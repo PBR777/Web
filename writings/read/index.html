@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <script src="/script.js"></script>
+
+  <script src="/components/init.js"></script>
+</head>
+
+<body>
+  <p-component id="upper_banner"></p-component>
+
+  <h1 id="heading">
+    ﹥My Writings
+  </h1>
+
+  <div class="body">
+    <script id="script">
+      const MAIN = document.createElement("p")
+
+      MAIN.innerText = "Loading..."
+
+      MAIN.style = "white-space: pre-wrap; size: 10px"
+
+      document
+        .getElementsByClassName("body")
+        .item(0)
+        .appendChild(MAIN);
+
+      const ID = new URLSearchParams(window.location.search).get("id");
+
+      const REG = /^[0-9a-f]{32}$/;
+
+      if(!ID || !REG.test(ID)) {
+        MAIN.innerText = "Invalid ID: " + ID;
+        throw new Error(`For safty reason, parsing of id ${ID} was stopped.`);
+      }
+
+      (async () => {
+        const RES = await fetch(`../${ID}/index.txt`);
+
+        if(!RES.ok) {
+          switch (RES.status) {
+            case 404:
+            MAIN.innerText = `Writing:${ID} no found`;
+            return;
+
+            case 403:
+            case 400:
+            MAIN.innerText = `Access denied of Wirting:${ID}`;
+            return;
+          }
+
+          MAIN.innerText = `Wirting:${ID} load failed`
+          return;
+        }
+
+        const TEXT = await RES.text();
+        MAIN.innerText = TEXT.replace(/  /g, "　");
+      })();
+
+      document.getElementById("script").remove();
+    </script>
+  </div>
+</body>
+
+</html>

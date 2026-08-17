@@ -1,0 +1,11 @@
+.gameshot span {
+  display: none;
+}
+
+.gameshot:hover span {
+  display: inline-block;
+}
+
+.body {
+  margin-top: -8px;
+}
