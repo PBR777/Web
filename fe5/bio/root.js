@@ -1,4 +1,3 @@
-import setTitle from "/fe5/modules/sidebar.js";
 import { create } from "/fe5/modules/index.js";
 
 const DIRECTORY = "bio";
@@ -137,7 +136,5 @@ const div = create("div")
 });
 
 document.body.insertAdjacentElement("afterbegin", div);
-
-setTitle(id);
 
 export default {};

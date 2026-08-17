@@ -55,7 +55,7 @@ ah-.h2 {
 .sidebar-button {
   position: fixed;
   left: 0;
-  top: 50%;
+  top: 10%;
   translate: 0 -50%;
 
   display: flex;
@@ -71,7 +71,7 @@ ah-.h2 {
 
   border-left-style: none;
 
-  width: 30px;
+  width: 40px;
   height: 60px;
 
   cursor: pointer;

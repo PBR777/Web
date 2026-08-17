@@ -37,12 +37,16 @@ function loadModules() {
   return Promise.all(modules.map(url => import(url)));
 }
 
-if(!document.querySelector("meta[name='no-title']") &&
-  document.title !== "") {
+if(!document.querySelector("meta[name='no-title']")) {
 
-  const title = create("h1", "document-title")
-    .setText(document.title)
-    .build();
+  const title = create("h1", "document-title").build();
+
+  if(document.title === "") {
+    const urlPart = location.href.split("/");
+    title.innerText = urlPart.at(-2);
+  } else {
+    title.innerText = document.title;
+  }
 
   document.body.insertAdjacentElement("afterbegin", title);
 }
