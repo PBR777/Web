@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Bio</title>
+
+  <link rel="stylesheet" href="/fe5/root.css">
+
+  <script type="module" src="/fe5/root.js"></script>
+
+  <style>
+    #search-bar {
+      width: 30%;
+      min-width: 100px;
+      max-width: 800px;
+
+      position: relative;
+      left: 50%;
+      translate: -50%;
+
+      text-align: center;
+
+      transition: width 500ms;
+    }
+
+    #search-bar:focus {
+      width: 70%;
+    }
+
+    #placeholder {
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+
+    #result-text-div {
+      text-align: center;
+      font-size: 120%;
+
+      padding: 8px 0;
+
+      border-width: 3px;
+      border-color: inherit;
+      border-bottom-style: solid;
+    }
+    
+  </style>
+
+  <script type="module">
+    import IdUtils from "/fe5/modules/id.js";
+    import {create} from "/fe5/modules/index.js";
+
+    /**@type string[] */
+    let idSet = [];
+
+    const textbox = create("text-box").build();
+    const resultDiv = create("div", "search-result").build();
+    const resultTextDiv = create("div", "result-text-div").build();
+
+    const searchbar = create("input", "search-bar").build();
+    searchbar.placeholder = "输入编号...";
+    searchbar.maxLength = "16";
+
+    (() => {
+      let id;
+      searchbar.addEventListener("input", () => {
+        clearTimeout(id);
+        id = setTimeout(update, 300);
+      });
+
+      searchbar.addEventListener("change", update);
+    })();
+
+    /**
+     * @param {string} str 
+     */
+    function search(str) {
+      if(!idSet) return [];
+      if(str.trim() === "") return idSet;
+
+      const {zoneCode, id, fullId} = IdUtils.parse(str);
+      let results = idSet;
+
+      if(zoneCode) {
+        results = results.filter(val => val[0] === zoneCode);
+      }
+
+      results = results
+        .map(val => ({ name: val, weight: val.lastIndexOf(id)}))
+        .filter(obj => obj.weight !== -1)
+        .sort((a, b) => b.weight - a.weight)
+        .map(obj => obj.name);
+
+      return results;
+    }
+
+    let searchRecord;
+
+    function update() {
+      
+      const str = searchbar.value.trim();
+      if(str === searchRecord) return;
+      searchRecord = str;
+
+      const results = search(str);
+
+      if(str === "") {
+        resultTextDiv.innerText = `${idSet.length}个编号已收录`;
+      } else if(results.length === 0) {
+        resultTextDiv.innerHTML = `ID:${str}未找到，他/她可能未被收录，或者根本不存在<br><br>￣へ￣`;
+      } else {
+        resultTextDiv.innerText = `找到${results.length}个与ID:${str}相似的结果`;
+      }
+
+      resultDiv.innerHTML = "";
+
+      const links = results.map(name => {
+        const link = create("a")
+          .setText(name)
+          .build();
+        link.href = `/fe5/bio/${name}/`;
+        return link;
+      });
+
+      resultDiv.append(...links);
+
+      return results;
+    }
+
+    (async () => {
+      const res = await fetch("/fe5/data/bio/index.json");
+      if (!res.ok) throw new Error("id.json load failed. Reason: " + res.statusText)
+      idSet = await res.json();
+
+      const url = new URLSearchParams(location.search);
+      const id = url.get("id");
+      if(id) searchbar.value = id;
+
+      const results = update();
+
+      if(url.has("redirect")) {
+        url.delete("redirect");
+        history.replaceState({}, "", "/fe5/bio/?" + url.toString());
+
+        if(results && results.length === 1) {
+          location.replace(`/fe5/bio/${results[0]}/`);
+          return;
+        }
+      }
+
+      document.body.querySelector("#placeholder").remove();
+      document.body.append(searchbar);
+      textbox.append(resultTextDiv, resultDiv);
+      document.body.append(textbox);
+    })().catch(err => {
+      console.error(err);
+
+      document.body.querySelector("#placeholder").innerText = 
+
+`加载失败 :(
+${err}`
+
+    });
+
+    
+    
+  </script>
+</head>
+
+<body>
+  <span id="placeholder">加载中</span>
+
+</body>
+
+</html>

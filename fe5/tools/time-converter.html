@@ -1,0 +1,224 @@
+<meta name="tool-name" content="时间转换">
+
+<div id="time-convert">
+  <span>一个简单的时间互转工具，注意过大的数值可能造成精度丢失。</span>
+  <span>若要转换为单一单位，请点击单位标签。</span>
+  <br>
+  <div id="time-inputarea">
+    <div class="column-down">
+      <span class="time-type">Fe5计时系统</span>
+      <span class="time-field">Y  <input class="time-fe5" id="time-Y"></span>
+      <span class="time-field">D  <input class="time-fe5" id="time-D"></span>
+      <span class="time-field">H  <input class="time-fe5" id="time-H"></span>
+      <span class="time-field">Hp <input class="time-fe5" id="time-Hp"></span>
+      <span class="time-field">s  <input class="time-fe5" id="time-s"></span>
+
+    </div>
+    <div class="column-down">
+      <span class="time-type">地球计时系统</span>
+      <span class="time-field">天   <input class="time-earth" id="time-Ed"></span>
+      <span class="time-field">小时 <input class="time-earth" id="time-Eh"></span>
+      <span class="time-field">分钟 <input class="time-earth" id="time-Emin"></span>
+      <span class="time-field">秒   <input class="time-earth" id="time-Es"></span>
+    </div>
+  </div>
+  <span>
+    <button id="time-reset">重置</button>
+    <button id="time-simplify">简化</button>
+  </span>
+</div>
+
+<style>
+#time-convert {
+  display: flex;
+  flex-direction: column;
+}
+
+#time-convert .time-type {
+  width: 80%;
+  position: static;
+  right: 0px;
+}
+
+#time-convert span {
+  display: flex;
+  justify-content: center;
+}
+
+#time-convert input {
+  width: 80%;
+}
+
+#time-convert #time-inputarea {
+  display: flex;
+  min-width: 700px;
+
+  justify-content: space-around;
+}
+
+#time-convert .column-down {
+  display: flex;
+
+  flex-direction: column;
+  align-items: end;
+
+  width: 50%;
+  height: min-content;
+}
+
+#time-convert .time-field {
+  display: flex;
+  justify-content: space-between;
+
+  margin: 2px 0px;
+  width: 100%;
+
+  text-indent: 10px;
+
+  cursor: pointer;
+
+  transition: background-color 200ms;
+}
+
+#time-convert .time-field:hover {
+  background-color: var(--background-glow);
+}
+
+#time-convert .time-field:active {
+  background-color: color-mix(in srgb, var(--background-glow) 60%, black 40%);
+}
+
+#time-convert button {
+  width: 25%;
+}
+</style>
+
+<script type="module" class="to-be-executed">
+  import Time from "/fe5/modules/time-system.js";
+
+  const root = document.getElementById("time-convert");
+  const valMap = new Map();
+  const getVal = name => Number(valMap.get("time-" + name).value) ?? 0;
+  const setVal = (name, val) => valMap.get("time-" + name).value = val === 0 ? "" : String(val);
+  const flr = Math.floor;
+
+  function secToTime(sec) {
+    return {
+      d: flr(sec / 86400),
+      h: flr(sec / 3600 % 24),
+      min: flr(sec / 60 % 60),
+      s: sec % 60
+    };
+  }
+
+  function timeToSec(ts) {
+    return ts.d * 86400 + ts.h * 3600 + ts.min * 60 + ts.s;
+  }
+
+  function getFe5Sec() {
+    const time = {
+      Y: getVal("Y"),
+      D: getVal("D"),
+      H: getVal("H"),
+      Hp: getVal("Hp"),
+      s: getVal("s")
+    };
+
+    return Time.create(time).toSecond();
+  }
+
+  function getEarthSec() {
+    const time = {
+      d: getVal("Ed"),
+      h: getVal("Eh"),
+      min: getVal("Emin"),
+      s: getVal("Es"),
+    };
+
+    return timeToSec(time);
+  }
+
+  function setFe5Time(time) {
+    setVal("Y", time.Y);
+    setVal("D", time.D);
+    setVal("H", time.H);
+    setVal("Hp", time.Hp);
+    setVal("s", time.s);
+  }
+
+  function setEarthTime(time) {
+    setVal("Ed", time.d);
+    setVal("Eh", time.h);
+    setVal("Emin", time.min);
+    setVal("Es", time.s);
+  }
+
+
+  function calAndUpdate(element) {
+    if(element.classList.contains("time-fe5")) {
+      const time = secToTime(getFe5Sec());
+      setEarthTime(time);
+    
+    } else {
+      const time = Time.secToTime(getEarthSec());
+      setFe5Time(time);
+
+    }
+  }
+
+  function convertToSpecifiedUnit(unit, sec) {
+    const time = Time.create(sec);
+
+    switch(unit) {
+      case "Y": return time.toY(sec);
+      case "D": return time.toD(sec);
+      case "H": return time.toH(sec);
+      case "Hp": return time.toHp(sec);
+
+      case "Ed": return sec / 86400;
+      case "Eh": return sec / 3600;
+      case "Emin": return sec / 60;
+
+      default: return sec;
+    }
+  }
+
+  root.querySelectorAll("input").forEach(element => {
+    valMap.set(element.id, element);
+
+    element.type = "number";
+    element.placeholder = "0";
+
+    element.addEventListener("input", () => calAndUpdate(element));
+
+    element.addEventListener("click", ev => ev.stopPropagation());
+  });
+
+  root.querySelectorAll(".time-field").forEach(field => {
+    const input = field.querySelector("input");
+
+    field.addEventListener("click", () => {
+      const sec = getEarthSec();
+      const unit = input.id.split("-").at(-1);
+
+      const belongClass = input.classList.contains("time-fe5") ? "time-fe5" : "time-earth";
+      
+      valMap.forEach(input => {
+        if(input.classList.contains(belongClass)) input.value = "";
+      });
+      
+      input.value = convertToSpecifiedUnit(unit, sec);
+    });
+  });
+
+  root.querySelector("#time-reset").addEventListener("click", () => {
+    valMap.forEach(input => input.value = "");
+  });
+
+  root.querySelector("#time-simplify").addEventListener("click", () => {
+    const sec = getEarthSec();
+    setEarthTime(secToTime(sec));
+    setFe5Time(Time.create(sec));
+  });
+
+</script>

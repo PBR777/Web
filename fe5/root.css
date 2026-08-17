@@ -1,0 +1,283 @@
+:root {
+  --border-color: #2525258e;
+  --background-color: #181818ad;
+  --border-glow: #4141419f;
+  --background-glow: #363636e5;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 30px;
+
+  color: white;
+  text-shadow: 1.3px 1.3px 0px color-mix(in srgb, currentColor 70%, black 30%), 
+               0px 0px 3px;
+  font-size: 120%;
+}
+
+body {
+  background-color: black;
+
+  visibility: hidden;
+}
+
+body.show {
+  visibility: visible;
+}
+
+h1 {
+  color: white;
+
+  text-align: center;
+  text-shadow: 0px 0px 15px;
+
+  font-size: 320%;
+  font-variant: small-caps;
+  font-family: Arial;
+}
+
+p::before {
+  content: "　　";
+}
+
+a {
+  color: #708aff;
+  display: inline-block;
+  text-align: center;
+
+  width: 50%;
+  min-width: 200px;
+
+  padding: 10px 0px;
+
+  cursor: pointer;
+  transition: background-color 200ms;
+}
+
+a:visited {
+  color: #d270ff;
+}
+
+a:hover {
+  background-color: var(--background-glow);
+}
+
+p>a {
+  color: #708aff;
+  display: inline;
+  width: min-content;
+}
+
+p>a:hover {
+  background-color: transparent
+}
+
+text-box {
+  display: block;
+  width: 80%;
+  min-width: 300px;
+  max-width: 800px;
+
+  position: relative;
+  left: 50%;
+  translate: -50% 0;
+
+  margin: 10px 0;
+  padding: 15px;
+
+  border-color: var(--border-color);
+  border-radius: 16px;
+  border-width: 3px;
+  border-style: solid;
+
+  background-color: var(--background-color);
+
+  animation: borderFix 0s forwards;
+  transition: border-color 200ms;
+}
+
+info-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: relative;
+  left: 50%;
+  translate: -50% 0;
+  width: fit-content;
+
+  margin: 20px 0;
+  padding: 3px;
+
+  font-size: 120%;
+  text-align: left;
+  font-family: 'Courier New', Courier, monospace;
+  text-shadow: 1px 1px 0 color-mix(in srgb, currentColor 70%, black 30%);
+  
+  border-color: var(--border-color);
+  border-radius: 5px;
+  border-width: 2px;
+  border-style: dashed;
+
+  transition: border-color 200ms;
+}
+
+info-text {
+  display: inline-block;
+  width: fit-content;
+
+  font-family: 'Courier New', Courier, monospace;
+  text-shadow: 1px 1px 0 color-mix(in srgb, currentColor 70%, black 30%);
+  
+  border-color: var(--border-color);
+  border-radius: 5px;
+  border-width: 3px;
+  border-style: dashed;
+
+  transition: border-color 200ms;
+}
+
+text-box:hover {
+  border-color: var(--border-glow);
+}
+
+info-box:hover {
+  border-color: var(--border-glow);
+}
+
+info-text:hover {
+  border-color: var(--border-glow);
+}
+
+del-text {
+  text-decoration-style: solid;
+  text-decoration-line: line-through;
+  text-decoration-color: #ff3232;
+  text-decoration-thickness: 3px;
+}
+
+@keyframes flashingUnderline {
+  50% {border-bottom-color: transparent;}
+}
+
+id- {
+  display: inline-block;
+  color: #ffc815;
+
+  border-bottom: solid 2px;
+
+  padding: 0 2px;
+
+  animation: flashingUnderline 1.5s infinite;
+
+  cursor: pointer;
+}
+
+figcaption {
+  display: flex;
+  justify-content: center;
+}
+
+input {
+  background-color: #2e2e2e;
+  color: white;
+
+  min-width: none;
+  width: 150px;
+
+  font-size: 100%;
+
+  border-radius: 1px;
+  border-color: #424242;
+  border-style: solid;
+}
+
+input:focus {
+  outline-style: none;
+}
+
+button {
+  background-color: #2e2e2e;
+  color: white;
+
+  width: auto;
+  min-width: none;
+
+  padding: 2px 15px;
+  font-size: 100%;
+
+  border-radius: 10px;
+  border-color: #424242;
+  border-style: solid;
+
+  cursor: pointer;
+
+  transition: scale 200ms;
+}
+
+button:active {
+  background-color: #252525;
+  border-color: #313131;
+
+  scale: 0.95;
+}
+
+span {
+  font-family: sans-serif;
+}
+
+table {
+  border-width: 3px;
+  border-radius: 8px;
+  border-style: solid;
+  border-color: var(--border-color);
+  
+  border-spacing: 0;
+
+  transition: border-color 200ms;
+}
+
+td, th {
+  border-width: 1px;
+  border-radius: 2px;
+  border-color: var(--border-color);
+  border-style: solid;
+  margin: 0;
+
+  text-align: center;
+
+  padding: 3px 8px;
+  transition: background-color 200ms;
+}
+
+table:hover {
+  border-color: var(--border-glow);
+}
+
+td:hover, th:hover {
+  background-color: var(--background-glow);
+}
+
+.observed-element {
+  display: flex;
+
+  width: 80%;
+  min-width: 500px;
+  max-width: 1600px;
+
+  position: relative;
+  left: 50%;
+  translate: -50% 0;
+
+  margin: 30px 0;
+
+  transform: translateY(10%);
+  opacity: 0%;
+
+  transition: transform 400ms, opacity 400ms;
+}
+
+.observed-element-visible {
+  transform: none;
+  opacity: 100%;
+}

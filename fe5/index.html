@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Fe5: Our Home</title>
+  
+  <meta name="no-title">
+
+  <link rel="stylesheet" href="/fe5/root.css">
+  <script type="module" src="/fe5/root.js"></script>
+
+  <style>
+    @keyframes floatingText {
+      0% {
+        translate: 10px 0px;
+      }
+    
+      100% {
+        translate: 50px 0px;
+      }
+    }
+
+    #title {
+      height: 300px;
+      display: flex;
+
+      max-width: 800px;
+      min-width: min-content;
+
+      justify-content: space-evenly;
+    }
+
+    #title .text {
+      flex-shrink: 1;
+      min-width: auto;
+      max-width: 500px;
+    
+      display: flex;
+      flex-direction: column;
+    
+      justify-content: space-evenly;
+      padding: 0px 0px 0px 50px;
+    
+      transform: perspective(300px) rotateY(30deg);
+    }
+
+    #title h1 {
+      text-align: left;
+      margin: 0px;
+    
+      text-wrap-mode: nowrap;
+    
+      animation-name: floatingText;
+      animation-timing-function: ease-in-out;
+      animation-duration: 5s;
+      animation-direction: alternate;
+      animation-iteration-count: infinite;
+    }
+
+    .title-highlight {
+      color: #0f13e7;
+    }
+
+    #title .planet {
+      flex-grow: 0;
+      width: 300px;
+    
+      border-radius: 100%;
+      box-shadow: 0px 0px 18px #006effa2;
+    }
+
+    #map {
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    
+      max-width: 800px;
+    }
+
+    #quick-action {
+      display: flex;
+      flex-wrap: wrap;
+      min-width: 300px;
+    }
+  </style>
+  
+  
+  <script type="module">
+    import {} from "./modules/text-obfucation.js"
+    import getMap from "./modules/map.js";
+
+    const mapArea = document.querySelector("#map");
+    getMap("fe5-winkel_tripel-lined").then(
+      map => mapArea.insertAdjacentElement("afterbegin", map.div));
+  </script>
+</head>
+
+<body>
+  <div class="observed-element" id="title">
+    <div class="text">
+      <h1>
+        Fe<span class="title-highlight">5</span>
+      </h1>
+      <h1 style="animation-delay: -1.25s;">
+        Our Home
+      </h1>
+      
+    </div>
+    <div class="planet">
+      <img src="/fe5/assets/fe5-1017x1017.webp" width="300" height="300">
+    </div>
+  </div>
+
+  <text-box>
+    <ah->Fe5：起航之地</ah->
+    <p>在<obf-text>IDK.</obf-text>光年之外的一颗行星——Fe5上。人类已经登上这颗美丽行星，重写了许多旧有常识，更突破了很多科技难题。</p>
+    <p>这一切都发生在未来某个时刻（反正是地球人类灭绝之前），或者现在正在发生……不知道，管他什么平行宇宙……反正有可能。</p>
+    <p>你能有幸来到这里，能有了解几千光年外、人类定居发展的行星，能以“上帝视角”监视着上面发生的一切。你越去发掘，你越会意识到，希望和绝望在未来的孪生是多么美妙。</p>
+    <p>噢，对了，我是777，你叫我编号就行。我在野外找到了这块指向地球的虫洞稳定器（这东西比我们的微虫洞芯片大太TM多了），现在成功打通了这个信道，正常来说地球人已经全部灭绝了，只不过这玩意貌似意外地打通到了<obf-text>undef..</obf-text>年前。好吧，也算幸运，你我都是，我可以向你，一位存活的地球人发送信息，你，也有机会能打听我们的消息。</p>
+    <p>我不知道这种连结能维持多久，但愿我能在它断开之前，将我所记录的，全部传送过去吧。还有……对，我将这些全部都秘密注入到了一个网站里，也就是你现在正在浏览的这个网站（希望网站管理员别把我当黑客封了）。</p>
+    <p>就这样，我会持续更新Fe5 Wiki，将整个架构尽可能收录进来。</p>
+    <p style="text-align: right; color: deepskyblue; margin-right: 60px;">-- 777</p>
+  </text-box>
+
+  <div class="observed-element" id="map">
+    <p>Fe5地图（温克尔三重投影）</p>
+  </div>
+  
+  <text-box>
+    <ah->快速连接</ah->
+    <div id="quick-action">
+      <a href="/fe5/wiki/">百科</a>
+      <a href="/fe5/bio/">已收录编号</a>
+      <a href="/fe5/time/">时钟</a>
+      <a href="/fe5/articles/">文章</a>
+    </div>
+    
+  </text-box>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Identity</title>
+
+  <link rel="stylesheet" href="/fe5/root.css">
+
+  <script type="module" src="/fe5/root.js"></script>
+
+  <script type="module">
+    import getToolObject from "/fe5/tools/load.js";
+
+    const toolObj = await getToolObject("id-converter");
+    document.querySelector("#tool-slot").append(toolObj.tool);
+    toolObj.execute();
+  </script>
+</head>
+<body>
+
+  <text-box>
+    <ah->身份索引</ah->
+    <p>Fe5上所有诞生于培养皿的人都会被分发一个<info-text>唯一编号</info-text>，所有系统和机构内部索引人员的方式总是使用编号。实际上，名字在<a href="/fe5/wiki/settings/deversity/#发展区">发展区</a>内部是不被认可的，其不确定性和碰撞概率使其难以索引。</p>
+    <p>不过，近80%的Fe5人还是会选取一个个性称呼，方便在朋友之间呼叫对方。</p>
+  </text-box>
+
+  <text-box>
+    <ah->编号原理</ah->
+    <p><info-text>唯一编号</info-text>的工作方式与UID相似，所有<info-text>唯一编号</info-text>都属于<a href="/fe5/wiki/settings/deversity/#监督服务器">被监督数据</a>。</p>
+    
+
+    <ah- class="h2">分配</ah->
+    <p>所有<info-text>唯一编号</info-text>都由<info-text>发展区生命管理会</info-text>分配，当有人诞生时，<info-text>发展区生命管理会</info-text>会计算一个唯一的编号并写入<a href="/fe5/wiki/settings/deversity/#监督服务器">监督服务器</a>内，同时一并生成一对公钥和私钥，将公钥存储进服务器，将私钥写入数据卡并交给目标编号人士。此后，该编号将无法被修改。</p>
+
+    <ah- class="h2">查询</ah->
+    <p>拥有他人<info-text>唯一编号</info-text>之人都可以向<a href="/fe5/wiki/settings/deversity/#监督服务器">监督服务器</a>发送请求，请求将返回基本个人资料。</p>
+
+    <ah- class="h2">身份验证</ah->
+    <p>本质于数字签名相似，私钥加密，公钥解密。由于公钥是可查询的，任何软件都可以用该方法作身份认证。</p>
+  </text-box>
+
+  <text-box>
+    <ah->编号格式</ah->
+
+    <ah- class="h2">字面编号</ah->
+    <p>所有字面唯一编号都将遵循一下格式：<info-text>(zoneCode) + (number)...</info-text>，即一个后方。加上任意长度的数。</p>
+    <p>后方。只有四种：<info-text>E</info-text>、<info-text>O</info-text>、<info-text>P</info-text>、<info-text>M</info-text>，它们表示的意思如下：</p>
+    <info-box>
+      E：来自地球<br>
+      O：来自绿洲教学区<br>
+      P：来自能源教学区<br>
+      M：来自秘境教学区<br>
+    </info-box>
+    <p>所以，以下是几个合格的字面编号：<id->E0</id->、<id->M5236841</id->、<id->O008</id->、<id->P11111</id->。</p>
+    <p>有时候，例如同学们互相称呼时，如果对方没有称呼，但叫完整编号又太长时，一般会使用字面编号简写：</p>
+    <info-box>
+      <span><id->P8536015</id-> -> <id->(P)015</id-></span>
+      <span><id->M705777</id-> -> <id->(M)777</id-></span>
+      <span><id->O36000</id-> -> <id->(O)000</id-></span>
+    </info-box>
+    <p>意思是<id->O36000</id->可以简写为<id->000</id->或者<id->O000</id->。</p>
+    <p>如果需要同时称呼两个编号简写且简写互相冲突，应该尝试保留地区编码，或者向前保留，直到不冲突：</p>
+    <info-box>
+      <span><id->O36000</id->和<id->P37000</id-></span>
+      <span>↓</span>
+      <span><id->000</id->和<id->000</id-></span>
+      <span>↓</span>
+      <span><id->O000</id->和<id->P000</id-></span>
+      <span>或者</span>
+      <span><id->6000</id->和<id->7000</id-></span>
+    </info-box>
+    <p>简写一般使用于日常沟通、文章代称等轻松场合，对于系统查询性严肃场合，必须使用全写。</p>
+
+    <ah- class="h2">计算机表示方式</ah->
+    <p>二进制编号通常运用于计算机索引与存储，一个二进制编号总是遵循以下格式：</p>
+    <info-box>
+      任意位的ID，后接两位地区编码
+    </info-box>
+    <p>首先，将地区编码转化为两比特：</p>
+    <info-box>
+      E: 00<br>
+      O: 01<br>
+      P: 10<br>
+      M: 11<br>
+    </info-box>
+    <p>然后将剩余数字ID转化为二进制，再拼接至地区编码前方。</p>
+    <p>假设需要将<id->M705777</id->转化为二进制编号，先将<info-text>M</info-text>转化为<info-text>11</info-text>，再将<info-text>705777</info-text>转化为<info-text>10101100010011110001</info-text>，最后拼接得<info-text>1010110001001111000111</info-text>，搞定。</p>
+    <p>十六进制编号也存在，将二进制编号转化为十六进制即可。以上例子的十六进制编号为<info-text>2B13C7</info-text>。</p>
+    <slot id="tool-slot"></slot>
+  </text-box>
+  
+</body>
+</html>

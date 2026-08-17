@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta name="no-sidebar">
+
+  <link rel="stylesheet" href="/fe5/root.css">
+
+  <script type="module" src="/fe5/root.js"></script>
+
+  <script type="module">
+    import Time from "/fe5/modules/time-system.js";
+
+    Time.calibrate();
+
+    const HEADING = document.getElementById("heading");
+    const STAGE = document.getElementById("stage");
+    const CTX = STAGE.getContext("2d");
+
+    const HpInSec = Time.H_CONST / 100;
+    const D_IN_d = (Time.H_CONST * 36 / 60 / 60 / 24).toFixed(5);
+    const H_IN_h = (Time.H_CONST / 60 / 60).toFixed(5);
+
+    let isSizeChanged = true;
+
+    const { drawLine, drawProcessBar } = ((ctx) => {
+      const obj = {
+        drawLine(startX, startY, endX, endY) {
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.lineTo(endX, endY);
+          ctx.stroke();
+        },
+
+        drawProcessBar(x, y, length, process, color) {
+          ctx.lineCap = "round";
+          obj.drawLine(x, y, x + length, y);
+          ctx.strokeStyle = color;
+          obj.drawLine(x, y, x + length * process, y);
+        }
+      };
+      return obj;
+    })(CTX);
+
+    setInterval((function update() {
+      const ts = Time.now();
+
+      const Y = String(ts.Y);
+      const D = String(ts.D).padStart(2, "0");
+      const H = String(ts.H).padStart(2, "0");
+
+      const Hp = String(ts.Hp | 0).padStart(2, "0");
+
+      const s = String(ts.s.toFixed(2)).padStart(6, "0");
+
+      const STATUS = ts.isDaytime ? "☀️日" : "🌙夜";
+
+      const SLEEPING_STATUS = Hp < 70 ? "活动" : "睡觉";
+
+
+
+      HEADING.innerHTML = `${Y}-${D}-${H} ${STATUS}<br>` +
+        `${Hp}:${s}<br><br>` +
+        `现在应该：${SLEEPING_STATUS}！`;
+
+      if(isSizeChanged) {
+        isSizeChanged = false;
+
+        const rect = STAGE.getBoundingClientRect();
+
+        const height = 300;
+
+        STAGE.style.height = `${height}px`;
+
+        STAGE.height = height;
+        STAGE.width = rect.width;
+      }
+
+      canvasTick(CTX, ts);
+
+      return update;
+    })(), 1000 / 30);
+
+    window.addEventListener("resize", () => isSizeChanged = true);
+
+    /**
+     * @param {CanvasRenderingContext2D | null}ctx
+     */
+    function canvasTick(ctx, ts) {
+      if (!ctx) return;
+
+      ctx.clearRect(0, 0, STAGE.width, STAGE.height);
+
+      const CVS = ctx.canvas;
+      const CENTER_X = CVS.width / 2 | 0;
+      const CENTER_Y = CVS.height / 2 | 0;
+
+      const barLength = CVS.width - 100;
+
+      const dnp = Time.create(ts).daynightProcess;
+      const workCycleProcess = (ts.Hp + ts.s * 100 / Time.H_CONST) / 100;
+
+      ctx.resetTransform();
+
+      ctx.strokeStyle = "#ffffff";
+      ctx.fillStyle = "#ffffff";
+      ctx.lineWidth = 1.2;
+      ctx.textAlign = "center";
+
+      ctx.translate(CENTER_X, 30)
+      ctx.scale(3, 3);
+
+      ctx.fillText(`百分时：${ts.s.toFixed(3)}s/${HpInSec.toFixed(3)}s`, 0, 0);
+      ctx.fillText(`${(HpInSec / 60).toFixed(5)}分钟`, 0, 50 / 3);
+
+      ctx.fillText(`昼夜：${(dnp * 100).toFixed(5)}%`, 0, 100 / 3);
+      ctx.fillText(`${D_IN_d}天`, 0, 150 / 3);
+
+      ctx.fillText(`作息：${(workCycleProcess * 100).toFixed(3)}%`, 0, 200 / 3);
+      ctx.fillText(`${H_IN_h}小时`, 0, 250 / 3);
+
+      ctx.resetTransform();
+
+      ctx.lineWidth = 8;
+
+
+      drawProcessBar(50, 50, barLength, ts.s / HpInSec, "#00aa00");
+
+      const grad1 = ctx.createLinearGradient(50, 0, 50 + barLength, 0);
+      grad1.addColorStop(0.00, "#0f0f0f");
+      grad1.addColorStop(0.24, "#222230");
+      grad1.addColorStop(0.26, "#2a66aa");
+      grad1.addColorStop(0.50, "#33ccff");
+      grad1.addColorStop(0.74, "#2a66aa");
+      grad1.addColorStop(0.76, "#222230");
+      grad1.addColorStop(1.00, "#0f0f0f");
+      ctx.strokeStyle = grad1;
+
+      drawLine(50, 150, 50 + barLength, 150);
+
+      const grad2 = ctx.createLinearGradient(50, 0, 50 + barLength, 0);
+      grad2.addColorStop(0.00, "#af4d27");
+      grad2.addColorStop(0.69, "#be542a");
+      grad2.addColorStop(0.71, "#0f0f2f");
+      grad2.addColorStop(0.85, "#0e0e1f");
+      grad2.addColorStop(1.00, "#0f0f2f");
+      ctx.strokeStyle = grad2;
+
+      drawLine(50, 250, 50 + barLength, 250);
+
+      ctx.lineWidth = 0;
+
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(50 + barLength * workCycleProcess, 250, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#0066ff";
+      ctx.beginPath();
+      ctx.arc(50 + barLength * dnp, 150, 7, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+  </script>
+
+  <style>
+    #stage {
+      width: 100%;
+      color: white;
+      background-color: #00000000;
+      text-align: center;
+      color: #af4d27;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 id="heading">正在校准时间……</h1>
+  <canvas id="stage" width="1920" height="1080">预览加载失败 :(</canvas>
+</body>
+
+</html>

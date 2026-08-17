@@ -1,0 +1,87 @@
+h1 {
+  margin-bottom: 0;
+}
+
+#profile-div {
+  width: 80%;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  
+}
+
+#profile-img-box {
+  margin: 0;
+}
+
+#profile-img {
+  width: 300px;
+  height: 300px;
+
+  text-align: center;
+}
+
+#profile-alt {
+  width: 300px;
+  height: 300px;
+
+  font-size: 150%;
+  font-family: 'Courier New';
+  text-align: center;
+  user-select: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#profile-caption {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+#profile-subheading {
+  font-size: 100%;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+#profile-info-div {
+  width: 0;
+  min-width: 200px;
+
+  flex-grow: 1;
+  flex-shrink: 1;
+
+  margin: 0 10px;
+}
+
+#profile-title {
+  width: 100%;
+  text-align: center;
+  font-size: 130%;
+
+  border-bottom: 4px var(--border-color) solid;
+
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+#profile-error {
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.bio-span {
+  display: block;
+
+  font-size: 120%;
+
+  margin: 0 10px;
+}

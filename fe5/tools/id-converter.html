@@ -1,0 +1,117 @@
+<meta name="tool-name" content="编号格式转化">
+
+<div id="id-convert">
+  <span><p>一个简单的编号转化工具，注意字面编号必须完整，不可使用简写。</p></span>
+  <span>字面编号<input id="id-literal" maxlength="16"></span>
+  <span>二进制编号(0b)<input id="id-bin" type="number" maxlength="55"></span>
+  <span>十六进制编号(0x)<input id="id-hex" maxlength="13"></span>
+  <span class="id-footer">
+    <button id="id-reset">重置</button>
+  </span>
+  <span class="id-footer">
+    <span>查询：<id- id="id-id"></id-></span>
+  </span>
+  <span class="id-footer" id="id-error"></span>
+</div>
+
+<style>
+#id-convert {
+  min-width: 480px;
+}
+
+#id-convert span {
+  display: flex;
+  justify-content: space-between;
+}
+
+#id-convert input {
+  width: 60%;
+}
+
+#id-convert .id-footer {
+  justify-content: center;
+  margin: 3px 0;
+}
+
+#id-convert button {
+  width: 40%;
+}
+
+#id-convert #id-error {
+  color: red;
+}
+
+</style>
+
+<script type="module" class="to-be-executed">
+  import IdConvert from "/fe5/modules/id.js";
+
+  const root = document.getElementById("id-convert");
+  const errorText = document.querySelector("#id-error");
+  const idElement = document.querySelector("#id-id");
+
+  const inputMap = new Map();
+  let lockId;
+
+  const setVal = (id, val) => {
+    const fullId = "id-" + id;
+    if(fullId === lockId) return;
+    inputMap.get(fullId).value = val;
+  };
+
+  const setErrorMsg = msg => errorText.innerHTML = msg;
+
+  root.querySelectorAll("input").forEach(element => {
+    element.addEventListener("input", update);
+    inputMap.set(element.id, element);
+  });
+
+  function reset() {
+    const input = inputMap.get("id-literal");
+    input.value = "E0";
+    update.apply(input);
+  }
+
+  root.querySelector("#id-reset").addEventListener("click", reset);
+  reset();
+
+  function update() {
+    setErrorMsg("");
+    let id = "";
+    // this = target element;
+    // console.log(this.value);
+
+    lockId = this.id;
+
+    switch(this.id) {
+      case "id-literal":
+      id = this.value;
+      break;
+
+      case "id-bin":
+      case "id-hex":
+      const bin = parseInt(this.value, this.id === "id-bin" ? 2 : 16)
+        .toString(2);
+      
+      id = IdConvert.binaryToId(bin);
+      
+      break;
+    }
+
+    const parsedId = IdConvert.parse(id);
+    let idBin;
+
+    try {
+      idBin = IdConvert.idToBinary(parsedId);
+    } catch(err) {
+      idBin = "0";
+      setErrorMsg("字面编号必须包含地区编号");
+    }
+    
+    setVal("literal", parsedId.fullId);
+    setVal("bin", idBin);
+    setVal("hex", parseInt(idBin, 2).toString(16).toUpperCase());
+
+    idElement.innerText = parsedId.fullId
+  }
+</script>

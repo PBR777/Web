@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Tool</title>
+
+  <link rel="stylesheet" href="/fe5/root.css">
+  
+  <script type="module">
+    import getToolObject from "./load.js";
+
+    const textbox = document.querySelector("text-box");
+    const toolName = new URLSearchParams(window.location.search).get("name");
+    
+    const toolObj = await getToolObject(toolName);
+    textbox.append(toolObj.tool)
+    toolObj.execute();
+  </script>
+  <script type="module" src="/fe5/root.js"></script>
+</head>
+<body>
+  <text-box></text-box>
+</body>
+</html>

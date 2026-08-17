@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Fe5 Wiki</title>
+
+  <link rel="stylesheet" href="/fe5/root.css">
+  <script type="module" src="/fe5/root.js"></script>
+
+  <style>
+    .observed-element {
+      flex-grow: 1;
+      width: 80%;
+      max-width: 800px;
+
+      justify-content: center;
+
+      flex-wrap: wrap;
+
+      margin: 0px;
+    }
+
+    .observed-element>text-box {
+      width: min-content;
+      position: unset;
+      translate: unset;
+    
+      min-width: 300px;
+      max-width: 750px;
+    
+      margin: 4px;
+      padding: 3px;
+    
+      flex-grow: 1;
+    }
+
+    .link-div {
+      width: 100%;
+      display: flex;
+    
+      flex-wrap: wrap;
+    }
+
+  </style>
+
+  <script type="module">
+    import getMap from "/fe5/modules/map.js";
+
+    const mapArea = document.querySelector("#locations");
+    getMap("fe5-winkel_tripel-lined").then(
+      map => mapArea.append(map.div));
+
+  </script>
+</head>
+<body>
+  <text-box>
+    <ah->简介</ah->
+    <p>欢迎来到Fe5 Wiki：一个只关于Fe5的百科。制度、地理、恒星系统、生物……等等都被记录于此。你想看些什么？</p>
+  </text-box>
+  <div class="observed-element">
+    <text-box>
+      <ah->恒星系统</ah->
+
+      <div class="link-div">
+        <a href="solar/sofar-system/">远征系</a>
+        <a href="solar/main-star/">主星</a>
+        <a href="solar/next-star/">序星</a>
+        <a href="solar/pbr_7/">PBR-7</a>
+        <a href="solar/fe5/">Fe5</a>
+        <a href="solar/electron/">电子星</a>
+      </div>
+    </text-box>
+    <text-box id="locations">
+      <ah->版图</ah->
+    </div>
+  </div>
+  <div class="observed-element">
+    <text-box>
+      <ah->设定</ah->
+
+      <div class="link-div">
+        <a href="settings/origin/">起源</a>
+        <a href="settings/time-system/">时间系统</a>
+        <a href="settings/deversity/">发展区</a>
+        <a href="settings/identity/">编号</a>
+        <a href="settings/lifestyle/">生活方式</a>
+        <a href="settings/court/">审判</a>
+      </div>
+    </text-box>
+    <text-box>
+      <ah->生态</ah->
+
+      <div class="link-div">
+        <a href="env/daynight-wind/">晨昏风</a>
+        <a href="env/typhoon/">阀门台风</a>
+        <a href="env/surface-aurora/">地表极光</a>
+        <a href="env/daynight-cycle">昼夜循环</a>
+        <a href="env/radiation-side/">向阳面/背阳面</a>
+        <a href="env/season-offset/">季节偏移</a>
+      </div>
+    </text-box>
+  </div>
+
+  <div class="observed-element">
+    <text-box>
+      <ah->科技</ah->
+      <div class="link-div">
+        <a href="tech/flight-board/">飞行滑板</a>
+        <a href="tech/smart-wristband/">智能手环</a>
+        <a href="tech/injected-bmi-chip/">植入式脑机芯片</a>
+      </div>
+    </text-box>
+  </div>
+</body>
+</html>

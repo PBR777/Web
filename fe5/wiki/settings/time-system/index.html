@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Time System</title>
+
+  <link rel="stylesheet" href="/fe5/root.css">
+  
+  <script type="module">
+    import getToolObject from "/fe5/tools/load.js";
+
+    const toolObj = await getToolObject("time-converter");
+    document.querySelector("#tool-slot-1").append(toolObj.tool);
+    toolObj.execute();
+  </script>
+  <script type="module" src="/fe5/root.js"></script>
+</head>
+<body>
+  <text-box>
+    <p>由于Fe5位于双星系统中，其星球上的时间定义会与地球有所不同。</p>
+  </text-box>
+
+  <text-box>
+    <ah->时间单位</ah->
+
+    <ah- class="h2">定义</ah->
+    <p>Fe5上的基本单位是秒，此单位沿用了地球定义：</p>
+    <info-box><img class="info-img" src="/fe5/assets/definition-s.svg"></info-box>
+    <p>由于Fe5被序星潮汐锁定，时间将无法直接根据==由Fe5的公转周期来定义。在Fe5上日出日落的周期被定义为天（D），一天的时长可以根据双星环绕周期，以及Fe5公转周期推导：</p>
+    <info-box><img class="info-img" src="/fe5/assets/definition-D.svg"></info-box>
+    <p>注意分母是两周期之和，原因是Fe5的公转轨道为逆行轨道。</p>
+    <p>继续定义年（Y）：</p>
+    <info-box><img class="info-img" src="/fe5/assets/definition-Y.svg"></info-box>
+    <p>双星环绕周期大约为11.336D，一年为11D，这导致了Fe5上季节会在每年偏移约0.336D，这种现象称之为<a  href="/fe5/wiki/env/season-offset/">季节偏移</a>。</p>
+    <p>为了更好地拟合人类作息，1D内被划分出时（H）和百分时（H%）两个单位，定义如下：</p>
+    <info-box><img class="info-img" src="/fe5/assets/definition-H.svg"></info-box>
+    <p>更多Fe5上的人类作息请参考<a  href="/fe5/wiki/settings/lifestyle/#人类作息">生活方式#人类作息</a></p>
+
+    <slot id="tool-slot-1"></slot>
+  </text-box>
+
+  <text-box>
+    <ah->时间戳</ah->
+
+    <ah- class="h2">定义</ah->
+    <p>一个标准的时间戳总是遵循着<info-text>Y*-DD-HH HpHp:ssss?</info-text>的格式。其中Y*为任意长度的年，DD为两位的天，HH为两位的时，HpHp为两位的百分时，ssss?为三到四位的秒。Y*字段读作“年”，DD字段读作“日”，HH字段读作“时”，HpHp字段读作“点”，ssss?读作“秒”，其中Y*因为长度不定，所以直接从左到右读数字就行。<info-text>12-03-04 56:789</info-text>将读作：<info-text>一二年三日四时五十六点七百八十九秒</info-text>。</p>
+    <p>以下是一些标准的时间戳：</p>
+    <info-box>3-10-21 98:675</info-box>
+    <info-box>15-02-00 15:1000</info-box>
+    <info-box>21-00-35 00:000</info-box>
+    <p>值得注意的是，时间戳里所有字段都是以0为基准的（zero-based），不难看出以下时间戳无效：</p>
+    <info-box>6-08-27 100:012</info-box>
+    <info-box>13-11-36 52:1001</info-box>
+    <p>根据定义，1H=100H%，即H%满100就要向H进一位，第一个时间戳的H%为100，不在[0, 100)之间，顾不正确。第二个时间戳的H亦同理。</p>
+    <p>一些更高精度的时间戳会写出秒的小数位，如：<info-text>19-05-20 03:454.622</info-text>。</p>
+    
+    <ah- class="h2">报时</ah->
+    <p>假设现在的时间戳为<info-text>1-02-34 56:789</info-text>。</p>
+    <p>他们现在问：<info-text>现在几点了？</info-text></p>
+    <p>Fe5上，百分时HpHp才读作“点”，所以应该回答：<info-text>现在56点。</info-text></p>
+    <p>问：<info-text>那……几时了？</info-text></p>
+    <p>答：<info-text>34时。</info-text></p>
+    <p>问：<info-text>几日？</info-text></p>
+    <p>答：<info-text>2日。</info-text></p>
+    <p>问：<info-text>秒？</info-text></p>
+    <p>答：<info-text>789。</info-text></p>
+    <!--The tool will be added in future-->
+  </text-box>
+</body>
+</html>

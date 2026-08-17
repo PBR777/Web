@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Articles</title>
+
+  <link rel="stylesheet" href="/fe5/root.css">
+  <script type="module" src="/fe5/root.js"></script>
+
+  <style>
+    #cover {
+      width: 60%;
+      max-width: 600px;
+    }
+
+    figure {
+      margin: 5px;
+    }
+
+    img {
+      width: 100%;
+    }
+
+    slot {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      width: 100%;
+      text-align: center;
+    }
+  </style>
+
+  <script type="module">
+    import { create } from "/fe5/modules/index.js";
+
+    const ARTICLE_ROOT = "/fe5/data/article/";
+    const slot = document.querySelector("#main-slot");
+
+    try {
+      const res = await fetch(ARTICLE_ROOT + "index.json");
+      if(!res.ok) throw new Error(res.statusText);
+
+      const arr = await res.json();
+
+      const buttons = arr.map(name => create("a")
+        .setText(name)
+        .addEventListener("click", () => location.href = "read/?name=" + name)
+        .build());
+
+      slot.innerHTML = "";
+      slot.append(...buttons);
+  
+    } catch(err) {
+      console.error(err);
+      
+      slot.innerHTML = "加载失败:(<br>" + err;
+    }
+
+  </script>
+
+</head>
+<body>
+  <text-box>
+    <ah->一些话</ah->
+    <p>首先，这些文章并不出自我手，它们大多来自网络，还有一些是我……曾经的朋友写的。我阅读过它们，觉得有趣，或者有深刻意义，所以将它们放在这里（他们已经同意了，大部分是的），并称这个集合为：《基本篇章》。</p>
+    <p>一些匿名文章的作者名统一使用<info-text>Trustable</info-text>，别问为什么……</p>
+    <p style="text-align: right; color: deepskyblue; margin-right: 60px;">-- 777</p>
+  </text-box>
+  <info-box id="cover">
+    <figure>
+      <img src="/fe5/assets/basic-chapter.png">
+      <figcaption><span>《基本篇章》封面（是的……）</span></figcaption>
+    </figure>
+  </info-box>
+  <text-box>
+    <ah->《基本篇章》</ah->
+    <slot id="main-slot">
+      加载中...
+    </slot>
+  </text-box>
+</body>
+</html>

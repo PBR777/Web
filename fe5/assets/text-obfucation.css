@@ -1,0 +1,12 @@
+obf-text {
+  display: inline-block;
+
+  color: red;
+
+  text-align: center;
+  font-family: monospace;
+  font-size: 135%;
+  
+  user-select: none;
+  cursor: wait;
+}

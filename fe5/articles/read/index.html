@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Reading</title>
+
+  <link rel="stylesheet" href="/fe5/root.css">
+  <script type="module" src="/fe5/root.js"></script>
+
+  <style>
+    @keyframes flashingText {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    text-box {
+      overflow-wrap: anywhere;
+      white-space-collapse: preserve;
+
+      min-width: 500px;
+    }
+
+    .date-box {
+      text-align: left;
+    }
+
+    .loading {
+      text-align: center;
+    }
+
+    .author-box {
+      width: max-content;
+    }
+
+    .author-box-untrusted {
+      text-shadow: 0 0 10px, 0 0 15px;
+
+      color: #ff4444;
+      white-space-collapse: collapse;
+    }
+
+    .author-box-untrusted>info-text {
+      font-weight: bold;
+      text-shadow: inherit;
+      
+      text-align: center;
+    }
+
+    .author-box-untrusted>info-text>span {
+      text-decoration: underline;
+      text-shadow: inherit;
+      font-weight: bold;
+      text-decoration-style: none;
+
+      font-size: 150%;
+      
+      animation: flashingText 1.5s infinite;
+    }
+
+    .author-box-untrusted>span {
+      text-decoration: line-through;
+      
+    }
+
+    br-space {
+      display: block;
+      margin: 15px 0;
+    }
+  </style>
+
+  <script type="module">
+    import { create } from "/fe5/modules/index.js"
+
+    const ARTICLE_ROOT = "/fe5/data/article/";
+    const TRUSTED_AUTHORS = new Set()
+      .add("PBR777")
+      .add("");
+
+    // From MDN
+    async function getHash(name) {
+      const data = new TextEncoder().encode(name);
+      const buffer = await crypto.subtle.digest("SHA-1", data);
+      const arr = Array.from(new Uint8Array(buffer));
+      return arr.map(value => value.toString(16).padStart(2, "0")).join("");
+    }
+
+    const textbox = document.querySelector("text-box");
+
+    /** 
+     * @param {string} text
+    */
+    function replaceId(text) {
+      return text.split("$").map(line => {
+        const index = line.match(/[^\dEOPM]/)?.index;
+
+        if(index !== 0) {
+          const id = line.slice(0, index);
+          const remainingLine = index ? line.slice(index) : "";
+          return `<id->${id}</id->${remainingLine}`;
+        }
+
+        return line;
+      }).join("")
+    }
+
+    try {
+      const articleName = new URLSearchParams(location.search).get("name");
+      if (!articleName || articleName === "") throw new Error("Missing 'name'");
+
+      const articleId = await getHash(articleName);
+      console.log(articleId);
+      const res = await fetch(`${ARTICLE_ROOT}/${articleId}.txt`);
+      if (!res.ok) {
+        if (res.status === 404) throw new Error(`Article:${articleName} Not Found.`);
+
+        throw new Error(res.status + " " + res.statusText);
+      }
+      const rawText = await res.text();
+
+      /**@type string[] */
+      const lines = replaceId(rawText).replaceAll("\r", "").replaceAll("  ", "　").split("\n");
+
+      let pos = 0;
+      const next = () => {
+        const lastPos = lines.indexOf("", pos);
+        const results = lines.slice(pos, lastPos);
+        pos = lastPos + 1;
+        return results;
+      };
+
+      const meta = next();
+      const date = next();
+      const author = next()[0];
+      const title = next()[0];
+      const text = lines.slice(pos);
+
+      const authorText = create("info-box")
+        .addClass("author-box")
+        .setHTML(`<span>作者：${author}</span>`)
+        .build();
+
+      if (true) {
+        
+      } else {
+        const untrustedBox = document.querySelector("#untrusted-box").content.cloneNode(true);
+        untrustedBox.querySelector("#author-slot").innerText = author;
+
+        authorText.append(untrustedBox);
+        authorText.classList.add("author-box-untrusted");
+      }
+
+      const heading = create("ah-")
+        .setText(title)
+        .build();
+
+      const dateText = create("info-box")
+        .addClass("date-box")
+        .setHTML(`<span>日期：${date.join(", ")}</span>`)
+        .build();
+
+      const div = create("div")
+        .setHTML(text.join("<br-space>"))
+        .build();
+
+      textbox.innerHTML = "";
+      textbox.append(authorText, dateText, heading, ...div.childNodes);
+
+
+      textbox.classList.remove("loading");
+
+    } catch (err) {
+
+      console.error(err);
+
+      textbox.innerHTML = "文章加载失败:(<br>" + err;
+    }
+
+  </script>
+
+  <template id="untrusted-box">
+    <info-text>
+      <span>警告：未经认证的作者</span><br><br>
+      
+      该文章由未知作者编写，或者来自未信任的源。它们可能携带反科学、玄学、<obf-text>??</obf-text>学、超自然、恶性模因等危险内容。继续阅读则代表你已知晓可能的后果，并且已接受承担一切责任。如果出现<obf-text>????</obf-text>、自<obf-text>????</obf-text>况请立即<obf-text>????????????????</obf-text>
+    </info-text>
+    <br>
+    <span>
+      <obf-text>???</obf-text>
+      作者：
+      <slot id="author-slot"></slot>
+      <obf-text>???</obf-text>
+    </span>
+  </template>
+</head>
+
+<body>
+  <text-box class="loading">
+    加载中...
+  </text-box>
+</body>
+
+</html>
