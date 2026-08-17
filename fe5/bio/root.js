@@ -14,6 +14,7 @@ if(dirIndex + 1 >= urlPart.length)
 
 const id = urlPart[dirIndex + 1];
 
+// 750你别再加这些无意义的……表情了，这很难维护的（︶^︶）
 const ALT_TEXT = {
   E: [
     "(￣、￣)",

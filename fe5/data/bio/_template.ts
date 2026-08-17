@@ -1,7 +1,7 @@
 /**
  * 一个标准的bio.json。里面的属性可以省略，代表“未知”。
  */
-type bioFromat = {
+type bioFormat = {
   /** 别名/称呼*/
   altname?: string;
 
@@ -22,7 +22,7 @@ type bioFromat = {
   words?: string;
 };
 
-const example: bioFromat = {
+const example: bioFormat = {
   altname: "000",
   birthday: {
     D: 0,

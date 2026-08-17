@@ -117,7 +117,7 @@ class Time {
       return new Time(secToTime(t))
     }
 
-    return new Time(toFull(t));
+    return new Time(simplify(t));
   }
 
   /**
