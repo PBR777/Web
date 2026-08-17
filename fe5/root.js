@@ -37,6 +37,7 @@ function loadModules() {
   return Promise.all(modules.map(url => import(url)));
 }
 
+
 if(!document.querySelector("meta[name='no-title']")) {
 
   const title = create("h1", "document-title").build();
@@ -64,10 +65,6 @@ try {
   console.error(err);
 }
 
-function finish() {
-  document.body.classList.add("show");
-}
+document.body.classList.add("show");
 
-finish();
-
-export default finish;
+export function updateTitle() {} ;

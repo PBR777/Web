@@ -1,3 +1,5 @@
+import {} from "/fe5/root.js"
+import setTitle from "/fe5/modules/sidebar.js";
 import { create } from "/fe5/modules/index.js";
 
 const DIRECTORY = "bio";
@@ -135,6 +137,15 @@ const div = create("div")
   profileInfoDiv.append(span);
 });
 
-document.body.insertAdjacentElement("afterbegin", div);
+setTitle(id);
+
+const firstTextbox = document.querySelector("text-box");
+if(firstTextbox) {
+  document.body.insertBefore(div, firstTextbox);
+} else {
+  document.body.append(div);
+}
+
+
 
 export default {};
