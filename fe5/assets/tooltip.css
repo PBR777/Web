@@ -18,3 +18,22 @@
 #tooltip.show {
   display: block;
 }
+
+@keyframes flashingText {
+  50% {opacity: 0;}
+}
+
+tool-tip::after {
+  content: "?";
+
+  color: #6ebeff;
+  font-weight: bold;
+  text-shadow: none;
+  font-size: 80%;
+
+  display: inline-block;
+
+  translate: 0 -30%;
+
+  animation: flashingText 2s infinite;
+}

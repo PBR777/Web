@@ -5,7 +5,9 @@
   <title>Flight Board</title>
 
   <link rel="stylesheet" href="/fe5/root.css">
+
   <script type="module" src="/fe5/root.js"></script>
+  <script type="module" src="/fe5/modules/tooltip.js"></script>
 </head>
 <body>
   <text-box>
@@ -39,9 +41,9 @@
     <ah- class="h2">飞行参数</ah->
     <ul>
       <li>滑翔比：<info-text>12:1</info-text></li>
-      <li title="官方设定的油门上限，超过这个速度油门将不会主动加速">油门速度上限：<info-text>160km/h（民用）</info-text>，<info-text>500km/h（竞赛）</info-text></li>
-      <li title="指官方建议的最大安全速度，超过这个速度可能会对飞行器造成损伤">最大安全速度：<info-text>200km/h（民用）</info-text>，<info-text>630km/h（竞赛）</info-text></li>
-      <li title="实际上的可能最大速度，超过这个速度大概率会解体">最大临界速度：<info-text>420km/h（民用）</info-text>，<info-text>1250km/h（竞赛）</info-text></li>
+      <li><tool-tip text="官方设定的油门上限，超过这个速度油门将不会主动加速。">油门速度上限</tool-tip>：<info-text>160km/h（民用）</info-text>，<info-text>500km/h（竞赛）</info-text></li>
+      <li><tool-tip text="指官方建议的最大安全速度，超过这个速度可能会对飞行器造成损伤。">最大安全速度</tool-tip>：<info-text>200km/h（民用）</info-text>，<info-text>630km/h（竞赛）</info-text></li>
+      <li><tool-tip text="实际上的可能最大速度，超过这个速度大概率会解体。">最大临界速度</tool-tip>：<info-text>420km/h（民用）</info-text>，<info-text>1250km/h（竞赛）</info-text></li>
       <li>最大油门推力：<info-text>600N（民用）</info-text>，<info-text>3000N（竞赛）</info-text></li>
     </ul>
     
@@ -50,8 +52,42 @@
   <text-box>
     <ah->特征</ah->
 
-    <p>飞行滑板自带无线电控油门，通过旋钮精准控制。</p>
-    <p>飞行滑板正下方装载离子推进器：通过高速电离空气中的分子形成离子，再通过线圈将它们“抛出去”，为滑板提供推力，同时新的空气进入推进器里，等待下一次电离……</p>
+    <ah- class="h2">动力系统</ah->
+    <p>飞行滑板自带有线和无限电控油门，通过旋钮精准控制。</p>
+    <p>滑板正下方装载离子推进器：通过高速电离空气中的分子形成离子，再通过线圈将它们“抛出去”，为滑板提供推力，同时新的空气进入推进器里，等待下一次电离……</p>
+    <p>滑板上带有两个微虫洞模块接口，两条微虫洞通道允许滑板与能量站交换自由电子，以此供能。</p>
+
+    <ah- class="h2">稳定系统</ah->
+    <p>滑板时速可达200km/h（民用），空中气流可能导致剧烈颠簸，轻微的重心偏移也可能导致事故发生。因此，滑板内部自带电控稳定系统，通过微调参数稳定滑板。</p>
+    <p>为安全着想，稳定系统在飞行时将强制开启，除非使用者强行注入或修改底层程序。</p>
+  </text-box>
+
+  <text-box>
+    <ah->操作程序</ah->
+    <p>（从飞行滑板基础手册里摘录）</p>
+    <p>你好，使用者，本手册将讲解关于飞行滑板的起飞程序、降落程序、飞行控制步骤、紧急处理程序、微虫洞模块、脑机操作等等基础知识，令你初步认识如何驾驭飞行滑板。</p>
+
+    <ah- class="h2">起降</ah->
+    <p>……起飞的跑道需要平坦，且长度理论最短为(2.058+0.412m)米，其中m为使用者质量（kg），推荐的起飞长度为80米；而推荐的降落长度为120米……</p>
+
+    <ah- class="h2">飞行</ah->
+    <p>飞行滑板有两种控制方式：<info-text>重心控制</info-text>和<info-text>脑机控制</info-text>。</p>
+    <p>重心控制要求使用者在飞行途中，通过下压滑板控制重心，以控制方向。具体来说有：</p>
+    <info-box>
+      <ul>
+        <li>重心左偏：向左横滚并偏航；</li>
+        <li>重心右偏：向右横滚并偏航；</li>
+        <li>重心前压：仰角向下并下降；</li>
+        <li>重心后压：仰角向上并上升。</li>
+      </ul>
+    </info-box>
+    <p>脑机控制要求使用者必须植入<a href="/fe5/wiki/tech/injected-bmi-chip/">脑机</a>，并通过基础控制飞行。</p>
+
+    <ah- class="h2">紧急处理</ah->
+    <p><del-text>都在空中极限飞行了还在考虑安全性吗？</del-text></p>
+    <p><del-text>这不是我写的！这是<id->256</id->写的！</del-text></p>
+    <p>就是<id->777</id->写的呀！(*￣▽￣*)</p>
+    <p><id->256</id->！再捣乱我就只好撤了你的网站权限了。</p>
   </text-box>
 </body>
 </html>
