@@ -40,16 +40,21 @@ function loadModules() {
 
 if(!document.querySelector("meta[name='no-title']")) {
 
-  const title = create("h1", "document-title").build();
+  const title = create("h1").build();
+
+  const titleDiv = create("div", "document-title-div")
+    .append(title)
+    .build()
 
   if(document.title === "") {
-    const urlPart = location.href.split("/");
-    title.innerText = urlPart.at(-2);
+    const urlPart = location.href.split("/").at(-2);
+    title.innerText = urlPart;
+    document.title = urlPart;
   } else {
     title.innerText = document.title;
   }
 
-  document.body.insertAdjacentElement("afterbegin", title);
+  document.body.insertAdjacentElement("afterbegin", titleDiv);
 }
 
 document.querySelectorAll(".info-img").forEach(img => {

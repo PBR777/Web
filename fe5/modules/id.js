@@ -15,17 +15,17 @@ class Id extends HTMLElement {
     super();
   }
 
+  clickHandler() {
+    window.location.href = `/fe5/bio/?id=${this.textContent}&redirect`;
+  }
+
   connectedCallback() {
     this.addEventListener("click", this.clickHandler);
   }
 
   disconnectedCallback() {
-    this.addEventListener("click", this.clickHandler);
-  }
-
-  clickHandler() {
-    window.location.href = `/fe5/bio/?id=${this.textContent}&redirect`;
-  }
+    this.removeEventListener("click", this.clickHandler);
+  } 
 }
 
 customElements.define("id-", Id);

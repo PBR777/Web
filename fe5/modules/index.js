@@ -75,7 +75,7 @@ class PackedElement {
   /**
    * @param {string} type 
    * @param {(ev) => void} listener 
-   * @param {boolean | AddEventListenerOptions | undefined} options 
+   * @param {boolean | AddEventListenerOptions?} options 
    * @returns 
    */
   addEventListener(type, listener, options) {
@@ -84,16 +84,32 @@ class PackedElement {
   }
 
   build() {
-    return this.#element;
+    const result = this.#element;
+    this.#element = null;
+    return result;
+  }
+
+  /**@param {Node} node  */
+  appendTo(node) {
+    const result = this.build();
+    return node.appendChild(result);
   }
 }
 
 /**
  * @param {string} name 
- * @param {string | undefined} id 
+ * @param {string?} id 
  */
 export function create(name, id) {
   if(id) return new PackedElement(name).setId(id);
 
-  return new PackedElement(name)
+  return new PackedElement(name);
+}
+
+/**
+ * For debug
+ * @param {number} ms 
+ */
+export function sleep(ms) {
+  return new Promise(_ => setTimeout(_, ms));
 }

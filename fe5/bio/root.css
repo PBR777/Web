@@ -3,6 +3,10 @@ h1 {
 }
 
 #profile-div {
+  width: 100%;
+}
+
+#profile-textbox {
   width: 80%;
 
   display: flex;

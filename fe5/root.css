@@ -25,6 +25,12 @@ body.show {
   visibility: visible;
 }
 
+#document-title-div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 h1 {
   color: white;
 
@@ -32,6 +38,7 @@ h1 {
   text-shadow: 0px 0px 15px;
 
   font-size: 320%;
+
   font-variant: small-caps;
   font-family: Arial;
 }

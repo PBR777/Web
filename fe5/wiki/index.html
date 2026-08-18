@@ -45,11 +45,10 @@
   </style>
 
   <script type="module">
-    import getMap from "/fe5/modules/map.js";
+    import {load} from "/fe5/modules/map.js";
 
-    const mapArea = document.querySelector("#locations");
-    getMap("fe5-winkel_tripel-lined").then(
-      map => mapArea.append(map.div));
+    (await load("fe5-winkel_tripel-lined"))
+      .appendTo(document.querySelector("#locations"));
 
   </script>
 </head>

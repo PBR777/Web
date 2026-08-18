@@ -18,6 +18,10 @@
   display: block;
 }
 
+.map-div {
+  width: 100%;
+}
+
 .map-spot {
   position: absolute;
   top: 0px;
