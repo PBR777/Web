@@ -18,9 +18,13 @@ export function loadStyle(name) {
 class PackedElement {
   #element;
 
-  /**@param {string} name */
+  /**@param {string | HTMLElement} name */
   constructor(name) {
-    this.#element = document.createElement(name);
+    if(typeof name === "string") {
+      this.#element = document.createElement(name);
+    } else {
+      this.#element = name;
+    }
   }
 
   /**@param {string[]} name */
@@ -43,7 +47,7 @@ class PackedElement {
 
   /**@param {string} text */
   setText(text) {
-    this.#element.innerText = text;
+    this.#element.textContent = text;
     return this;
   }
 
@@ -60,7 +64,7 @@ class PackedElement {
   }
 
   /**
-   * @param {string} name 
+   * @param {keyof CSSStyleDeclaration} name 
    * @param {string?} value 
    */
   setStyle(name, value) {
@@ -73,26 +77,51 @@ class PackedElement {
   }
 
   /**
-   * @param {string} type 
-   * @param {(ev) => void} listener 
-   * @param {boolean | AddEventListenerOptions?} options 
-   * @returns 
+   * @param {string} name 
+   * @param {string} value 
    */
-  addEventListener(type, listener, options) {
+  setAttr(name, value) {
+    this.#element.setAttribute(name, value);
+    return this;
+  }
+
+  /**
+   * @param {keyof HTMLElementEventMap} type 
+   * @param {(ev) => any} listener 
+   * @param {boolean | AddEventListenerOptions?} options 
+   */
+  addListener(type, listener, options) {
     this.#element.addEventListener(type, listener, options);
     return this;
   }
 
-  build() {
-    const result = this.#element;
-    this.#element = null;
-    return result;
+  /**
+   * @param {keyof HTMLElementEventMap} type 
+   * @param {(ev) => any} listener 
+   * @param {boolean | AddEventListenerOptions?} options 
+   */
+  removeListener(type, listener, options) {
+    this.#element.removeEventListener(type, listener, options);
+    return this;
+  }
+
+  /**@param {string} selector  */
+  select(selector) {
+    const results = Array
+      .from(this.#element.querySelectorAll(selector))
+      .map(element => new PackedElement(element));
+    
+    if(results.length === 1) return results[0];
+    return results;
   }
 
   /**@param {Node} node  */
   appendTo(node) {
-    const result = this.build();
-    return node.appendChild(result);
+    return node.appendChild(this.#element);
+  }
+
+  build() {
+    return this.#element;
   }
 }
 
@@ -107,7 +136,6 @@ export function create(name, id) {
 }
 
 /**
- * For debug
  * @param {number} ms 
  */
 export function sleep(ms) {

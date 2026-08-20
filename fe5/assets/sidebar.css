@@ -1,3 +1,7 @@
+:root {
+  --duration: 300ms;
+}
+
 ah- {
   color: #ff483b;
   display: block;
@@ -77,7 +81,7 @@ ah-.h2 {
   cursor: pointer;
   z-index: 99;
 
-  transition: border-color 200ms, transform 500ms;
+  transition: border-color 200ms, transform var(--duration);
 }
 
 .sidebar-button:hover {
@@ -94,7 +98,7 @@ ah-.h2 {
 
   transform: translateX(-3px) rotateZ(45deg);
 
-  transition: transform 500ms;
+  transition: transform var(--duration);
 }
 
 .sidebar-showing {
@@ -121,7 +125,7 @@ ah-.h2 {
 
   width: 300px;
   height: 100%;
-  transition: transform 500ms, border-color 200ms;
+  transition: transform var(--duration), border-color 200ms;
   
   z-index: 100;
 
@@ -241,7 +245,7 @@ ah-.h2 {
   background-color: black;
   opacity: 0;
 
-  transition: opacity 500ms;
+  transition: opacity var(--duration);
 
   z-index: 98;
   

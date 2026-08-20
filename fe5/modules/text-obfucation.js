@@ -39,7 +39,7 @@ setInterval(() => {
 
     element.textContent = str;
   });
-}, 30);
+}, 40);
 
 await loadStyle("text-obfucation");
 

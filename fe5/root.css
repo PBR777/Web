@@ -116,7 +116,6 @@ info-box {
   margin: 20px 0;
   padding: 3px;
 
-  font-size: 120%;
   text-align: left;
   font-family: 'Courier New', Courier, monospace;
   text-shadow: 1px 1px 0 color-mix(in srgb, currentColor 70%, black 30%);
@@ -157,10 +156,10 @@ info-text:hover {
 }
 
 del-text {
+  color: #f5bfbf;
   text-decoration-style: solid;
   text-decoration-line: line-through;
-  text-decoration-color: #ff3232;
-  text-decoration-thickness: 3px;
+  text-decoration-thickness: 2px;
 }
 
 @keyframes flashingUnderline {
@@ -231,6 +230,8 @@ button:active {
 
 span {
   font-family: sans-serif;
+
+  text-align: center;
 }
 
 table {

@@ -65,7 +65,7 @@ const profileImgBox = create("info-box", "profile-img-box")
   .appendTo(profileImgDiv);
 
 const profileImg = create("img", "profile-img")
-  .addEventListener("error", imgErrorHandler, {once: true})
+  .addListener("error", imgErrorHandler, {once: true})
   .appendTo(profileImgBox);
 
 profileImg.src = `/fe5/assets/bio/${id}/profile.png`;

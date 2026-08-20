@@ -4,18 +4,7 @@ const tooltip = create("div", "tooltip")
   .appendTo(document.body);
 
 let isTooltipShowing = false;
-let frameId;
-
-document.addEventListener("pointermove", ev => {
-  if(frameId || !isTooltipShowing) return;
-
-  requestAnimationFrame(() => {
-    tooltip.style.left = ev.clientX + "px";
-    tooltip.style.top = ev.clientY + "px";
-
-    frameId = null;
-  });
-})
+let frameId = null;
 
 class Tooltip extends HTMLElement {
   static observedAttributes = ["text"];
@@ -29,16 +18,28 @@ class Tooltip extends HTMLElement {
   set text(val) {
     this.setAttribute("text", val);
   }
-  
-  showTooltip() {
-    tooltip.innerHTML = this.#text;
-    tooltip.classList.add("show");
-    isTooltipShowing = true;
-  }
 
   hideTooltip() {
     tooltip.classList.remove("show");
     isTooltipShowing = false;
+  }
+
+  showTooltip() {
+    tooltip.innerHTML = this.text;
+    tooltip.classList.add("show");
+    isTooltipShowing = true;
+  }
+
+  updateTooltip(ev) {
+    if(!isTooltipShowing) this.showTooltip();
+    if(frameId) return;
+
+    frameId = requestAnimationFrame(() => {
+      tooltip.style.left = ev.clientX + "px";
+      tooltip.style.top = ev.clientY + "px";
+
+      frameId = null;
+    });
   }
 
   constructor() {
@@ -50,13 +51,15 @@ class Tooltip extends HTMLElement {
   }
 
   connectedCallback() {
-    this.addEventListener("mouseenter", this.showTooltip);
-    this.addEventListener("mouseleave", this.hideTooltip);
+    this.addEventListener("pointerenter", this.showTooltip);
+    this.addEventListener("pointerleave", this.hideTooltip);
+    this.addEventListener("pointermove", this.updateTooltip);
   }
 
   disconnectedCallback() {
-    this.removeEventListener("mouseenter", this.showTooltip);
-    this.removeEventListener("mouseleave", this.hideTooltip);
+    this.removeEventListener("pointerenter", this.showTooltip);
+    this.removeEventListener("pointerleave", this.hideTooltip);
+    this.removeEventListener("pointermove", this.updateTooltip);
   }
 }
 

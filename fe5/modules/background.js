@@ -1,8 +1,6 @@
 import { loadStyle, create } from "/fe5/modules/index.js";
 
-const canvas = create("canvas")
-  .setId("background")
-  .build();
+const canvas = create("canvas", "background").build();
 
 const ctx = canvas.getContext("2d");
 if(!ctx) throw new Error("Canvas is not supported in this browser.");
@@ -10,7 +8,7 @@ if(!ctx) throw new Error("Canvas is not supported in this browser.");
 const canvasDiv = create("div")
   .setId("background-div")
   .append(canvas)
-  .build();
+  .appendTo(document.body);
 
 // Load star svg
 const starPNG = create("canvas").build();
@@ -29,7 +27,7 @@ await new Promise((resolve, reject) => {
   starImg.addEventListener("error", reject);
 
 }).catch(() => {
-  throw new Error("Star svg load failed.")
+  throw new Error("Star svg load failed.");
 });
 
 pngCtx.drawImage(starImg, 0, 0, starSize, starSize);
@@ -61,8 +59,6 @@ let initLock = false;
 
 function initCanvas(initialSeed = seed, starCount = 256) {
   if(initLock) throw new Error("Background has been initialized.");
-
-  if(typeof initialSeed !== "number") throw new Error("Cannot initialize with non-number seed.");
 
   seed = initialSeed;
 
@@ -102,6 +98,5 @@ for(let i = url.length; i >= 0; i--) {
 initCanvas((urlHash * -2156926 | 0) + 137697);
 
 await loadStyle("background");
-document.body.append(canvasDiv);
 
-export default initCanvas;
+export {};

@@ -23,6 +23,15 @@
   50% {opacity: 0;}
 }
 
+@keyframes flashingLine {
+  50% {text-decoration-color: transparent;}
+}
+
+tool-tip {
+  text-decoration: underline solid;
+  animation: flashingLine 2s infinite;
+}
+
 tool-tip::after {
   content: "?";
 
@@ -36,4 +45,13 @@ tool-tip::after {
   translate: 0 -30%;
 
   animation: flashingText 2s infinite;
+}
+
+tool-tip.hidden {
+  text-decoration: none;
+}
+
+
+tool-tip.hidden::after {
+  content: "";
 }

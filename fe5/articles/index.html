@@ -45,7 +45,7 @@
 
       const buttons = arr.map(name => create("a")
         .setText(name)
-        .addEventListener("click", () => location.href = "read/?name=" + name)
+        .addListener("click", () => location.href = "read/?name=" + name)
         .build());
 
       slot.innerHTML = "";

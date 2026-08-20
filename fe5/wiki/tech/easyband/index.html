@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Easyband</title>
+
+  <link rel="stylesheet" href="/fe5/root.css">
+
+  <script type="module" src="/fe5/root.js"></script>
+
+  <script type="module" src="/fe5/modules/tooltip.js"></script>
+
+  <style>
+
+    .animation {
+      width: 90%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .animation-div {
+      width: 0;
+      height: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    easyband-demo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes flashing {
+      0% {opacity: 0.5;}
+      50% {opacity: 0.3;}
+      100% {opacity: 0.5;}
+    }
+
+    easyband-demo tool-tip {
+      display: block;
+    }
+
+    easyband-demo .demo-band {
+      background-color: #5353f3;
+
+      border: 4px solid #3333ff;
+      border-radius: 30px;
+
+      position: relative;
+
+      width: 150px;
+      height: 15px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    easyband-demo .demo-projector {
+      position: absolute;
+
+      border: 3px solid #93ffff;
+      border-radius: 5px;
+
+      translate: 0 -25%;
+
+      background-color: #93ffff;
+
+      width: 15px;
+      height: 8px;
+    }
+
+    easyband-demo .demo-cursor {
+      position: absolute;
+
+      translate: 0 -300px;
+      width: 0;
+      height: 0;
+
+      border: 4px solid #9dc4ff;
+      border-radius: 100%;
+
+      transition: translate 200ms;
+    }
+
+    easyband-demo .demo-beam {
+      position: absolute;
+
+      width: 3px;
+      height: 296px;
+
+      translate: 0 -50%; 
+
+      background-color: #9dc4ff;
+      transition: height 200ms;
+    }
+
+    easyband-demo.off .demo-cursor {
+      visibility: hidden;
+      translate: unset;
+    }
+    
+    easyband-demo.off .demo-beam{
+      visibility: hidden;
+      height: 0;
+    }
+
+    easyband-demo .demo-leftkey {
+      right: 50px;
+    }
+
+    easyband-demo .demo-rightkey {
+      left: 50px;
+    }
+
+    easyband-demo .demo-cursor,
+    easyband-demo .demo-beam{
+      animation: flashing 1s ease-in-out infinite;
+    }
+
+    
+
+    easyband-demo.side .demo-band {
+      width: 1350px;
+    }
+
+    easyband-demo .demo-key {
+      display: none;
+      position: relative;
+    }
+
+    easyband-demo.side .demo-key {
+      display: block;
+
+      width: 60px;
+      height: 80%;
+      background-color: #5959f7;
+    }
+
+    .mask {
+      mask-image: radial-gradient(white 0, transparent 70%);
+      mask-size: 600px 600px;
+      mask-repeat: no-repeat;
+      mask-position: calc(50%) calc(50%);
+
+      
+      opacity: 0.6;
+
+      position: fixed;
+
+      width: 1000px;
+      height: 750px;
+
+      transition: mask-size 200ms, mask-position 50ms;
+    }    
+  </style>
+
+  <script type="module">
+    const observer = new ResizeObserver(entries => {
+      entries.forEach(entry => {
+        const element = entry.target;
+        const width = entry.contentRect.width;
+        const height = (width / 4 * 3 | 0) + "px";
+
+        if(element.style.height !== height)
+          element.style.height = height;
+
+        const child = element.querySelector("div");
+        if(!child) return;
+
+        child.style.scale = width / 1000;
+
+      });
+    });
+
+    document
+      .querySelectorAll(".animation")
+      .forEach(element => {
+        observer.observe(element);
+      });
+
+    class EasybandDemo extends HTMLElement {
+      static node = document
+        .querySelector("template")
+        .content;
+
+      isInit = false;
+
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        if(this.isInit) return;
+
+        this.isInit = true;
+        this.append(EasybandDemo.node.cloneNode(true));
+      }
+    }
+
+    customElements.define("easyband-demo", EasybandDemo);
+  </script>
+
+  <!--我有最顶级的艺术细菌-->
+  <template id="easyband-demo">
+    <tool-tip class="demo-band hidden" text="环带">
+      <tool-tip class="demo-beam hidden" text="游标光束"></tool-tip>
+      <tool-tip class="demo-projector hidden" text="全息投影仪"></tool-tip>
+      <tool-tip class="demo-cursor hidden" text="3D游标"></tool-tip>
+      <tool-tip class="demo-leftkey demo-key hidden" text="左触控区域（左键）"></tool-tip>
+      <tool-tip class="demo-rightkey demo-key hidden" text="右触控区域（右键）"></tool-tip>
+    </tool-tip>
+  </template>
+</head>
+<body>
+  <text-box>
+    <p>随身环，Fe5上最便携的智能工具！（确信）</p>
+
+    <ah- class="h2">外观</ah->
+    <p>随身环看上去就像一个手环，但是扁平的。展开时成带状，长<info-text>12cm~22cm</info-text>，宽<info-text>2cm</info-text>。环带中央嵌入了一个全息投影仪，背面同一位置为安装E20微虫洞模块的接口，用于无限供电。</p>
+    <p>随身环有多种颜色可选。<del-text>蓝色！蓝色！蓝色！</del-text></p>
+    <p>随身环左侧与右侧各有一个隐形的触控键，对应着不同的操作。左键默认绑定至惯用键，右键为辅助键。</p>
+
+    <info-box class="animation">
+      <div class="animation-div" id="ani0">
+        <style>
+          #ani0 {
+            flex-direction: column;
+          }
+
+          .band-scale-0_7 {
+            scale: 0.7;
+          }
+
+          #view-normal-on {
+            scale: 1.0;
+            rotate: 90deg;
+          }
+
+          #view-up .demo-band {
+            height: 150px;
+          }
+
+          #view-up .demo-projector {
+            top: 50%;
+            height: 15px;
+            translate: 0;
+          }
+
+          #ani0 easyband-demo {
+            margin: 50px 0;
+          }
+
+          #view-normal-div {
+            display: flex;
+          }
+        </style>
+
+        <div id="view-normal-div">
+          <easyband-demo class="band-scale-0_7 off"></easyband-demo>
+          <easyband-demo class="band-scale-0_7" id="view-normal-on"></easyband-demo>
+        </div>
+        <easyband-demo class="band-scale-0_7 off side" id="view-up"></easyband-demo>
+        <easyband-demo class="band-scale-0_7 off side" id="view-side"></easyband-demo>
+      </div>
+    </info-box>
+
+    <info-box>
+      <span>图中展示的分别是随身环正面（左上），正面激活状态（右上，全息模式，缩放≈143%），顶面（中）以及侧面（下），图中的随身环为展开状态（即未佩戴状态），环带长18cm。</span>
+      <span>可将鼠标悬停至部件上查看描述。</span>
+    </info-box>
+
+  </text-box>
+
+  <text-box>
+
+    <ah->全息模式</ah->
+
+    <p>随身环的默认投影模式。当随身环被触发时，在正上方投影出三维全息图。</p>
+    <p>全息模式下，最大<tool-tip text="投影距离与画面宽度之比">投射比</tool-tip>为<info-text>1:1.73（视场角120°）</info-text>，视锥最大高度为<info-text>30cm</info-text>。</p>
+    <p>全息模式下的界面存在一个3D游标，无论投影仪相对于地面的方向如何，该游标总是悬停在投影仪正前方，该距离可设置，默认为<info-text>10cm</info-text>。</p>
+    <p>游标处的像素密度为<info-text>125000/cm³</info-text>。</p>
+    <p>为了方便演示，无特殊声明，本页面下所有光标距离默认为<info-text>4cm</info-text>。</p>
+    <info-box class="animation">
+      <div class="animation-div" id="ani1">
+
+        <style>
+          @keyframes animation1 {
+            0%, 5% {transform: none;}
+
+            10%, 15% {
+              transform: rotate(90deg);
+            }
+
+            20%, 25% {
+              transform: translate(80px) rotate(90deg);
+            }
+
+            30%, 35% {
+              transform: translate(80px) rotate(45deg);
+            }
+
+            40%, 45% {
+              transform: translate(80px, -100px) rotate(-45deg);
+            }
+
+            50%, 55% {
+              transform: translate(-20px, 0px) rotate(-90deg);
+            }
+
+            60%, 65% {
+              transform: translate(0px, 0px) rotate(180deg);
+            }
+
+            70% {
+              transform: translate(-100px, 0px) rotate(290deg);
+            }
+
+            75%, 80% {
+              transform: translate(-100px, 0px) rotate(270deg);
+            }
+
+          }
+
+          #ani1 easyband-demo {
+            animation: animation1 6s ease-in-out infinite;
+          }
+        </style>
+
+        <easyband-demo></easyband-demo>
+
+      </div>
+
+        
+    </info-box>
+    <info-box>
+      <span>游标永远位于投影仪前方，无论环带如何旋转、移动。</span>
+    </info-box>
+    
+    <ah- class="h2">全息操作</ah->
+    <p>随身环通过手腕加速度来控制裁切范围，达到类似“空间漫游”的效果。全息模式下的界面可以是<info-text>平面（2D）</info-text>的，也可以是<info-text>空间（3D）</info-text>的。</p>
+    <info-box class="animation">
+      <div class="animation-div" id="ani2">
+
+        <style>
+          @keyframes animation2 {
+            0%, 10% {
+              transform: translate(0, 175px);
+            }
+
+            15%, 20% {
+              transform: translate(300px, 175px);
+            }
+
+            25%, 30% {
+              transform: translate(250px, 175px);
+            }
+
+            35%, 40% {
+              transform: translate(-50px, 175px) rotate(30deg);
+            }
+
+            45%, 50% {
+              transform: translate(200px, 100px) rotate(-80deg);
+            }
+
+            55%, 60% {
+              transform: translate(300px, 145px) rotate(-90deg);
+            }
+
+            65%, 70% {
+              transform: translate(0px, 25px);
+            }
+
+            75%, 80% {
+              transform: translate(-200px, 200px) rotate(60deg); 
+            }
+
+            85%, 90% {
+              transform: translate(250px, -80px) rotate(-140deg);
+            }
+
+            100% {
+              transform: translate(0, 175px);
+            }
+          }
+
+          #ani2 easyband-demo {
+            translate: 0 100px;
+
+            animation: animation2 10s infinite;
+          }
+
+          #ani2 .mask {
+            background-image: url(/fe5/assets/app-overlay.svg),
+                              url(/fe5/assets/app-bg.svg);
+          }
+        </style>
+
+        <script type="module">
+          import { bind } from "./mask-binding.js";
+          bind("band-2", "mask-2");
+        </script>
+
+        <div class="mask" id="mask-2"></div>
+        <easyband-demo id="band-2"></easyband-demo>
+        
+
+      </div>
+    </info-box>
+
+    <info-box>
+      <span>手腕移动，环带随之在空间中移动，并裁切相应的界面，投影到空中。</span>
+    </info-box>
+
+    <p>同时按下两个键以激活或关闭随身环。</p>
+
+    <info-box class="animation">
+      <div class="animation-div" id="ani3">
+        <style>
+
+          #ani3 .mask {
+            background-image: url(/fe5/assets/app-overlay.svg),
+                              url(/fe5/assets/app-bg.svg);
+          }
+
+          #ani3 easyband-demo {
+            translate: 0 300px;
+          }
+
+          #ani3 .demo-band {
+            width: 1000px;
+          }
+
+          #ani3 .demo-key {
+            transition: background-color 200ms;
+          }
+
+          #ani3 .demo-key.glow {
+            background-color: #bebeff;
+          }
+        </style>
+
+        <div class="mask"></div>
+        <easyband-demo class="side"></easyband-demo>
+
+        <script type="module" src="./ani3.js"></script>
+      </div>
+    </info-box>
+
+    <info-box>
+      <span>同时按下左右键激活随身环，再次按下关闭。</span>
+    </info-box>
+  </text-box>
+
+  <text-box>
+    <ah->投影模式</ah->
+
+    <p>顾名思义，投影模式指将画面投影至一张平面的模式，与平面投影仪有异曲同工之妙。</p>
+    <p>投影模式下，最远有效投影距离为<info-text>5米</info-text>，屏幕比例为<info-text>16:9</info-text>，<tool-tip text="游标光束与水平面的夹角">投影夹角</tool-tip>默认为<info-text>20°（可调整，12°~90°）</info-text>。5米20°情况下，能得到2米×1.125米的画面，分辨率为<info-text>3840×2160</info-text>。</p>
+
+    <info-box class="animation">
+      <div class="animation-div" id="ani4">
+        <style>
+          #ani4 easyband-demo {
+            translate: -400px 300px;
+
+            scale: 0.4;
+          }
+
+          #ani4 .demo-cursor {
+            translate: 0 -5px;
+            transform: rotate(-20deg) translate(2250px);
+          }
+
+          #ani4 .demo-beam {
+            translate: 0 -5px;
+            transform: rotate(70deg) translate(0, -50%);
+            height: 2246px;
+          }
+
+          #ani4 #wall {
+            position: absolute;
+            translate: 445.7px;
+            width: 4px;
+            height: 700px;
+
+            background-color: #dbdbff;
+          }
+
+          #ani4 #frame {
+            position: absolute;
+            scale: 0.6;
+            opacity: 0.8;
+
+            translate: 130px;
+
+            border: 8px dashed var(--border-color);
+          }
+        </style>
+
+        <tool-tip class="hidden" id="wall" text="墙面"></tool-tip>
+        <tool-tip id="frame" text="投影画面预览">
+          <img src="/fe5/assets/app-bg.svg">
+        </tool-tip>
+        <easyband-demo>
+        </easyband-demo>
+      </div>
+    </info-box>
+
+    <info-box>
+      <span>投影仪将画面投射至墙上，此处墙与投影仪水平距离约28.2cm，投影夹角为20°。</span>
+    </info-box>
+
+    <p>可见，虽然投影夹角不为0，投影出来的画面依然不会变形。因为随身环自带梯形校正，通过计算与平面的夹角，并投影出正确的结果。</p>
+    <p>随身环还自带稳定效果，无论如何移动手腕，画面将始终锚定在同一位置。</p>
+
+    <ah- class="h2">投影操作</ah->
+    <p>左右按键作用与<a href="#全息操作">全息操作</a>一致。</p>
+    <p>要移动游标，使用者可以通过移动手腕，使用游标光束瞄准，此时游标会尝试移动到准心位置，如同激光笔那样。如果超出画面外，游标将会隐藏。</p>
+    
+
+  </text-box>
+
+  <text-box>
+    <ah->脑机操作</ah->
+
+    <p>随身环也支持脑机操作。这通常需要使用者长时间练习，特别是在全息模式下。空间感知对全息操作很重要。</p>
+    
+  </text-box>
+</body>
+</html>

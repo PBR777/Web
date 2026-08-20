@@ -92,9 +92,6 @@
 
     const textbox = document.querySelector("text-box");
 
-    /** 
-     * @param {string} text
-    */
     function replaceId(text) {
       return text.split("$").map(line => {
         const index = line.match(/[^\dEOPM]/)?.index;

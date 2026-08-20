@@ -1,5 +1,7 @@
 import { loadStyle, create } from "/fe5/modules/index.js"
 
+const DURATION = 300;
+
 let isSpaceEnough = false;
 let isSidebarShowing = false;
 
@@ -9,7 +11,7 @@ const buttonArrow = create("div")
 
 const button = create("div")
   .addClass("sidebar-button")
-  .addEventListener("click", () => sidebarControl(!isSidebarShowing))
+  .addListener("click", () => sidebarControl(!isSidebarShowing))
   .append(buttonArrow)
   .build();
 
@@ -20,7 +22,7 @@ icon.src = "/fe5/assets/fe5-64x64.webp";
 
 const homeDiv = create("div")
   .addClass("sidebar-title-div")
-  .addEventListener("click", () => window.location.href = "/fe5/")
+  .addListener("click", () => window.location.href = "/fe5/")
   .append("Fe5: Our Home", icon)
   .build();
 
@@ -35,12 +37,12 @@ const div = create("div")
 
 const anchorTitle = create("div")
   .addClass("sidebar-anchor-title", "sidebar-anchor")
-  .addEventListener("click", () => window.scrollTo(0, 0))
+  .addListener("click", () => window.scrollTo(0, 0))
   .build();
 
 const overlay = create("div")
   .addClass("sidebar-overlay")
-  .addEventListener("click", () => sidebarControl(false))
+  .addListener("click", () => sidebarControl(false))
   .build();
 
 const updateTree = (() => {
@@ -93,7 +95,7 @@ class AnchorHeading extends HTMLElement {
   anchor = (() => {
     const anchorButton = create("div")
       .addClass("sidebar-anchor")
-      .addEventListener("click", this.onClick.bind(this))
+      .addListener("click", this.onClick.bind(this))
       .build();
 
     return anchorButton;
@@ -163,7 +165,7 @@ const sidebarControl = (() => {
 
       timeoutId = setTimeout(() => {
         overlay.style.visibility = "hidden";
-      }, 500);
+      }, DURATION);
     }
   }
 })();
