@@ -79,6 +79,10 @@ p>a:hover {
   background-color: transparent
 }
 
+.info-img {
+  width: 100%;
+}
+
 text-box {
   display: block;
   width: 80%;
@@ -230,7 +234,9 @@ button:active {
 
 span {
   font-family: sans-serif;
+}
 
+span.center {
   text-align: center;
 }
 
@@ -264,6 +270,10 @@ table:hover {
 
 td:hover, th:hover {
   background-color: var(--background-glow);
+}
+
+li {
+  margin: 10px 0;
 }
 
 .observed-element {

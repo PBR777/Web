@@ -80,7 +80,7 @@ class PackedElement {
    * @param {string} name 
    * @param {string} value 
    */
-  setAttr(name, value) {
+  setAttribute(name, value) {
     this.#element.setAttribute(name, value);
     return this;
   }
@@ -111,6 +111,7 @@ class PackedElement {
       .from(this.#element.querySelectorAll(selector))
       .map(element => new PackedElement(element));
     
+    if(results.length === 0) return null;
     if(results.length === 1) return results[0];
     return results;
   }

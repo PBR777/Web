@@ -79,7 +79,7 @@ function imgErrorHandler() {
   const seed = parseInt(id.slice(1)); 
 
   create("span", "profile-alt")
-    .setText(textList[Math.abs((seed * 258015 | 0) - 152) % textList.length] + "\n图片不存在")
+    .setHTML(textList[Math.abs((seed * 258015 | 0) - 152) % textList.length] + "<br>图片不存在")
     .appendTo(profileImgBox);
 }
 
