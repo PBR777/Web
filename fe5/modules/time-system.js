@@ -213,7 +213,7 @@ class Time {
 
   static async calibrate()  {
     const startTime = Date.now();
-    const res = await fetch("https://api/pbrsite.dev/time");
+    const res = await fetch("https://api.pbrsite.dev/time");
     const endTime = Date.now();
 
     if(!res.ok) 
