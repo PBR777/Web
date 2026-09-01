@@ -65,7 +65,7 @@ class Map {
         const yPct = `${y * 50 + 50}%`;
 
         const spot = create("tool-tip")
-          .addClass("map-spot", "map-spot-main")
+          .addClass("map-spot", "map-spot-main", "hidden")
           .setStyle("left", xPct)
           .setStyle("top", yPct)
           .appendTo(mapDiv);
