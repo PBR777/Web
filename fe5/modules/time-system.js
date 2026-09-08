@@ -61,8 +61,8 @@ class Time {
     const period = (short, long, mass) => 2 * Math.PI * ((long + short) ** 3 / (8 * G * mass)) ** 0.5;
 
     return ((a, b) => a * b / (a + b))
-    (period(2.4168e10 + 1.6134e11, 2.6111e10 + 1.7431e11, 2.215e30 + 3.318e29),
-    period(2.0214e10, 2.1019e10, 3.318e29 + 7.589e24));
+      (period(2.4168e10 + 1.6134e11, 2.6111e10 + 1.7431e11, 2.215e30 + 3.318e29),
+      period(2.0214e10, 2.1019e10, 3.318e29 + 7.589e24));
   })();
 
   static Y_CONST = Time.D_CONST * 11;
