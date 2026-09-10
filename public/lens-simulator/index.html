@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Lens Optics Simulator (Ray Box)</title>
+    <!-- Tailwind CSS for modern responsive aesthetics -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .handle {
+            transition: r 0.15s, fill 0.15s, stroke-width 0.15s;
+        }
+        .handle:hover {
+            r: 9px;
+            fill: #06b6d4;
+            stroke-width: 3px;
+            cursor: grab;
+        }
+        .handle:active {
+            cursor: grabbing;
+        }
+        .ray-line {
+            stroke-linecap: round;
+            opacity: 0.85;
+        }
+        .virtual-line {
+            stroke-dasharray: 5 4;
+            opacity: 0.75;
+        }
+        .ray-box-body {
+            cursor: grab;
+        }
+        .ray-box-body:active {
+            cursor: grabbing;
+        }
+        .dial {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center p-4 md:p-6">
+
+    <header class="w-full max-w-6xl mb-6 text-center md:text-left">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div>
+                <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-sky-400 to-amber-400 bg-clip-text text-transparent">
+                    Dynamic Optical Ray Bench
+                </h1>
+                <p class="text-slate-400 text-sm mt-1">
+                    Drag the Ray Box to reposition, rotate the dial, and switch between Convex and Concave lens geometries.
+                </p>
+            </div>
+            <div class="flex gap-2">
+                <span class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-400 font-mono" id="engine-badge">
+                    Convex Lens Engine
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Interactive Workbench Section -->
+        <div class="lg:col-span-8 flex flex-col gap-4">
+            <!-- SVG Optical Bench Container -->
+            <div class="relative bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-2xl overflow-hidden aspect-[16/9] w-full">
+                
+                <!-- Interactive SVG Canvas -->
+                <svg id="optics-bench" viewBox="0 0 800 450" class="w-full h-full select-none">
+                    <defs>
+                        <!-- Ray Arrow Point Marker -->
+                        <marker id="ray-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8" />
+                        </marker>
+                        <!-- Virtual Ray Arrow Marker -->
+                        <marker id="virtual-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 1 L 8 5 L 0 9 z" fill="#f59e0b" />
+                        </marker>
+                    </defs>
+
+                    <!-- Base Grid Layout -->
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" stroke-width="0.5" opacity="0.3"/>
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+
+                    <!-- Lens focal markers -->
+                    <!-- F' -->
+                    <line id="guide-f-prime" x1="280" y1="215" x2="280" y2="235" stroke="#475569" stroke-width="1.2" stroke-dasharray="2 2" />
+                    <text id="txt-f-prime" x="274" y="255" fill="#64748b" font-size="11" class="font-semibold select-none">F'</text>
+
+                    <!-- F -->
+                    <line id="guide-f" x1="520" y1="215" x2="520" y2="235" stroke="#475569" stroke-width="1.2" stroke-dasharray="2 2" />
+                    <text id="txt-f" x="515" y="255" fill="#64748b" font-size="11" class="font-semibold select-none">F</text>
+
+                    <!-- Focal Planes Group (Dashed Vertical Planes passing through F and F') -->
+                    <g id="focal-planes-group" class="opacity-0 pointer-events-none transition-opacity duration-300">
+                        <!-- Left Focal Plane (F') -->
+                        <line id="focal-plane-left" x1="280" y1="15" x2="280" y2="435" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5 5" opacity="0.5" />
+                        <text id="focal-plane-left-label" x="285" y="30" fill="#f59e0b" font-size="9" class="font-mono tracking-wider opacity-75">Focal Plane (F')</text>
+                        
+                        <!-- Right Focal Plane (F) -->
+                        <line id="focal-plane-right" x1="520" y1="15" x2="520" y2="435" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5 5" opacity="0.5" />
+                        <text id="focal-plane-right-label" x="525" y="30" fill="#f59e0b" font-size="9" class="font-mono tracking-wider opacity-75">Focal Plane (F)</text>
+                    </g>
+
+                    <!-- Principal Axis Line -->
+                    <line x1="0" y1="225" x2="800" y2="225" stroke="#475569" stroke-width="2" opacity="0.6" />
+                    <text x="710" y="242" fill="#94a3b8" font-size="10" class="font-mono tracking-wider uppercase opacity-50 select-none">Principal Axis</text>
+
+                    <!-- Dynamic Ray Paths Layer -->
+                    <g id="rays-container"></g>
+
+                    <!-- Lens Graphic Representation (Convex / Concave Dynamic) -->
+                    <line x1="400" y1="25" x2="400" y2="425" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.4" />
+                    <path id="lens-graphic" d="M 400 25 C 445 140 445 310 400 425 C 355 310 355 140 400 25 Z" fill="rgba(56, 189, 248, 0.12)" stroke="#38bdf8" stroke-width="2.5" class="pointer-events-none transition-all duration-300" />
+
+                    <!-- Optical Center node -->
+                    <text x="393" y="243" fill="#38bdf8" font-size="15" class="font-extrabold select-none">O</text>
+
+                    <!-- Dynamic Rotatable/Draggable Ray Box Emitter Group -->
+                    <g id="ray-box-group">
+                        <!-- Main Body Base (underlay drag target for easy grasping) -->
+                        <rect id="ray-box-hitbox" x="-65" y="-50" width="130" height="100" rx="6" fill="transparent" class="ray-box-body" />
+                        <rect id="ray-box-body" x="-60" y="-45" width="120" height="90" rx="4" fill="#1e293b" stroke="#475569" stroke-width="2.5" class="ray-box-body shadow-lg" />
+                        
+                        <!-- Larger front nozzle marker representing optical slit exit -->
+                        <path d="M 60 -30 L 66 -22 L 66 22 L 60 30 Z" fill="#0f172a" stroke="#64748b" stroke-width="1.5" />
+                        
+                        <!-- Mini internal laser slots design -->
+                        <line x1="-40" y1="-15" x2="-10" y2="-15" stroke="#334155" stroke-width="2.5" />
+                        <line x1="-40" y1="15" x2="-10" y2="15" stroke="#334155" stroke-width="2.5" />
+                        
+                        <!-- Cyan center core glow -->
+                        <circle cx="0" cy="0" r="8" fill="#06b6d4" opacity="0.8" />
+                        
+                        <!-- Text label inside ray box -->
+                        <text x="-32" y="4" fill="#94a3b8" font-size="11" font-weight="bold" class="pointer-events-none select-none font-mono">EMITTER</text>
+
+                        <!-- Stem for rotation lever -->
+                        <line x1="0" y1="0" x2="-90" y2="0" stroke="#475569" stroke-width="2.5" stroke-dasharray="2 1" />
+                        <!-- Rotation Dial Handle -->
+                        <circle id="rotate-dial" cx="-90" cy="0" r="7" fill="#06b6d4" stroke="#ffffff" stroke-width="2" class="dial handle" />
+                    </g>
+                    
+                    <!-- Focal Length Drag Target Handle (Focal Length Adjuster) -->
+                    <circle id="drag-focus" cx="520" cy="225" r="7" fill="#f59e0b" stroke="#ffffff" stroke-width="2.5" class="handle" />
+                </svg>
+                
+                <!-- Helper interface legends -->
+                <div class="absolute bottom-2.5 left-4 text-[10px] text-slate-500 font-mono flex gap-4">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-slate-800 border border-slate-600"></span> Grab center to Move Box</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span> Rotate Dial Lever</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Adjust Focus F</span>
+                </div>
+            </div>
+
+            <!-- Preconfigured Ray Presets -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                <h3 class="text-sm font-semibold text-slate-300 mb-3">Optical Emitter Presets</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+                    <button id="pre-focal" onclick="loadRayPreset('focal')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-medium text-slate-200 transition-all flex flex-col items-center gap-1">
+                        <span class="text-slate-100 font-semibold">Focal Alignment</span>
+                        <span class="text-[10px] text-slate-400">Position at F'</span>
+                    </button>
+                    <button id="pre-parallel" onclick="loadRayPreset('parallel')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-medium text-slate-200 transition-all flex flex-col items-center gap-1">
+                        <span class="text-slate-100 font-semibold">Parallel Laser</span>
+                        <span class="text-[10px] text-slate-400">Axial beam</span>
+                    </button>
+                    <button id="pre-tilt" onclick="loadRayPreset('tilt')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-medium text-slate-200 transition-all flex flex-col items-center gap-1">
+                        <span class="text-slate-100 font-semibold">Tilted Laser Comb</span>
+                        <span class="text-[10px] text-slate-400">Shows focal plane alignment</span>
+                    </button>
+                    <button id="pre-divergent" onclick="loadRayPreset('divergent')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-medium text-slate-200 transition-all flex flex-col items-center gap-1">
+                        <span class="text-slate-100 font-semibold">Wide Angle Fan</span>
+                        <span class="text-[10px] text-slate-400">Point source exploration</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configurations & Sidebar Controller panel -->
+        <div class="lg:col-span-4 flex flex-col gap-6">
+            
+            <!-- Ray Box Customizations -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col gap-5">
+                <h3 class="font-bold text-base text-slate-100 border-b border-slate-800 pb-2">Emitter & Optics Controls</h3>
+                
+                <!-- Lens Type Selector -->
+                <div class="flex flex-col gap-1.5">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Lens Type</span>
+                    <div class="grid grid-cols-2 gap-2 mt-1">
+                        <button id="type-convex" onclick="setLensType('convex')" class="py-2 text-xs bg-sky-600 text-slate-100 font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-md">
+                            <span>Convex (Converging)</span>
+                        </button>
+                        <button id="type-concave" onclick="setLensType('concave')" class="py-2 text-xs bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition-all flex items-center justify-center gap-1.5">
+                            <span>Concave (Diverging)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ray Mode Selector -->
+                <div class="flex flex-col gap-1.5">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Emitter Ray Mode</span>
+                    <div class="grid grid-cols-2 gap-2 mt-1">
+                        <button id="mode-fan" onclick="setEmitterMode('fan')" class="py-1.5 text-xs bg-cyan-600 text-slate-100 font-bold rounded-lg transition-all">
+                            Divergent Fan
+                        </button>
+                        <button id="mode-parallel" onclick="setEmitterMode('parallel')" class="py-1.5 text-xs bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition-all">
+                            Parallel Comb
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ray Count -->
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-300 font-medium">Ray Count</span>
+                        <span class="font-mono text-cyan-400 font-semibold" id="label-count">5</span>
+                    </div>
+                    <input type="range" id="input-count" min="1" max="11" step="2" value="5" class="w-full accent-cyan-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer">
+                </div>
+
+                <!-- Ray Spread/Separation -->
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-300 font-medium" id="title-spread">Ray Angle Spread</span>
+                        <span class="font-mono text-cyan-400 font-semibold" id="label-spread">20°</span>
+                    </div>
+                    <input type="range" id="input-spread" min="5" max="60" value="20" class="w-full accent-cyan-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer">
+                </div>
+
+                <!-- Focal Length -->
+                <div class="flex flex-col gap-1.5 border-t border-slate-800 pt-4">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-300 font-medium">Focal Distance (|f|)</span>
+                        <span class="font-mono text-amber-500 font-semibold" id="label-f">120px</span>
+                    </div>
+                    <input type="range" id="input-f" min="40" max="220" value="120" class="w-full accent-amber-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer">
+                </div>
+
+                <!-- Guides and Overlays Options -->
+                <div class="flex flex-col gap-3 border-t border-slate-800 pt-4">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Guides & Overlays</span>
+                    
+                    <label class="flex items-center gap-3 cursor-pointer text-xs select-none">
+                        <input type="checkbox" id="toggle-focal-plane" class="w-4 h-4 rounded text-amber-500 accent-amber-500 bg-slate-800 border-slate-700">
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            Show Focal Planes
+                        </span>
+                    </label>
+
+                    <label class="flex items-center gap-3 cursor-pointer text-xs select-none" id="virtual-rays-toggle-label">
+                        <input type="checkbox" id="toggle-virtual-rays" checked class="w-4 h-4 rounded text-amber-500 accent-amber-500 bg-slate-800 border-slate-700">
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                            Show Virtual Back-Trace Extensions
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Manual Numerical Fine-Tuning Coordinates -->
+                <div class="text-[11px] text-slate-500 font-mono bg-slate-950 p-2.5 rounded-lg border border-slate-800/80 flex flex-col gap-1">
+                    <span class="font-bold text-slate-400 mb-0.5">Ray Box Parameters:</span>
+                    <div class="flex justify-between">
+                        <span>Emitter Position:</span>
+                        <span id="coord-pos" class="text-slate-300">X: 200, Y: 225</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Pointer Angle:</span>
+                        <span id="coord-angle" class="text-slate-300">0.0°</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Lens Power:</span>
+                        <span id="coord-power" class="text-sky-400 font-semibold">+8.33 D</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Educational Exploration Scenarios Guide -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+                <div class="flex items-center gap-2 mb-3 border-b border-slate-800 pb-3">
+                    <span class="bg-gradient-to-r from-blue-500 to-cyan-500 text-slate-950 font-extrabold text-[10px] px-2 py-0.5 rounded tracking-wider uppercase">Guide</span>
+                    <h3 class="font-bold text-base text-slate-100">Concave vs. Convex Lab</h3>
+                </div>
+                <ul class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                    <li class="flex gap-2 items-start">
+                        <span class="text-cyan-400 font-bold">•</span>
+                        <span><strong>Diverging Nature (Concave):</strong> Switch to <em>Concave</em> mode with a <em>Parallel Comb</em> beam. Notice how rays bend outward upon refraction. Their virtual dashed extensions map directly back to focal point <strong>F'</strong>!</span>
+                    </li>
+                    <li class="flex gap-2 items-start">
+                        <span class="text-cyan-400 font-bold">•</span>
+                        <span><strong>Virtual Focus Alignment:</strong> Point a single ray towards virtual focus <strong>F</strong> on the right of a concave lens. The refracted ray emerges perfectly parallel to the principal axis.</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Optics bench geometry constants
+        const LENS_X = 400;
+        const AXIS_Y = 225;
+
+        // Simulator State Model
+        let state = {
+            xs: 200,          // Ray Box position X
+            ys: 225,          // Ray Box position Y
+            angle: 0,         // Rotation angle in radians
+            lensType: 'convex', // 'convex' or 'concave'
+            absF: 120,        // Absolute focal distance |f| (px)
+            rayMode: 'fan',   // 'fan' (divergent) or 'parallel' (slit comb)
+            rayCount: 5,
+            raySpread: 20,    // degrees for fan spread OR separation in pixels for parallel comb
+            showVirtualRays: true,
+            draggedHandle: null
+        };
+
+        // Computed effective signed focal length
+        function getFocalLength() {
+            return state.lensType === 'convex' ? state.absF : -state.absF;
+        }
+
+        // Cache DOM selectors
+        const inputCount = document.getElementById('input-count');
+        const inputSpread = document.getElementById('input-spread');
+        const inputF = document.getElementById('input-f');
+        const toggleFocalPlane = document.getElementById('toggle-focal-plane');
+        const toggleVirtualRays = document.getElementById('toggle-virtual-rays');
+        const focalPlanesGroup = document.getElementById('focal-planes-group');
+        
+        const labelCount = document.getElementById('label-count');
+        const labelSpread = document.getElementById('label-spread');
+        const labelF = document.getElementById('label-f');
+        const titleSpread = document.getElementById('title-spread');
+
+        const coordPos = document.getElementById('coord-pos');
+        const coordAngle = document.getElementById('coord-angle');
+        const coordPower = document.getElementById('coord-power');
+        const engineBadge = document.getElementById('engine-badge');
+
+        const rayBoxGroup = document.getElementById('ray-box-group');
+        const dragFocus = document.getElementById('drag-focus');
+        const raysContainer = document.getElementById('rays-container');
+        const lensGraphic = document.getElementById('lens-graphic');
+
+        // Set Lens Type (Convex vs Concave)
+        function setLensType(type) {
+            state.lensType = type;
+            const btnConvex = document.getElementById('type-convex');
+            const btnConcave = document.getElementById('type-concave');
+
+            if (type === 'convex') {
+                btnConvex.className = "py-2 text-xs bg-sky-600 text-slate-100 font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-md";
+                btnConcave.className = "py-2 text-xs bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition-all flex items-center justify-center gap-1.5";
+                engineBadge.innerText = "Convex Lens Engine (+f)";
+                engineBadge.className = "bg-slate-900 border border-sky-800/80 rounded-lg px-3 py-1.5 text-xs text-sky-400 font-mono";
+
+                // Convex shape path (thick center, tapered ends)
+                lensGraphic.setAttribute('d', "M 400 25 C 445 140 445 310 400 425 C 355 310 355 140 400 25 Z");
+                lensGraphic.setAttribute('fill', "rgba(56, 189, 248, 0.12)");
+                lensGraphic.setAttribute('stroke', "#38bdf8");
+            } else {
+                btnConcave.className = "py-2 text-xs bg-amber-600 text-slate-100 font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-md";
+                btnConvex.className = "py-2 text-xs bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition-all flex items-center justify-center gap-1.5";
+                engineBadge.innerText = "Concave Lens Engine (-f)";
+                engineBadge.className = "bg-slate-900 border border-amber-800/80 rounded-lg px-3 py-1.5 text-xs text-amber-400 font-mono";
+
+                // Concave shape path (thin center, flared ends)
+                lensGraphic.setAttribute('d', "M 370 25 L 430 25 Q 408 225 430 425 L 370 425 Q 392 225 370 25 Z");
+                lensGraphic.setAttribute('fill', "rgba(245, 158, 11, 0.12)");
+                lensGraphic.setAttribute('stroke', "#f59e0b");
+            }
+
+            syncInputs();
+            renderBench();
+        }
+
+        // Apply a high-quality optical scenario preset
+        function loadRayPreset(presetName) {
+            ['focal', 'parallel', 'tilt', 'divergent'].forEach(p => {
+                document.getElementById('pre-' + p).classList.remove('bg-cyan-600', 'hover:bg-cyan-700');
+                document.getElementById('pre-' + p).classList.add('bg-slate-800', 'hover:bg-slate-700');
+            });
+
+            const activeBtn = document.getElementById('pre-' + presetName);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-slate-800', 'hover:bg-slate-700');
+                activeBtn.classList.add('bg-cyan-600', 'hover:bg-cyan-700');
+            }
+
+            if (presetName === 'focal') {
+                state.rayMode = 'fan';
+                state.absF = 120;
+                state.xs = LENS_X - state.absF; // Place directly over focal point F'
+                state.ys = AXIS_Y;
+                state.angle = 0;
+                state.rayCount = 5;
+                state.raySpread = 25;
+            } else if (presetName === 'parallel') {
+                state.rayMode = 'parallel';
+                state.xs = 150;
+                state.ys = AXIS_Y;
+                state.angle = 0;
+                state.rayCount = 5;
+                state.raySpread = 15;
+                state.absF = 120;
+            } else if (presetName === 'tilt') {
+                state.rayMode = 'parallel';
+                state.xs = 160;
+                state.ys = 150;
+                state.angle = 15 * (Math.PI / 180); // 15 degrees downward tilt
+                state.rayCount = 5;
+                state.raySpread = 15;
+                state.absF = 120;
+            } else if (presetName === 'divergent') {
+                state.rayMode = 'fan';
+                state.xs = 140;
+                state.ys = AXIS_Y - 50;
+                state.angle = 12 * (Math.PI / 180);
+                state.rayCount = 9;
+                state.raySpread = 45;
+                state.absF = 130;
+            }
+
+            syncInputs();
+            renderBench();
+        }
+
+        // Change mode (Divergent vs Parallel)
+        function setEmitterMode(mode) {
+            state.rayMode = mode;
+            const btnFan = document.getElementById('mode-fan');
+            const btnPara = document.getElementById('mode-parallel');
+
+            if (mode === 'fan') {
+                btnFan.className = "py-1.5 text-xs bg-cyan-600 text-slate-100 font-bold rounded-lg transition-all";
+                btnPara.className = "py-1.5 text-xs bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition-all";
+                titleSpread.innerText = "Ray Angle Spread";
+                inputSpread.min = 5;
+                inputSpread.max = 60;
+                if (state.raySpread > 60) state.raySpread = 25;
+            } else {
+                btnFan.className = "py-1.5 text-xs bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition-all";
+                btnPara.className = "py-1.5 text-xs bg-cyan-600 text-slate-100 font-bold rounded-lg transition-all";
+                titleSpread.innerText = "Laser Slit Spacing";
+                inputSpread.min = 4;
+                inputSpread.max = 24;
+                if (state.raySpread < 4 || state.raySpread > 24) state.raySpread = 12;
+            }
+
+            syncInputs();
+            renderBench();
+        }
+
+        // Synchronize UI elements to script state
+        function syncInputs() {
+            inputCount.value = state.rayCount;
+            inputSpread.value = state.raySpread;
+            inputF.value = state.absF;
+
+            labelCount.innerText = state.rayCount;
+            labelSpread.innerText = state.raySpread + (state.rayMode === 'fan' ? '°' : 'px');
+            labelF.innerText = Math.round(state.absF) + "px";
+
+            // Update guidelines positioning labels
+            document.getElementById('guide-f').setAttribute('x1', LENS_X + state.absF);
+            document.getElementById('guide-f').setAttribute('x2', LENS_X + state.absF);
+            document.getElementById('txt-f').setAttribute('x', LENS_X + state.absF - 4);
+
+            document.getElementById('guide-f-prime').setAttribute('x1', LENS_X - state.absF);
+            document.getElementById('guide-f-prime').setAttribute('x2', LENS_X - state.absF);
+            document.getElementById('txt-f-prime').setAttribute('x', LENS_X - state.absF - 6);
+
+            // Update Focal Planes dynamic positions in SVG space
+            const fPlaneLeft = document.getElementById('focal-plane-left');
+            const fPlaneLeftLabel = document.getElementById('focal-plane-left-label');
+            const fPlaneRight = document.getElementById('focal-plane-right');
+            const fPlaneRightLabel = document.getElementById('focal-plane-right-label');
+
+            if (fPlaneLeft && fPlaneRight) {
+                const xLeft = LENS_X - state.absF;
+                const xRight = LENS_X + state.absF;
+
+                fPlaneLeft.setAttribute('x1', xLeft);
+                fPlaneLeft.setAttribute('x2', xLeft);
+                fPlaneLeftLabel.setAttribute('x', xLeft + 6);
+
+                fPlaneRight.setAttribute('x1', xRight);
+                fPlaneRight.setAttribute('x2', xRight);
+                fPlaneRightLabel.setAttribute('x', xRight + 6);
+            }
+
+            // Update Collapsible coordinates panel info
+            coordPos.innerText = `X: ${Math.round(state.xs)}, Y: ${Math.round(state.ys)}`;
+            coordAngle.innerText = `${Math.round(state.angle * (180 / Math.PI))}.0°`;
+            
+            const fSigned = getFocalLength();
+            const powerD = (1000 / fSigned).toFixed(2);
+            coordPower.innerText = `${powerD > 0 ? '+' : ''}${powerD} D`;
+            coordPower.className = fSigned > 0 ? "text-sky-400 font-semibold" : "text-amber-400 font-semibold";
+        }
+
+        // Connect Input Slider & Toggle events
+        function setupInputs() {
+            inputCount.addEventListener('input', (e) => {
+                state.rayCount = parseInt(e.target.value);
+                syncInputs();
+                renderBench();
+            });
+            inputSpread.addEventListener('input', (e) => {
+                state.raySpread = parseInt(e.target.value);
+                syncInputs();
+                renderBench();
+            });
+            inputF.addEventListener('input', (e) => {
+                state.absF = parseInt(e.target.value);
+                syncInputs();
+                renderBench();
+            });
+            toggleFocalPlane.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    focalPlanesGroup.classList.remove('opacity-0');
+                } else {
+                    focalPlanesGroup.classList.add('opacity-0');
+                }
+            });
+            toggleVirtualRays.addEventListener('change', (e) => {
+                state.showVirtualRays = e.target.checked;
+                renderBench();
+            });
+        }
+
+        // Physical Ray Tracing Engine
+        function renderBench() {
+            // Reposition the SVG Emitter Body with translate + rotation
+            rayBoxGroup.setAttribute('transform', `translate(${state.xs}, ${state.ys}) rotate(${state.angle * (180 / Math.PI)})`);
+            
+            // Relocate Focal Handle
+            dragFocus.setAttribute('cx', LENS_X + state.absF);
+
+            // Clear old ray representations
+            raysContainer.innerHTML = '';
+
+            const n = state.rayCount;
+            const midIndex = (n - 1) / 2;
+
+            // Generate rays based on mode
+            for (let i = 0; i < n; i++) {
+                let rX0, rY0, rAngle;
+
+                if (state.rayMode === 'fan') {
+                    // All rays start at emitter front center
+                    const localNozzleX = 66; 
+                    const localNozzleY = 0;
+                    
+                    rX0 = state.xs + localNozzleX * Math.cos(state.angle) - localNozzleY * Math.sin(state.angle);
+                    rY0 = state.ys + localNozzleX * Math.sin(state.angle) + localNozzleY * Math.cos(state.angle);
+
+                    const dAngle = n > 1 ? (state.raySpread * (Math.PI / 180)) / (n - 1) : 0;
+                    rAngle = state.angle + (i - midIndex) * dAngle;
+
+                } else {
+                    // Parallel Comb: rays emerge parallel from offset points on front face
+                    const maxNozzleY = 24; 
+                    let spacing = state.raySpread;
+                    const totalRange = (n - 1) * spacing;
+                    if (totalRange > maxNozzleY * 2) {
+                        spacing = (maxNozzleY * 2) / (n - 1 || 1);
+                    }
+
+                    const offsetLocalY = (i - midIndex) * spacing;
+                    const offsetLocalX = 66;
+
+                    rX0 = state.xs + offsetLocalX * Math.cos(state.angle) - offsetLocalY * Math.sin(state.angle);
+                    rY0 = state.ys + offsetLocalX * Math.sin(state.angle) + offsetLocalY * Math.cos(state.angle);
+                    rAngle = state.angle;
+                }
+
+                traceSingleRay(rX0, rY0, rAngle);
+            }
+        }
+
+        // Dynamic Paraxial Thin Lens Ray Solver (Supports Signed f for Convex & Concave)
+        function traceSingleRay(x0, y0, theta) {
+            const dx = Math.cos(theta);
+            const dy = Math.sin(theta);
+            const effF = getFocalLength();
+
+            if (dx <= 0.01) {
+                // Shoot backwards to left canvas edge
+                const edgeX = 0;
+                const edgeY = y0 + ((edgeX - x0) / dx) * dy;
+                appendRayPath(x0, y0, edgeX, edgeY, false);
+                return;
+            }
+
+            const tLens = (LENS_X - x0) / dx;
+            
+            if (tLens <= 0) {
+                // Emitter is past the lens
+                const targetX = 800;
+                const targetY = y0 + ((targetX - x0) / dx) * dy;
+                appendRayPath(x0, y0, targetX, targetY, false);
+                return;
+            }
+
+            const yLens = y0 + tLens * dy;
+            const insideLensHeight = (yLens >= 25 && yLens <= 425);
+
+            if (insideLensHeight) {
+                // Incident ray to vertical lens boundary
+                appendRayPath(x0, y0, LENS_X, yLens, true);
+
+                // Thin lens equation slope solver: m2 = m1 - (yLens - AXIS_Y) / f
+                const m1 = dy / dx;
+                const m2 = m1 - (yLens - AXIS_Y) / effF;
+
+                // Outgoing real refracted ray destination on right boundary
+                const targetX = 800;
+                const targetY = yLens + m2 * (targetX - LENS_X);
+
+                appendRayPath(LENS_X, yLens, targetX, targetY, true);
+
+                // For Concave lens (or diverging scenarios), trace virtual back-extensions if enabled
+                if (state.lensType === 'concave' && state.showVirtualRays) {
+                    // Back project backward through left side (X from 0 to LENS_X)
+                    const backX = 0;
+                    const backY = yLens + m2 * (backX - LENS_X);
+                    appendVirtualPath(LENS_X, yLens, backX, backY);
+                }
+            } else {
+                // Ray missed the lens height - unrefracted path
+                const targetX = 800;
+                const targetY = y0 + ((targetX - x0) / dx) * dy;
+                appendRayPath(x0, y0, targetX, targetY, false);
+            }
+        }
+
+        // Draw standard SVG line split in half to position the arrow marker exactly at the midpoint
+        function appendRayPath(x1, y1, x2, y2, hasRefracted) {
+            const midX = (x1 + x2) / 2;
+            const midY = (y1 + y2) / 2;
+            
+            let colorClass;
+            if (hasRefracted) {
+                colorClass = state.lensType === 'convex' ? "stroke-cyan-500/85" : "stroke-amber-400/85";
+            } else {
+                colorClass = "stroke-cyan-600/40";
+            }
+            const strokeWidth = hasRefracted ? "2.5" : "1.8";
+
+            // First half of path - handles direction marker pointer at its end coordinate
+            const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line1.setAttribute("x1", x1);
+            line1.setAttribute("y1", y1);
+            line1.setAttribute("x2", midX);
+            line1.setAttribute("y2", midY);
+            line1.setAttribute("class", `ray-line ${colorClass}`);
+            line1.setAttribute("stroke-width", strokeWidth);
+            line1.setAttribute("marker-end", "url(#ray-arrow)");
+            raysContainer.appendChild(line1);
+
+            // Second half of path
+            const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line2.setAttribute("x1", midX);
+            line2.setAttribute("y1", midY);
+            line2.setAttribute("x2", x2);
+            line2.setAttribute("y2", y2);
+            line2.setAttribute("class", `ray-line ${colorClass}`);
+            line2.setAttribute("stroke-width", strokeWidth);
+            raysContainer.appendChild(line2);
+        }
+
+        // Draw virtual back-extension line for diverging rays
+        function appendVirtualPath(x1, y1, x2, y2) {
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("class", "virtual-line stroke-amber-400/70");
+            line.setAttribute("stroke-width", "1.5");
+            raysContainer.appendChild(line);
+        }
+
+        // Drag handlers supporting Desktop Mice and Touch Devices
+        function setupDrags() {
+            let activeDrag = null;
+
+            const getPos = (e) => {
+                const svg = document.getElementById('optics-bench');
+                const rect = svg.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: (clientX - rect.left) * (800 / rect.width),
+                    y: (clientY - rect.top) * (450 / rect.height)
+                };
+            };
+
+            const startDrag = (dragType) => {
+                activeDrag = dragType;
+            };
+
+            const handleMove = (e) => {
+                if (!activeDrag) return;
+                const pos = getPos(e);
+
+                if (activeDrag === 'translate') {
+                    state.xs = Math.min(330, Math.max(40, pos.x));
+                    state.ys = Math.min(410, Math.max(40, pos.y));
+                } else if (activeDrag === 'rotate') {
+                    const dx = pos.x - state.xs;
+                    const dy = pos.y - state.ys;
+                    state.angle = Math.atan2(dy, dx) + Math.PI;
+                } else if (activeDrag === 'focus') {
+                    state.absF = Math.min(220, Math.max(40, pos.x - LENS_X));
+                }
+
+                syncInputs();
+                renderBench();
+            };
+
+            const endDrag = () => {
+                activeDrag = null;
+            };
+
+            // Emitter movement triggers
+            const hitBox = document.getElementById('ray-box-hitbox');
+            const mainBody = document.getElementById('ray-box-body');
+            [hitBox, mainBody].forEach(el => {
+                el.addEventListener('mousedown', () => startDrag('translate'));
+                el.addEventListener('touchstart', (e) => { e.preventDefault(); startDrag('translate'); }, { passive: false });
+            });
+
+            // Emitter rotation lever triggers
+            const rotDial = document.getElementById('rotate-dial');
+            rotDial.addEventListener('mousedown', () => startDrag('rotate'));
+            rotDial.addEventListener('touchstart', (e) => { e.preventDefault(); startDrag('rotate'); }, { passive: false });
+
+            // Lens focus adjuster triggers
+            dragFocus.addEventListener('mousedown', () => startDrag('focus'));
+            dragFocus.addEventListener('touchstart', (e) => { e.preventDefault(); startDrag('focus'); }, { passive: false });
+
+            // Universal Window Triggers
+            window.addEventListener('mousemove', handleMove);
+            window.addEventListener('touchmove', handleMove, { passive: false });
+            window.addEventListener('mouseup', endDrag);
+            window.addEventListener('touchend', endDrag);
+        }
+
+        // Initial setup sequence on runtime load
+        window.onload = function() {
+            setupInputs();
+            setupDrags();
+            setLensType('convex');
+            loadRayPreset('parallel');
+        };
+    </script>
+</body>
+</html>
