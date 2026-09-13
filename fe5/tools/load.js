@@ -1,4 +1,4 @@
-import { create } from "/fe5/modules/index.js";
+import { create, fetchText } from "/fe5/modules/index.js";
 
 /**
  * const obj = getToolObject("name");
@@ -27,10 +27,7 @@ async function getToolObject(toolName) {
 
     if(!/^[a-zA-Z0-9_-]*$/g.test(toolName)) throw new Error("Parameter unsafe, stop loading");
 
-    const res = await fetch(`/fe5/tools/${toolName}.html`);
-    if(!res.ok) throw new Error(res.statusText);
-
-    toolDiv.innerHTML = await res.text();
+    toolDiv.innerHTML = await fetchText(`/fe5/tools/${toolName}.html`);
 
   } catch(err) {
     console.error(err);

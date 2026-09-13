@@ -1,5 +1,5 @@
 import {} from "/fe5/modules/tooltip.js"
-import { loadStyle, create } from "/fe5/modules/index.js";
+import { loadStyle, create, fetchJson } from "/fe5/modules/index.js";
 
 class Map {
   static MAP_ROOT= "/fe5/data/map/";
@@ -49,16 +49,13 @@ class Map {
       mapImg.addEventListener("error", reject, {once: true});
     }).catch(() => { throw new Error("Map .webp load failed."); });
 
-    const mapDataPromise = fetch(Map.MAP_ROOT + mapDataName + ".json");
+    const mapDataPromise = fetchJson(Map.MAP_ROOT + mapDataName + ".json");
 
     try {
-
-      const [res] = await Promise.all([mapDataPromise, mapImgPromise])
+      /**@type mapDataFormat */
+      const [mapData] = await Promise.all([mapDataPromise, mapImgPromise])
         .catch(err => { throw err; });
 
-      if(!res.ok) throw new Error(res.status + " " + res.statusText);
-      /**@type mapDataFormat */
-      const mapData = await res.json();
 
       const createSpot = (x, y, name, href) => {
         const xPct = `${x * 50 + 50}%`;

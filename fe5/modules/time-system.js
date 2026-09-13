@@ -1,6 +1,8 @@
 /**@typedef {Time | {Y?: number; D?: number; H?: number; Hp?: number; s?: number;}} time */
 /**@typedef {number | time} t */
 
+import { fetchJson } from "./index.js";
+
 const toFull = time => ({
   Y: time.Y ?? 0,
   D: time.D ?? 0,
@@ -213,13 +215,10 @@ class Time {
 
   static async calibrate()  {
     const startTime = Date.now();
-    const res = await fetch("https://api.pbrsite.dev/time");
+    const json = await fetchJson("https://api.pbrsite.dev/time");
     const endTime = Date.now();
 
-    if(!res.ok) 
-      throw new Error(res.statusText);
-
-    const t = (await res.json()).t;
+    const t = json.t;
 
     if(!t || typeof t !== "number")
       throw new Error("Invalid response from server.");

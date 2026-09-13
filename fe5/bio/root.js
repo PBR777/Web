@@ -1,21 +1,7 @@
-import {} from "/fe5/root.js";
-import setTitle from "/fe5/modules/sidebar.js";
-import { create } from "/fe5/modules/index.js";
+import { headingDiv } from "/fe5/root.js";
+import { create, dirName, fetchJson } from "/fe5/modules/index.js";
+import { createCard } from "/fe5/modules/infocard.js";
 
-const DIRECTORY = "bio";
-
-const urlPart = location.href.split("/");
-const dirIndex = urlPart.indexOf(DIRECTORY);
-
-if(dirIndex === -1) 
-  throw new Error(`Cannot be called outside ${DIRECTORY} directory.`);
-
-if(dirIndex + 1 >= urlPart.length)
-  throw new Error("Invalid url.");
-
-const id = urlPart[dirIndex + 1];
-
-// 750你别再加这些无意义的……表情了，这很难维护的（︶^︶）
 const ALT_TEXT = {
   E: [
     "(￣、￣)",
@@ -39,109 +25,69 @@ const ALT_TEXT = {
   ]
 };
 
-
-
 const writer = document.head
   .querySelector("meta[name='writer']")
   ?.content
 
-const div = create("div", "profile-div")
+const img = create("img")
+  .setAttribute("src", `/fe5/assets/bio/${dirName}/profile.png`)
   .build();
 
 const subheading = create("h1", "profile-subheading")
-  .setHTML(writer && writer !== id ? `由<id->${writer}</id->撰写` : "自我撰写")
-  .appendTo(div);
+  .setHTML(writer && writer !== dirName ? `由<id->${writer}</id->撰写` : "自我撰写")
+  .build();
 
-const profileTextbox = create("text-box", "profile-textbox")
-  .appendTo(div);
+const div = createCard(img, "基础信息");
 
-const profileImgDiv = create("div", "profile-img-div")
-  .appendTo(profileTextbox);
+const textList = ALT_TEXT[dirName[0]];
+const seed = Number(dirName.slice(1));
 
-const profileInfoDiv = create("div", "profile-info-div")
-  .appendTo(profileTextbox);
+const alt = textList[Math.abs((seed * 258015 | 0) - 152) % textList.length]
+  + "\n图片不存在"
 
-const profileImgBox = create("info-box", "profile-img-box")
-  .appendTo(profileImgDiv);
+div.setImgAlt(alt)
 
-const profileImg = create("img", "profile-img")
-  .addListener("error", imgErrorHandler, {once: true})
-  .appendTo(profileImgBox);
+headingDiv.append(subheading, div.build());
 
-profileImg.src = `/fe5/assets/bio/${id}/profile.png`;
+try {
+  const bio = await fetchJson(`./data.json`);
 
+  const info = [];
 
-function imgErrorHandler() {
+  info.push("别名：" + (bio.altname ?? "无/未知（Trustable）"));
 
-  profileImg.remove();
-
-  const textList = ALT_TEXT[id[0]];
-  const seed = parseInt(id.slice(1)); 
-
-  create("span", "profile-alt")
-    .setHTML(textList[Math.abs((seed * 258015 | 0) - 152) % textList.length] + "<br>图片不存在")
-    .appendTo(profileImgBox);
-}
-
-(async () => {
-  const createSpan = html => create("span")
-    .addClass("bio-span")
-    .setHTML(html)
-    .build();
-
-  const title = createSpan("基础信息加载中...");
-  title.id = "profile-title";
-  profileInfoDiv.append(title);
-
-  const bioRes= await fetch("./data.json");
-  if(!bioRes.ok) throw new Error(bioRes.status + " " + bioRes.statusText);
-
-  const {altname, birthday, sex, words} = await bioRes.json();
-
-  const spans = [];
-  const push = text => {
-    spans.push(createSpan(text));
-  };
-
-  push("别名：" + (altname ?? "无/未知（Trustable）"));
-
-  if(birthday) {
+  if(bio.birthday) {
     const Time = (await import("/fe5/modules/time-system.js")).default;
 
-    if(Time) {
-      push("出生日期：" + Time.stringify(birthday, birthday.Hp ? "full" : "YDH", 0));
-    }
+    info.push("出生日期：" + Time.stringify(bio.birthday, bio.birthday.Hp ? "full" : "YDH", 0));
   } else {
-    push("出生日期：未知");
+    info.push("出生日期：未知");
   }
 
   let sexText;
-  if(sex === 0) sexText = "女";
-  else if(sex === 1) sexText = "男";
-  else if(sex === null) sexText = "无";
-  else sexText = "未知";
-  push("性别：" + sexText);
+  switch(bio.sex) {
+    case 0:
+    sexText = "女";
+    break;
 
-  push("个性签名：" + (words ?? "无"));
+    case 1:
+    sexText = "男";
+    break;
 
-  title.innerText = "基础信息";
+    case null:
+    sexText = "无";
+    break;
 
-  profileInfoDiv.append(...spans);
+    default:
+    sexText = "未知";
+  }
+  info.push("性别：" + sexText);
 
-})().catch(err => {
-  console.error(err);
-  
-  profileInfoDiv.innerHTML = "";
+  info.push("个性签名：" + (bio.words ?? "无"));
 
-  create("span", "profile-error")
-    .setText("基础信息加载失败 :(\n" + err)
-    .appendTo(profileInfoDiv);
-
-  
-});
-
-setTitle(id);
-
-document.querySelector("#document-title-div").append(div);
+  div.setInfo(info.join("\n"));
+} catch(err) {
+  div.setInfo("加载失败:(\n" + err)
+}
 
 export default {};

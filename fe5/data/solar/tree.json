@@ -1,0 +1,15 @@
+{
+  "centroid": {
+    "name": "远征系重心",
+    "children": [
+      {
+        "id": "main-star",
+        "name": "主星"
+      },
+      {
+        "id": "next-star",
+        "name": "序星"
+      }
+    ]
+  }
+}

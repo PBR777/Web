@@ -1,21 +1,6 @@
-/**
- * Load specified .css file in /fe5/assets/
- * @param {string} name  
- */
-export function loadStyle(name) {
+export const dirName = location.href.split("/").at(-2);
 
-  const style = document.createElement("link");
-  style.rel = "stylesheet";
-  style.href = `/fe5/assets/${name}.css`;
-  document.head.append(style);
-
-  return new Promise(resolve => {
-    style.addEventListener("load", resolve, { once: true });
-    style.addEventListener("error", resolve, { once: true });
-  });
-}
-
-class PackedElement {
+export class PackedElement {
   #element;
 
   /**@param {string | HTMLElement} name */
@@ -57,9 +42,13 @@ class PackedElement {
     return this;
   }
 
-  /**@param {(string | Node)[]} nodes */
+  /**@param {(string | HTMLElement | PackedElement)[]} nodes */
   append(...nodes) {
-    this.#element.append(...nodes);
+    this.#element.append(...nodes.map(node => {
+      if(node instanceof PackedElement) 
+        return node.#element;
+      return node;
+    }));
     return this;
   }
 
@@ -87,7 +76,7 @@ class PackedElement {
 
   /**
    * @param {keyof HTMLElementEventMap} type 
-   * @param {(ev) => any} listener 
+   * @param {(this: HTMLElement, ev: HTMLElementEventMap[keyof HTMLElementEventMap]) => any} listener 
    * @param {boolean | AddEventListenerOptions?} options 
    */
   addListener(type, listener, options) {
@@ -97,7 +86,7 @@ class PackedElement {
 
   /**
    * @param {keyof HTMLElementEventMap} type 
-   * @param {(ev) => any} listener 
+   * @param {(this: HTMLElement, ev: HTMLElementEventMap[keyof HTMLElementEventMap]) => any} listener 
    * @param {boolean | AddEventListenerOptions?} options 
    */
   removeListener(type, listener, options) {
@@ -105,7 +94,9 @@ class PackedElement {
     return this;
   }
 
-  /**@param {string} selector  */
+  /**
+   * @param {keyof HTMLElementTagNameMap} selector 
+   */
   select(selector) {
     const results = Array
       .from(this.#element.querySelectorAll(selector))
@@ -116,9 +107,12 @@ class PackedElement {
     return results;
   }
 
-  /**@param {Node} node  */
+  /**
+   * @param {HTMLElement | PackedElement} node
+   */
   appendTo(node) {
-    return node.appendChild(this.#element);
+    node.append(this.#element);
+    return this.#element;
   }
 
   build() {
@@ -131,14 +125,64 @@ class PackedElement {
  * @param {string?} id 
  */
 export function create(name, id) {
-  if(id) return new PackedElement(name).setId(id);
+  if(id) return new PackedElement(name)
+    .setId(id);
 
   return new PackedElement(name);
 }
 
 /**
+ * Load specified .css file in /fe5/assets/
+ * @param {string} name  
+ */
+export async function loadStyle(name) {
+
+  const style = create("link")
+    .setAttribute("rel", "stylesheet")
+    .setAttribute("href", `/fe5/assets/${name}.css`)
+    .appendTo(document.head);
+
+  await new Promise(resolve => {
+
+    style.addEventListener("load", resolve, { once: true });
+
+    style.addEventListener("error", () => {
+      console.error(".css " + style.href + " load failed.");
+      resolve();
+    }, { once: true });
+
+  });
+}
+
+/**
  * @param {number} ms 
  */
-export function sleep(ms) {
-  return new Promise(_ => setTimeout(_, ms));
+export async function sleep(ms) {
+  await new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * @param {string} url 
+ * @param {RequestInit?} init 
+ */
+export async function strictFetch(url, init) {
+  const res = await fetch(url, init);
+  if(!res.ok) throw new Error(`${res.status} ${res.statusText} ${url}`);
+  return res;
+}
+
+/**
+ * @param {string} url 
+ * @param {RequestInit?} init 
+ */
+export async function fetchText(url, init) {
+  return await (await strictFetch(url, init)).text();
+}
+
+/**
+ * @param {string} url 
+ * @param {RequestInit?} init 
+ */
+export async function fetchJson(url, init) {
+  return await (await strictFetch(url, init)).json();
 }

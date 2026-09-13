@@ -32,16 +32,13 @@
   </style>
 
   <script type="module">
-    import { create } from "/fe5/modules/index.js";
+    import { create, fetchJson } from "/fe5/modules/index.js";
 
     const ARTICLE_ROOT = "/fe5/data/article/";
     const slot = document.querySelector("#main-slot");
 
     try {
-      const res = await fetch(ARTICLE_ROOT + "index.json");
-      if(!res.ok) throw new Error(res.statusText);
-
-      const arr = await res.json();
+      const arr = await fetchJson(ARTICLE_ROOT + "index.json");
 
       const buttons = arr.map(name => create("a")
         .setText(name)

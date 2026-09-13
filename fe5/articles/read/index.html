@@ -75,7 +75,7 @@
   </style>
 
   <script type="module">
-    import { create } from "/fe5/modules/index.js"
+    import { create, fetchText } from "/fe5/modules/index.js"
 
     const ARTICLE_ROOT = "/fe5/data/article/";
     const TRUSTED_AUTHORS = new Set()
@@ -112,13 +112,8 @@
 
       const articleId = await getHash(articleName);
       console.log(articleId);
-      const res = await fetch(`${ARTICLE_ROOT}/${articleId}.txt`);
-      if (!res.ok) {
-        if (res.status === 404) throw new Error(`Article:${articleName} Not Found.`);
 
-        throw new Error(res.status + " " + res.statusText);
-      }
-      const rawText = await res.text();
+      const rawText = await fetchText(`${ARTICLE_ROOT}${articleId}.txt`);
 
       /**@type string[] */
       const lines = replaceId(rawText).replaceAll("\r", "").replaceAll("  ", "　").split("\n");

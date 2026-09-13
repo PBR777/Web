@@ -18,7 +18,7 @@ const button = create("div")
 const icon = create("img")
   .addClass("sidebar-title-icon")
   .build();
-icon.src = "/fe5/assets/fe5-64x64.webp";
+icon.src = "/fe5/assets/solar/fe5-256x256.webp";
 
 const homeDiv = create("div")
   .addClass("sidebar-title-div")
@@ -188,7 +188,11 @@ function onResize() {
   }
 }
 
-function setTitle(title) {
+/**
+ * 
+ * @param {string} title 
+ */
+export function setTitle(title) {
   document.title = title;
   const titleHeading = document.querySelector("#document-title");
   if(titleHeading) titleHeading.innerText = title;

@@ -1,0 +1,31 @@
+#solar-div {
+  width: 80%;
+}
+
+#solar-img {
+  height: 100%;
+  max-height: 300px;
+}
+
+#solar-box {
+  height: min-content;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+
+#solar-info-div {
+  margin: 0 10px;
+  flex-grow: 1;
+
+  min-width: 200px;
+}
+
+#solar-loading-text {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}

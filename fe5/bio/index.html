@@ -49,7 +49,7 @@
 
   <script type="module">
     import IdUtils from "/fe5/modules/id.js";
-    import {create} from "/fe5/modules/index.js";
+    import { create, fetchJson } from "/fe5/modules/index.js";
 
     /**@type string[] */
     let idSet = [];
@@ -129,9 +129,7 @@
     }
 
     (async () => {
-      const res = await fetch("/fe5/data/bio/index.json");
-      if (!res.ok) throw new Error("id.json load failed. Reason: " + res.statusText)
-      idSet = await res.json();
+      idSet = await fetchJson("/fe5/data/bio/index.json");
 
       const url = new URLSearchParams(location.search);
       const id = url.get("id");

@@ -1,8 +1,7 @@
-import {} from "/fe5/modules/background.js";
-import {} from "/fe5/modules/id.js";
-import {} from '/fe5/modules/text-obfucation.js';
-import { create } from "/fe5/modules/index.js";
-
+import "/fe5/modules/background.js";
+import "/fe5/modules/id.js";
+import "/fe5/modules/text-obfucation.js";
+import { create, dirName } from "/fe5/modules/index.js";
 
 function loadEaseBox() {
   const observeTarget = document.querySelectorAll(".observed-element");
@@ -37,24 +36,23 @@ function loadModules() {
   return Promise.all(modules.map(url => import(url)));
 }
 
+export const headingDiv = !document.querySelector("meta[name='no-title']") 
+  ? create("div", "document-title-div").build() 
+  : null;
 
-if(!document.querySelector("meta[name='no-title']")) {
 
-  const title = create("h1").build();
-
-  const titleDiv = create("div", "document-title-div")
-    .append(title)
-    .build()
-
+if(headingDiv) {
+  const heading = create("h1")
+    .appendTo(headingDiv);
+    
   if(document.title === "") {
-    const urlPart = location.href.split("/").at(-2);
-    title.innerText = urlPart;
-    document.title = urlPart;
+    heading.innerText = dirName;
+    document.title = dirName;
   } else {
-    title.innerText = document.title;
+    heading.innerText = document.title;
   }
 
-  document.body.insertAdjacentElement("afterbegin", titleDiv);
+  document.body.insertAdjacentElement("afterbegin", headingDiv);
 }
 
 document.querySelectorAll(".info-img").forEach(img => {
@@ -71,5 +69,3 @@ try {
 }
 
 document.body.classList.add("show");
-
-export function updateTitle() {} ;
