@@ -186,3 +186,12 @@ export async function fetchText(url, init) {
 export async function fetchJson(url, init) {
   return await (await strictFetch(url, init)).json();
 }
+
+export const G = (6.674184e-11 + 6.674484e-11) / 2;
+
+/**
+ * @param {number} short 
+ * @param {number} long 
+ * @param {number} mass 
+ */
+export const period = (short, long, mass) => 2 * Math.PI * ((long + short) ** 3 / (8 * G * mass)) ** 0.5;
