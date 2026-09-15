@@ -1,4 +1,7 @@
-import { loadStyle, create } from "/fe5/modules/index.js"
+import { addStyle, create } from "./index.js"
+
+import css from "/fe5/assets/sidebar.css" with { type: "css" };
+addStyle(css);
 
 const DURATION = 300;
 
@@ -201,8 +204,6 @@ export function setTitle(title) {
 
 window.addEventListener("resize", onResize);
 onResize();
-
-await loadStyle("sidebar");
 
 document.body.append(button, div, overlay);
 

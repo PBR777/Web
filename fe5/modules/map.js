@@ -1,5 +1,8 @@
-import {} from "/fe5/modules/tooltip.js"
-import { loadStyle, create, fetchJson } from "/fe5/modules/index.js";
+import "./tooltip.js"
+import { addStyle, create, fetchJson } from "./index.js";
+
+import css from "/fe5/assets/map.css" with { type: "css" };
+addStyle(css);
 
 class Map {
   static MAP_ROOT= "/fe5/data/map/";
@@ -105,7 +108,5 @@ class Map {
     return new Map(mapDiv, true);
   }
 }
-
-await loadStyle("map");
 
 export const load = Map.load;

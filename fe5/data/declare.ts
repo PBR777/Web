@@ -1,4 +1,3 @@
-
 type bioFormat = {
   /** 别名/称呼*/
   altname?: string;
@@ -20,13 +19,28 @@ type bioFormat = {
   words?: string;
 };
 
-const example: bioFormat = {
-  altname: "000",
-  birthday: {
-    D: 0,
-    H: 0,
-    Y: 0
-  },
-  sex: null,
-  words: "---"
+
+type mapDataFormat = {
+  name: string;
+
+  href?: string;
+
+  pos: [number, number] | [number, number][]
+}[];
+
+type solarTreeFormat = {
+  id: string;
+  name: string;
+  parent?: string;
+
+  mass: number; // In kg
+  //计算半长轴：long / 2 = (near + far) / 2
+  near: number; // In m, 近日点
+  far: number; // In m, 远日电
+
+  rotationPeriod: number; // In sec, 0 if it is locked by parent.
+
+  starInfo?: {
+    temperature: number; // In K
+  }
 };

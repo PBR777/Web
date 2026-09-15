@@ -1,6 +1,8 @@
 import { headingDiv } from "/fe5/root.js";
-import { create, dirName, fetchJson, period } from "/fe5/modules/index.js";
+import { create, dirName, fetchJson } from "/fe5/modules/index.js";
 import { createCard } from "/fe5/modules/infocard.js";
+import { getObject, calOrbitalPeriod } from "/fe5/modules/solar.js";
+import "/fe5/modules/solar.js";
 
 const img = create("img")
   .setAttribute("src", `/fe5/assets/solar/${dirName}-800x800.webp`)
@@ -10,12 +12,9 @@ const div = createCard(img, "天体数据");
 
 headingDiv.append(div.build());
 
-/**@type solarTreeFormat */
-const tree = await fetchJson("/fe5/data/solar/tree.json");
-
 try {
   /**@type solarDataFormat */
-  const data = await fetchJson(`/fe5/data/solar/${dirName}.json`);
+  const data = getObject(dirName);
 
   const info = [];
 
@@ -24,9 +23,18 @@ try {
     : "未知";
 
   info.push("质量：" + getData(data.mass, "kg"));
-  info.push("近日点（父级）：" + getData(data.short, "m"));
-  info.push("远日点（父级）：" + getData(data.long, "m"));
-  info.push("自转周期：" + getData(data.rotationPeriod, "s"));
+  info.push("近日点（父级）：" + getData(data.near, "m"));
+  info.push("远日点（父级）：" + getData(data.far, "m"));
+
+  const orbitalPeriod = calOrbitalPeriod("fe5");
+  if(data.rotationPeriod === 0) {
+    info.push("自转周期：" + getData(orbitalPeriod, "s"));
+    info.push("公转周期：" + getData(orbitalPeriod, "s"));
+  } else {
+    info.push("自转周期：" + getData(data.rotationPeriod, "s"));
+    info.push("公转周期：" + getData(orbitalPeriod, "s"));
+  }
+  
 
 
   div.setInfo(info.join("\n"));
@@ -35,3 +43,6 @@ try {
   console.error(err);
   
 }
+
+console.log();
+ 

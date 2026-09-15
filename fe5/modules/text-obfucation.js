@@ -1,4 +1,7 @@
-import { loadStyle } from "/fe5/modules/index.js";
+import { addStyle } from "./index.js";
+
+import css from "/fe5/assets/text-obfucation.css" with { type: "css" };
+addStyle(css);
 
 const visibleObfucatedText = new Set();
 
@@ -40,7 +43,5 @@ setInterval(() => {
     element.textContent = str;
   });
 }, 40);
-
-await loadStyle("text-obfucation");
 
 export {};

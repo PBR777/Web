@@ -132,26 +132,10 @@ export function create(name, id) {
 }
 
 /**
- * Load specified .css file in /fe5/assets/
- * @param {string} name  
+ * @param {CSSStyleSheet} css  
  */
-export async function loadStyle(name) {
-
-  const style = create("link")
-    .setAttribute("rel", "stylesheet")
-    .setAttribute("href", `/fe5/assets/${name}.css`)
-    .appendTo(document.head);
-
-  await new Promise(resolve => {
-
-    style.addEventListener("load", resolve, { once: true });
-
-    style.addEventListener("error", () => {
-      console.error(".css " + style.href + " load failed.");
-      resolve();
-    }, { once: true });
-
-  });
+export function addStyle(css) {
+  document.adoptedStyleSheets = document.adoptedStyleSheets.concat(css);
 }
 
 /**
@@ -176,7 +160,7 @@ export async function strictFetch(url, init) {
  * @param {RequestInit?} init 
  */
 export async function fetchText(url, init) {
-  return await (await strictFetch(url, init)).text();
+  return (await strictFetch(url, init)).text();
 }
 
 /**
@@ -184,14 +168,13 @@ export async function fetchText(url, init) {
  * @param {RequestInit?} init 
  */
 export async function fetchJson(url, init) {
-  return await (await strictFetch(url, init)).json();
+  return (await strictFetch(url, init)).json();
 }
 
-export const G = (6.674184e-11 + 6.674484e-11) / 2;
-
 /**
- * @param {number} short 
- * @param {number} long 
- * @param {number} mass 
+ * @param  {(() => any)[]} callbacks 
+ * @returns {any[]}
  */
-export const period = (short, long, mass) => 2 * Math.PI * ((long + short) ** 3 / (8 * G * mass)) ** 0.5;
+export function parallel(...callbacks) { 
+  return Promise.all(callbacks.map(async callback => await callback()));
+}

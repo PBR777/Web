@@ -1,4 +1,7 @@
-import { loadStyle, create } from "/fe5/modules/index.js";
+import { addStyle, create } from "./index.js";
+
+import css from "/fe5/assets/background.css" with { type: "css" };
+addStyle(css);
 
 const canvas = create("canvas", "background").build();
 
@@ -96,7 +99,5 @@ for(let i = url.length; i >= 0; i--) {
   urlHash = urlHash + url.charCodeAt(i) * i | 0;
 }
 initCanvas((urlHash * -2156926 | 0) + 137697);
-
-await loadStyle("background");
 
 export {};

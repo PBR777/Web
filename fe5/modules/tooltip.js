@@ -1,4 +1,7 @@
-import { loadStyle, create } from "/fe5/modules/index.js";
+import { addStyle, create } from "./index.js";
+
+import css from "/fe5/assets/tooltip.css" with { type: "css" };
+addStyle(css);
 
 const tooltip = create("div", "tooltip")
   .appendTo(document.body);
@@ -64,7 +67,5 @@ class Tooltip extends HTMLElement {
 }
 
 customElements.define("tool-tip", Tooltip);
-
-await loadStyle("tooltip");
 
 export {};
