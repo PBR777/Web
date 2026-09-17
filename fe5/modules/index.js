@@ -132,9 +132,13 @@ export function create(name, id) {
 }
 
 /**
- * @param {CSSStyleSheet} css  
+ * @param {string} url  
  */
-export function addStyle(css) {
+export async function loadStyle(url) {
+  const data = await fetchText(`/fe5/assets/${url}.css`);
+  const css = new CSSStyleSheet();
+  css.replaceSync(data);
+
   document.adoptedStyleSheets = document.adoptedStyleSheets.concat(css);
 }
 

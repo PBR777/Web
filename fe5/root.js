@@ -1,7 +1,8 @@
+import { create, dirName } from "/fe5/modules/index.js";
 import "/fe5/modules/background.js";
 import "/fe5/modules/id.js";
 import "/fe5/modules/text-obfucation.js";
-import { create, dirName } from "/fe5/modules/index.js";
+
 
 function loadEaseBox() {
   const observeTarget = document.querySelectorAll(".observed-element");

@@ -1,31 +1,18 @@
 import "./tooltip.js"
-import { addStyle, create, fetchJson } from "./index.js";
+import { loadStyle, create, fetchJson, PackedElement } from "./index.js";
 
-import css from "/fe5/assets/map.css" with { type: "css" };
-addStyle(css);
-
-class Map {
+class Map extends PackedElement {
+  static STATUS = loadStyle("map");
   static MAP_ROOT= "/fe5/data/map/";
 
-  #map;
   #ok;
 
-  /**
-   * @param {HTMLDivElement} div
-   * @param {boolean} success
-   */
-  constructor(div, success) {
-    this.#map = div;
-    this.#ok = success;
+  constructor(element) {
+    super(element);
   }
 
   getMap() {
-    return this.#map;
-  }
-
-  /**@param {Node} node  */
-  appendTo(node) {
-    node.appendChild(this.#map);
+    return this.build();
   }
 
   get ok() {
@@ -43,20 +30,25 @@ class Map {
 
     const mapImg = create("img")
       .addClass("map")
-      .build();
+      .appendTo(mapDiv);
 
-    mapImg.src = Map.MAP_ROOT + mapImgName + ".webp";
+    const map = new Map(mapDiv);
 
-    const mapImgPromise = new Promise((resolve, reject) => {
-      mapImg.addEventListener("load", resolve, {once: true});
-      mapImg.addEventListener("error", reject, {once: true});
-    }).catch(() => { throw new Error("Map .webp load failed."); });
-
-    const mapDataPromise = fetchJson(Map.MAP_ROOT + mapDataName + ".json");
-
+    let status = true;
     try {
+      await Map.STATUS;
+      
+      mapImg.src = Map.MAP_ROOT + mapImgName + ".webp";
+
+      const mapImgPromise = new Promise((resolve, reject) => {
+        mapImg.addEventListener("load", resolve, {once: true});
+        mapImg.addEventListener("error", reject, {once: true});
+      }).catch(() => { throw new Error("Map .webp load failed.");});
+
+      const mapDataPromise = fetchJson(Map.MAP_ROOT + mapDataName + ".json");
+
       /**@type mapDataFormat */
-      const [mapData] = await Promise.all([mapDataPromise, mapImgPromise])
+      const [ mapData ] = await Promise.all([mapDataPromise, mapImgPromise])
         .catch(err => { throw err; });
 
 
@@ -95,18 +87,19 @@ class Map {
 
     } catch(err) {
       console.error(err);
+
+      mapImg.remove();
       
       create("span")
         .addClass("map-fail")
         .setText("看上去地图加载失败了 :(")
         .appendTo(mapDiv);
 
-      return new Map(mapDiv, false);
+      status = false;
     }
 
-    mapDiv.append(mapImg);
-    return new Map(mapDiv, true);
+    return map;
   }
 }
 
-export const load = Map.load;
+export const loadMap = Map.load;

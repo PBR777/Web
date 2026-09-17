@@ -1,7 +1,4 @@
-import { create, addStyle, PackedElement } from "./index.js";
-
-import css from "/fe5/assets/infocard.css" with { type: "css" };
-addStyle(css);
+import { create, loadStyle, PackedElement } from "./index.js";
 
 export class Infocard extends PackedElement {
   #imgAlt = "图片加载失败 :("
@@ -82,3 +79,5 @@ export class Infocard extends PackedElement {
 export function createCard(img, title, descriptions) {
   return new Infocard(img, title, descriptions);
 }
+
+loadStyle("infocard");

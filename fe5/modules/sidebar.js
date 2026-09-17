@@ -1,7 +1,4 @@
-import { addStyle, create } from "./index.js"
-
-import css from "/fe5/assets/sidebar.css" with { type: "css" };
-addStyle(css);
+import { loadStyle, create } from "./index.js"
 
 const DURATION = 300;
 
@@ -202,9 +199,10 @@ export function setTitle(title) {
   updateTree();
 }
 
-window.addEventListener("resize", onResize);
-onResize();
 
-document.body.append(button, div, overlay);
+loadStyle("sidebar").then(() => {
+  window.addEventListener("resize", onResize);
+  onResize();
 
-export default setTitle;
+  document.body.append(button, div, overlay);
+});

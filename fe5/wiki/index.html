@@ -45,9 +45,9 @@
   </style>
 
   <script type="module">
-    import { load } from "/fe5/modules/map.js";
+    import { loadMap } from "/fe5/modules/map.js";
 
-    (await load("fe5-winkel_tripel-lined"))
+    (await loadMap("fe5-winkel_tripel-lined"))
       .appendTo(document.querySelector("#locations"));
 
   </script>

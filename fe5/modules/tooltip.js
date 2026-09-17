@@ -1,10 +1,6 @@
-import { addStyle, create } from "./index.js";
+import { loadStyle, create } from "./index.js";
 
-import css from "/fe5/assets/tooltip.css" with { type: "css" };
-addStyle(css);
-
-const tooltip = create("div", "tooltip")
-  .appendTo(document.body);
+const tooltip = create("div", "tooltip");
 
 let isTooltipShowing = false;
 let frameId = null;
@@ -23,13 +19,15 @@ class Tooltip extends HTMLElement {
   }
 
   hideTooltip() {
-    tooltip.classList.remove("show");
+    tooltip.removeClass("show");
     isTooltipShowing = false;
   }
 
   showTooltip() {
-    tooltip.innerHTML = this.text;
-    tooltip.classList.add("show");
+    tooltip
+      .setHTML(this.text)
+      .addClass("show");
+
     isTooltipShowing = true;
   }
 
@@ -38,8 +36,9 @@ class Tooltip extends HTMLElement {
     if(frameId) return;
 
     frameId = requestAnimationFrame(() => {
-      tooltip.style.left = ev.clientX + "px";
-      tooltip.style.top = ev.clientY + "px";
+      tooltip
+        .setStyle("left", ev.clientX + "px")
+        .setStyle("top", ev.clientY + "px")
 
       frameId = null;
     });
@@ -67,5 +66,9 @@ class Tooltip extends HTMLElement {
 }
 
 customElements.define("tool-tip", Tooltip);
+
+loadStyle("tooltip").then(() => {
+  tooltip.appendTo(document.body);
+});
 
 export {};

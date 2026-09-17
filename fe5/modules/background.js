@@ -1,7 +1,4 @@
-import { addStyle, create } from "./index.js";
-
-import css from "/fe5/assets/background.css" with { type: "css" };
-addStyle(css);
+import { loadStyle, create } from "./index.js";
 
 const canvas = create("canvas", "background").build();
 
@@ -22,18 +19,6 @@ starPNG.width = starSize;
 starPNG.height = starSize;
 
 const starImg = new Image();
-starImg.src = "/fe5/assets/bg-star.svg";
-
-await new Promise((resolve, reject) => {
-
-  starImg.addEventListener("load", resolve);
-  starImg.addEventListener("error", reject);
-
-}).catch(() => {
-  throw new Error("Star svg load failed.");
-});
-
-pngCtx.drawImage(starImg, 0, 0, starSize, starSize);
 
 // Listen reize event
 let starSizeFactor = 0;
@@ -60,14 +45,30 @@ const stars = [];
 
 let initLock = false;
 
-function initCanvas(initialSeed = seed, starCount = 256) {
+async function initCanvas(initialSeed = seed, starCount = 256) {
   if(initLock) throw new Error("Background has been initialized.");
-
+  initLock = true;
   seed = initialSeed;
 
   for(let i = starCount; i > 0; i--) {
     stars.push([random(), random(), random() * 48 + 20, (random() + 0.3) * 0.001]);
   }
+
+  starImg.src = "/fe5/assets/bg-star.svg";
+
+  try {
+    await new Promise((resolve, reject) => {
+
+      starImg.addEventListener("load", resolve);
+      starImg.addEventListener("error", reject);
+
+    });
+  } catch(err) {
+    console.error(err);
+    return;
+  }
+
+  pngCtx.drawImage(starImg, 0, 0, starSize, starSize);
 
   const tick = t => {
     const scrollOffset = window.scrollY / canvas.height * 10;
@@ -88,16 +89,20 @@ function initCanvas(initialSeed = seed, starCount = 256) {
     requestAnimationFrame(tick);
   };
 
-  initLock = true;
+  
 
   tick();
 }
 
-const url = window.location.href;
-let urlHash = 0;
-for(let i = url.length; i >= 0; i--) {
-  urlHash = urlHash + url.charCodeAt(i) * i | 0;
-}
-initCanvas((urlHash * -2156926 | 0) + 137697);
+loadStyle("background").then(() => {
+
+  const url = window.location.href;
+  let urlHash = 0;
+  for(let i = url.length; i >= 0; i--) {
+    urlHash = urlHash + url.charCodeAt(i) * i | 0;
+  }
+
+  initCanvas((urlHash * -2156926 | 0) + 137697);
+});
 
 export {};

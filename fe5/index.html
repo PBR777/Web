@@ -86,10 +86,10 @@
   
   
   <script type="module">
-    import {load} from "./modules/map.js";
+    import { loadMap } from "./modules/map.js";
     import "/fe5/modules/tooltip.js";
 
-    (await load("fe5-winkel_tripel-lined"))
+    (await loadMap("fe5-winkel_tripel-lined"))
       .appendTo(document.querySelector("#map-inner"));
   </script>
 </head>
