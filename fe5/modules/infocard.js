@@ -41,7 +41,8 @@ export class Infocard extends PackedElement {
       this.setInfo("加载中...");
 
     this.#imgBox = create("info-box")
-      .addClass("infocard-img-box").addListener("error", ev => {
+      .addClass("infocard-img-box")
+      .addListener("error", () => {
         this.#imgBox.setHTML("");
 
         create("div")

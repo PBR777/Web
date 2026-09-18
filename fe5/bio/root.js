@@ -31,11 +31,11 @@ const writer = document.head
 
 const img = create("img")
   .setAttribute("src", `/fe5/assets/bio/${dirName}/profile.png`)
-  .build();
+  .get();
 
 const subheading = create("h1", "profile-subheading")
   .setHTML(writer && writer !== dirName ? `由<id->${writer}</id->撰写` : "自我撰写")
-  .build();
+  .get();
 
 const div = createCard(img, "基础信息");
 
@@ -47,7 +47,7 @@ const alt = textList[Math.abs((seed * 258015 | 0) - 152) % textList.length]
 
 div.setImgAlt(alt)
 
-headingDiv.append(subheading, div.build());
+headingDiv.append(subheading, div.get());
 
 try {
   const bio = await fetchJson(`./data.json`);

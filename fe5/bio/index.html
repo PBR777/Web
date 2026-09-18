@@ -54,11 +54,11 @@
     /**@type string[] */
     let idSet = [];
 
-    const textbox = create("text-box").build();
-    const resultDiv = create("div", "search-result").build();
-    const resultTextDiv = create("div", "result-text-div").build();
+    const textbox = create("text-box").get();
+    const resultDiv = create("div", "search-result").get();
+    const resultTextDiv = create("div", "result-text-div").get();
 
-    const searchbar = create("input", "search-bar").build();
+    const searchbar = create("input", "search-bar").get();
     searchbar.placeholder = "输入编号...";
     searchbar.maxLength = "16";
 
@@ -118,7 +118,7 @@
       const links = results.map(name => {
         const link = create("a")
           .setText(name)
-          .build();
+          .get();
         link.href = `/fe5/bio/${name}/`;
         return link;
       });

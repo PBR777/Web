@@ -1,4 +1,4 @@
-import { create, dirName } from "/fe5/modules/index.js";
+import { create, dirName, calStyleStatus, sleep } from "/fe5/modules/index.js";
 import "/fe5/modules/background.js";
 import "/fe5/modules/id.js";
 import "/fe5/modules/text-obfucation.js";
@@ -38,7 +38,7 @@ function loadModules() {
 }
 
 export const headingDiv = !document.querySelector("meta[name='no-title']") 
-  ? create("div", "document-title-div").build() 
+  ? create("div", "document-title-div").get() 
   : null;
 
 
@@ -47,19 +47,14 @@ if(headingDiv) {
     .appendTo(headingDiv);
     
   if(document.title === "") {
-    heading.innerText = dirName;
+    heading.setText(dirName);
     document.title = dirName;
   } else {
-    heading.innerText = document.title;
+    heading.setText(document.title);
   }
 
   document.body.insertAdjacentElement("afterbegin", headingDiv);
 }
-
-document.querySelectorAll(".info-img").forEach(img => {
-  if(img.alt === "")
-    img.alt = "图片加载失败 :(";
-});
 
 loadEaseBox();
 
@@ -68,5 +63,12 @@ try {
 } catch(err) {
   console.error(err);
 }
+
+
+
+await Promise.race([calStyleStatus().then(console.log),
+  new Promise((_, reject) => setTimeout(reject, 5000))]).catch(() => {
+  console.warn("Some styles take too much time to load.");
+});
 
 document.body.classList.add("show");

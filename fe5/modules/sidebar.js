@@ -5,57 +5,52 @@ const DURATION = 300;
 let isSpaceEnough = false;
 let isSidebarShowing = false;
 
-const buttonArrow = create("div")
-  .addClass("sidebar-button-arrow")
-  .build();
-
 const button = create("div")
   .addClass("sidebar-button")
-  .addListener("click", () => sidebarControl(!isSidebarShowing))
-  .append(buttonArrow)
-  .build();
+  .addListener("click", () => sidebarControl(!isSidebarShowing));
 
-const icon = create("img")
-  .addClass("sidebar-title-icon")
-  .build();
-icon.src = "/fe5/assets/solar/fe5-256x256.webp";
+const buttonArrow = create("div")
+  .addClass("sidebar-button-arrow")
+  .appendTo(button);
+
+const div = create("div")
+  .addClass("sidebar-div");
 
 const homeDiv = create("div")
   .addClass("sidebar-title-div")
+  .setText("Fe5: Our Home")
   .addListener("click", () => window.location.href = "/fe5/")
-  .append("Fe5: Our Home", icon)
-  .build();
+  .appendTo(div);
+
+const icon = create("img")
+  .addClass("sidebar-title-icon")
+  .setAttribute("src", "/fe5/assets/solar/fe5-256x256.webp")
+  .appendTo(homeDiv);
 
 const anchorDiv = create("div")
   .addClass("sidebar-anchor-div")
-  .build();
-
-const div = create("div")
-  .addClass("sidebar-div")
-  .append(homeDiv, anchorDiv)
-  .build();
+  .appendTo(div);
 
 const anchorTitle = create("div")
   .addClass("sidebar-anchor-title", "sidebar-anchor")
-  .addListener("click", () => window.scrollTo(0, 0))
-  .build();
+  .addListener("click", () => window.scrollTo(0, 0));
 
 const overlay = create("div")
   .addClass("sidebar-overlay")
-  .addListener("click", () => sidebarControl(false))
-  .build();
+  .addListener("click", () => sidebarControl(false));
 
 const updateTree = (() => {
   let timeoutId = null;
 
   function update() {
-    anchorDiv.innerHTML = "";
-    anchorTitle.innerText = document.title;
+    anchorDiv.setHTML("");
+    anchorTitle.setText(document.title);
     anchorDiv.append(anchorTitle);
 
-    const allHeading = document.querySelectorAll(AnchorHeading.ELEMENT_ID);
+    /**@type AnchorHeading[] */
+    const allHeading = [...document.querySelectorAll(AnchorHeading.ELEMENT_ID)];
     
-    const allAnchor = [...allHeading].map(element => {
+    const allAnchor = allHeading.map(element => {
 
       const anchor = element.anchor;
 
@@ -67,11 +62,11 @@ const updateTree = (() => {
 
     anchorDiv.append(...allAnchor);
 
-    const lastElement = anchorDiv.children[anchorDiv.children.length - 1];
+    const lastElement = anchorDiv.getChildren().at(-1);;
 
-    if(lastElement && !lastElement.classList.contains("sidebar-anchor-title")) {
-      lastElement.classList.remove("sidebar-anchor-mid");
-      lastElement.classList.add("sidebar-anchor-end");
+    if(lastElement && !lastElement.getClass().contains("sidebar-anchor-title")) {
+      lastElement.removeClass("sidebar-anchor-mid");
+      lastElement.addClass("sidebar-anchor-end");
     }
 
     timeoutId = null;
@@ -91,52 +86,67 @@ class AnchorHeading extends HTMLElement {
     window.location.href = "#" + this.id;
   }
 
+  #rawId = "";
 
-  anchor = (() => {
-    const anchorButton = create("div")
-      .addClass("sidebar-anchor")
-      .addListener("click", this.onClick.bind(this))
-      .build();
+  #anchor = create("div")
+    .addClass("sidebar-anchor")
+    .addListener("click", this.onClick.bind(this))
+    .get();
 
-    return anchorButton;
-  })();
+  get anchor() {
+    return this.#anchor;
+  }
 
   constructor() {
     super();
 
-    this.addEventListener("click", this.onClick);
+    this.setId(this.textContent);
+    this.setContent(this.textContent)
+    this.#anchor.classList.toggle("sidebar-anchor-h2", this.classList.contains("h2"));
+  }
+
+  /**@param {string} id  */
+  setId(id) {
+    const map = AnchorHeading.nameMap;
+
+    const uid = (map.get(this.#rawId) ?? 0) - 1;
+    if(uid > 0) {
+      map.set(this.#rawId, uid);
+    } else {
+      map.delete(this.#rawId);
+    }
+
+    const safeId = CSS.escape(id);
+    if(map.has(safeId)) {
+
+      const uid = map.get(safeId) + 1;
+      map.set(safeId, uid);
+
+      this.id = safeId + "-" + uid;
+    } else {
+
+      map.set(safeId, 0);
+      this.id = safeId;
+    }
+
+    this.#rawId = safeId;
+  }
+
+  /**
+   * @param {string} content 
+   */
+  setContent(content) {
+    this.textContent = content;
+    this.#anchor.textContent = content
   }
 
   connectedCallback() {
-    const name = this.textContent;
-
-    if(this.id === "") {
-      
-      if(AnchorHeading.nameMap.has(name)) {
-        
-        const nameUid = AnchorHeading.nameMap.get(name) + 1;
-        AnchorHeading.nameMap.set(name, nameUid);
-
-        this.id = CSS.escape(name) + "-" + nameUid;
-      } else {
-
-        AnchorHeading.nameMap.set(name, 0);
-        this.id = CSS.escape(name);
-
-      }
-    }
-
-    this.anchor.innerText = name;
-    if(this.classList.contains("h2")) {
-      this.anchor.classList.add("sidebar-anchor-h2");
-    } else {
-      this.anchor.classList.remove("sidebar-anchor-h2");
-    }
-
+    this.addEventListener("click", this.onClick);
     updateTree();
   }
 
   disconnectedCallback() {
+    this.removeEventListener("click", this.onClick);
     updateTree();
   }
 }
@@ -151,20 +161,20 @@ const sidebarControl = (() => {
 
     if(isShowing) {
       clearTimeout(timeoutId);
-      overlay.style.visibility = "visible";
+      overlay.setStyle("visibility", "visible");
 
-      button.classList.add("sidebar-showing");
-      div.classList.add("sidebar-showing");
-      overlay.classList.add("sidebar-overlay-showing");
+      button.addClass("sidebar-showing");
+      div.addClass("sidebar-showing");
+      overlay.addClass("sidebar-overlay-showing");
 
     } else {
 
-      button.classList.remove("sidebar-showing");
-      div.classList.remove("sidebar-showing");
-      overlay.classList.remove("sidebar-overlay-showing");
+      button.removeClass("sidebar-showing");
+      div.removeClass("sidebar-showing");
+      overlay.removeClass("sidebar-overlay-showing");
 
       timeoutId = setTimeout(() => {
-        overlay.style.visibility = "hidden";
+        overlay.setStyle("visibility", "hidden");
       }, DURATION);
     }
   }
@@ -176,15 +186,15 @@ function onResize() {
     isSpaceEnough = true;
 
     sidebarControl(true);
-    button.style.visibility = "hidden";
-    overlay.style.visibility = "hidden";
+    button.setStyle("visibility", "hidden");
+    overlay.setStyle("visibility", "hidden");
 
   } else {
     if(!isSpaceEnough) return;
     isSpaceEnough = false;
     
-    button.style.visibility = null;
-    overlay.style.visibility = null;
+    button.setStyle("visibility", null);
+    overlay.setStyle("visibility", null);
   }
 }
 
@@ -199,10 +209,9 @@ export function setTitle(title) {
   updateTree();
 }
 
-
 loadStyle("sidebar").then(() => {
   window.addEventListener("resize", onResize);
   onResize();
 
-  document.body.append(button, div, overlay);
+  document.body.append(button.get(), div.get(), overlay.get());
 });

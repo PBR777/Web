@@ -43,7 +43,7 @@
       const buttons = arr.map(name => create("a")
         .setText(name)
         .setAttribute("href", "./read/?name=" + name)
-        .build());
+        .get());
 
       slot.innerHTML = "";
       slot.append(...buttons);

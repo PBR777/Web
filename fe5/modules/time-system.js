@@ -1,8 +1,18 @@
 import { fetchJson } from "./index.js";
 import { period } from "./solar.js";
 
-/**@typedef {Time | timestamp} time */
-/**@typedef {number | time} t */
+/**@typedef {Time | timestamp} TimeObject */
+
+export const D_CONST = ((a, b) => a * b / (a + b))
+  (period(2.4168e10 + 1.6134e11, 2.6111e10 + 1.7431e11, 2.215e30 + 3.318e29),
+  period(2.0214e10, 2.1019e10, 3.318e29 + 7.589e24));
+
+export const Y_CONST = D_CONST * 11;
+export const H_CONST = D_CONST / 36;
+export const HP_CONST = H_CONST / 100;
+
+const STARTED_TIME = Math.round(1783434536027 - 31.956 * 365.256 * 24 * 60 * 60 * 1000);
+
 
 const toFull = time => ({
   Y: time.Y ?? 0,
@@ -14,9 +24,12 @@ const toFull = time => ({
 
 const val = t => typeof t === "number" ? t : timeToSec(t);
 
-const simplify = time => secToTime(timeToSec(time));
+/**
+ * @param {TimeObject} time 
+ */
+export const simplify = time => secToTime(timeToSec(time));
 
-const secToTime = (() => {
+export const secToTime = (() => {
   let secRemain = 0;
 
   const getVal = step => {
@@ -25,20 +38,27 @@ const secToTime = (() => {
     return result;
   }
 
+  /**
+   * @param {number} sec
+   */
   return sec => {
     secRemain = sec;
 
-    const Y = getVal(Time.Y_CONST);
-    const D = getVal(Time.D_CONST);
-    const H = getVal(Time.H_CONST);
-    const Hp = getVal(Time.HP_CONST);
+    const Y = getVal(Y_CONST);
+    const D = getVal(D_CONST);
+    const H = getVal(H_CONST);
+    const Hp = getVal(HP_CONST);
 
     return { Y, D, H, Hp, s: secRemain };
   }
 })();
 
-const timeToSec = time => {
-  const fullTime =  toFull(time);
+/**
+ * @param {TimeObject} time 
+ * @returns {number}
+ */
+export const timeToSec = time => {
+  const fullTime = toFull(time);
 
   const result = fullTime.Y * Time.Y_CONST
     + fullTime.D * Time.D_CONST
@@ -55,18 +75,22 @@ const timeToSec = time => {
 };
 
 /**
+ * @param {TimeObject | number} t
+ * @param {"full" | "YDH" | "Hps" | undefined} format Default to "full".
+ * @param {number | undefined} secDigit
+ */
+export function stringify(t, format, secDigit) {
+  const time = typeof t === "number" 
+    ? new Time(secToTime(t))
+    : new Time(toFull(t))
+
+  return time.toString(format, secDigit);
+}
+
+/**
  * Time and timestamp class. A time object can represent as a duration or a date.
  */
 class Time {
-  static D_CONST = ((a, b) => a * b / (a + b))
-    (period(2.4168e10 + 1.6134e11, 2.6111e10 + 1.7431e11, 2.215e30 + 3.318e29),
-    period(2.0214e10, 2.1019e10, 3.318e29 + 7.589e24));
-
-  static Y_CONST = Time.D_CONST * 11;
-  static H_CONST = Time.D_CONST / 36;
-  static HP_CONST = Time.H_CONST / 100;
-
-  static #STARTED_TIME = Math.round(1783434536027 - 31.956 * 365.256 * 24 * 60 * 60 * 1000);
 
   /**@type number*/
   #Y;
@@ -85,9 +109,9 @@ class Time {
   get Hp() { return this.#Hp; }
   get s() { return this.#s; }
   get daynightProcess() {
-    return (this.H 
+    return (this.#H 
       + this.#Hp / 100
-      + this.#s / Time.H_CONST)
+      + this.#s / H_CONST)
       / 36;
   }
 
@@ -96,10 +120,6 @@ class Time {
     return p >= 0.25 && p < 0.75;
   }
 
-
-  /**
-   * DO NOT CALL THIS CONSTRUCTOR, USE Time.create() INSTANT.
-  */
   constructor(time) {
     this.#Y = time.Y;
     this.#D = time.D;
@@ -108,22 +128,13 @@ class Time {
     this.#s = time.s;
   }
 
-  /**@param {t} t */
-  static create(t) {
+  /**@param {number | TimeObject} t */
+  static construct(t) {
     if(typeof t === "number") {
       return new Time(secToTime(t))
     }
 
     return new Time(simplify(t));
-  }
-
-  /**
-   * @param {time} time
-   * @param {"full" | "YDH" | "Hps"} format
-   * @param {number | undefined} secDigit
-   */
-  static stringify(time, format, secDigit) {
-    return new Time(toFull(time)).toString(format, secDigit);
   }
 
   toSecond() {
@@ -183,43 +194,56 @@ class Time {
     return this.toSecond();
   }
 
-  /**@param {t} t */
+  /**@param {TimeObject | number} t */
   add(t) {
-    return Time.create(this + val(t));
+    return Time.construct(this + val(t));
   }
 
-  /**@param {t} t */
+  /**@param {TimeObject | number} t */
   minus(t) {
-    return Time.create(this - val(t));
+    return Time.construct(this - val(t));
   }
 
-  /**@param {number} t */
-  scale(t) {
-    return Time.create(this * t);
-  }
-
-  // ---------------- Clock ----------------
-
-  static #offset = 0;
-
-  static now() {
-    const sec = Date.now() - Time.#STARTED_TIME + Time.#offset;
-
-    return Time.create(sec / 1000);
-  }
-
-  static async calibrate()  {
-    const startTime = Date.now();
-    const json = await fetchJson("https://api.pbrsite.dev/time");
-    const endTime = Date.now();
-
-    const t = json.t;
-
-    if(!t || typeof t !== "number")
-      throw new Error("Invalid response from server.");
-      
-    Time.#offset = t - Math.trunc(startTime + endTime) / 2;
+  /**@param {number} factor */
+  mul(factor) {
+    return Time.construct(this * factor);
   }
 }
 
-export default Time;
+export const createTime = Time.construct;
+
+let clockOffset = 0;
+
+export function now() {
+  const sec = Date.now() - STARTED_TIME + clockOffset;
+
+  return createTime(sec / 1000);
+}
+
+export async function calibrate()  {
+  const startTime = Date.now();
+  const json = await fetchJson("https://api.pbrsite.dev/time");
+  const endTime = Date.now();
+
+  const t = json.t;
+
+  if(!t || typeof t !== "number")
+    throw new Error("Invalid response from server.");
+    
+  clockOffset = t - Math.trunc(startTime + endTime) / 2;
+}
+
+export default {
+  Y_CONST,
+  D_CONST,
+  H_CONST,
+  HP_CONST,
+
+  simplify,
+  secToTime,
+  timeToSec,
+  stringify,
+  createTime,
+  now,
+  calibrate
+}

@@ -1,6 +1,6 @@
 import { loadStyle, create } from "./index.js";
 
-const canvas = create("canvas", "background").build();
+const canvas = create("canvas", "background").get();
 
 const ctx = canvas.getContext("2d");
 if(!ctx) throw new Error("Canvas is not supported in this browser.");
@@ -11,7 +11,7 @@ const canvasDiv = create("div")
   .appendTo(document.body);
 
 // Load star svg
-const starPNG = create("canvas").build();
+const starPNG = create("canvas").get();
 const pngCtx = starPNG.getContext("2d");
 
 const starSize = 512;

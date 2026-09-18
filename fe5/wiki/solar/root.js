@@ -6,11 +6,11 @@ import "/fe5/modules/solar.js";
 
 const img = create("img")
   .setAttribute("src", `/fe5/assets/solar/${dirName}-800x800.webp`)
-  .build();
+  .get();
 
 const div = createCard(img, "天体数据");
 
-headingDiv.append(div.build());
+headingDiv.append(div.get());
 
 try {
   /**@type solarDataFormat */

@@ -98,7 +98,7 @@
 
       const barLength = CVS.width - 100;
 
-      const dnp = Time.create(ts).daynightProcess;
+      const dnp = ts.daynightProcess;
       const workCycleProcess = (ts.Hp + ts.s * 100 / Time.H_CONST) / 100;
 
       ctx.resetTransform();

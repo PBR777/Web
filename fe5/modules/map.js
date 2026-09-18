@@ -12,7 +12,7 @@ class Map extends PackedElement {
   }
 
   getMap() {
-    return this.build();
+    return this.get();
   }
 
   get ok() {
@@ -25,8 +25,7 @@ class Map extends PackedElement {
    */
   static async load(mapImgName, mapDataName = mapImgName) {
     const mapDiv = create("info-box")
-      .addClass("map-div")
-      .build();
+      .addClass("map-div");
 
     const mapImg = create("img")
       .addClass("map")
@@ -37,20 +36,18 @@ class Map extends PackedElement {
     let status = true;
     try {
       await Map.STATUS;
-      
-      mapImg.src = Map.MAP_ROOT + mapImgName + ".webp";
 
-      const mapImgPromise = new Promise((resolve, reject) => {
-        mapImg.addEventListener("load", resolve, {once: true});
-        mapImg.addEventListener("error", reject, {once: true});
-      }).catch(() => { throw new Error("Map .webp load failed.");});
+      mapImg.setAttribute("src", Map.MAP_ROOT + mapImgName + ".webp");
+
+      const mapImgPromise = new Promise((resolve, reject) => mapImg
+        .addListener("load", resolve, {once: true})
+        .addListener("error", reject, {once: true})
+      );
 
       const mapDataPromise = fetchJson(Map.MAP_ROOT + mapDataName + ".json");
 
       /**@type mapDataFormat */
-      const [ mapData ] = await Promise.all([mapDataPromise, mapImgPromise])
-        .catch(err => { throw err; });
-
+      const [ mapData ] = await Promise.all([mapDataPromise, mapImgPromise]);
 
       const createSpot = (x, y, name, href) => {
         const xPct = `${x * 50 + 50}%`;
@@ -65,7 +62,7 @@ class Map extends PackedElement {
         spot.text = name;
 
         if(href)
-          spot.addEventListener("click", () => location.href = href);
+          spot.addListener("click", () => location.href = href);
 
         create("div")
           .addClass("map-spot", "map-spot-pulse")
@@ -74,16 +71,15 @@ class Map extends PackedElement {
           .appendTo(mapDiv);
       };
 
-      mapData.forEach(data => {
+      for(const data of mapData) {
         if(Array.isArray(data.pos[0])) {
-
-          data.pos.forEach(spot => {
-            createSpot(spot[0], spot[1], data.name, data.href);
-          });
+          data.pos.forEach(spot =>
+            createSpot(spot[0], spot[1], data.name, data.href));
         } else {
           createSpot(data.pos[0], data.pos[1], data.name, data.href);
         }
-      });
+      }
+
 
     } catch(err) {
       console.error(err);

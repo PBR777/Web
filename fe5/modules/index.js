@@ -1,14 +1,15 @@
 export const dirName = location.href.split("/").at(-2);
 
 export class PackedElement {
+  /**@type HTMLElement */
   #element;
 
-  /**@param {string | HTMLElement} name */
-  constructor(name) {
-    if(typeof name === "string") {
-      this.#element = document.createElement(name);
+  /**@param {string | HTMLElement | PackedElement} element */
+  constructor(element) {
+    if(typeof element === "string") {
+      this.#element = document.createElement(element);
     } else {
-      this.#element = name;
+      this.#element = (element instanceof PackedElement) ? element.#element : element;
     }
   }
 
@@ -42,26 +43,12 @@ export class PackedElement {
     return this;
   }
 
-  /**@param {(string | HTMLElement | PackedElement)[]} nodes */
-  append(...nodes) {
-    this.#element.append(...nodes.map(node => {
-      if(node instanceof PackedElement) 
-        return node.#element;
-      return node;
-    }));
-    return this;
-  }
-
   /**
    * @param {keyof CSSStyleDeclaration} name 
-   * @param {string?} value 
+   * @param {string | null} value 
    */
   setStyle(name, value) {
-    if(!value) {
-      this.#element.style = name;
-    } else {
-      this.#element.style[name] = value;
-    }
+    this.#element.style[name] = value;
     return this;
   }
 
@@ -98,13 +85,23 @@ export class PackedElement {
    * @param {keyof HTMLElementTagNameMap} selector 
    */
   select(selector) {
-    const results = Array
-      .from(this.#element.querySelectorAll(selector))
+    const result = this.#element.querySelector(selector);
+    return result ? new PackedElement(result) : null;
+  }
+
+  /**
+   * @param {keyof HTMLElementTagNameMap} selector 
+   */
+  selectAll(selector) {
+    return [...this.#element.querySelectorAll(selector)]
       .map(element => new PackedElement(element));
-    
-    if(results.length === 0) return null;
-    if(results.length === 1) return results[0];
-    return results;
+  }
+
+  /**@param {(string | HTMLElement | PackedElement)[]} nodes */
+  append(...nodes) {
+    this.#element.append(...nodes.map(node =>
+      node instanceof PackedElement ? node.#element : node));
+    return this;
   }
 
   /**
@@ -112,11 +109,20 @@ export class PackedElement {
    */
   appendTo(node) {
     node.append(this.#element);
+    return this;
+  }
+
+  get() {
     return this.#element;
   }
 
-  build() {
-    return this.#element;
+  getChildren() {
+    return [...this.#element.children]
+      .map(element => new PackedElement(element));
+  }
+
+  getClass() {
+    return this.#element.classList;
   }
 }
 
@@ -131,27 +137,61 @@ export function create(name, id) {
   return new PackedElement(name);
 }
 
+const stylePromiseSet = [];
+let startLoadingTime;
+
 /**
  * @param {string} url  
  */
 export async function loadStyle(url) {
-  const data = await fetchText(`/fe5/assets/${url}.css`);
-  const css = new CSSStyleSheet();
-  css.replaceSync(data);
+  if(!startLoadingTime) startLoadingTime = Date.now();
 
-  document.adoptedStyleSheets = document.adoptedStyleSheets.concat(css);
+  const {promise, resolve} = Promise.withResolvers();
+  stylePromiseSet.push(promise);
+  
+  try {
+    const data = await fetchText(`/fe5/assets/${url}.css`);
+    const css = new CSSStyleSheet();
+    css.replaceSync(data);
+
+    document.adoptedStyleSheets = [...document.adoptedStyleSheets, css];
+
+    resolve(true);
+  } catch(err) {
+
+    resolve(false);
+    throw err;
+  } 
+}
+
+export async function calStyleStatus() {
+  const status = await Promise.all(stylePromiseSet);
+
+  const result = status.reduce((result, success) => {
+    if(success) result.success++;
+    else result.failure++;
+    return result;
+  }, {
+    success: 0,
+    failure: 0
+  });
+
+  result.total = status.length;
+  result.timeUsed = Date.now() - startLoadingTime;
+  return result;
 }
 
 /**
+ * @async
  * @param {number} ms 
  */
-export async function sleep(ms) {
-  await new Promise(resolve => setTimeout(resolve, ms));
+export function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
  * @param {string} url 
- * @param {RequestInit?} init 
+ * @param {RequestInit | undefined} init
  */
 export async function strictFetch(url, init) {
   const res = await fetch(url, init);
@@ -161,7 +201,7 @@ export async function strictFetch(url, init) {
 
 /**
  * @param {string} url 
- * @param {RequestInit?} init 
+ * @param {RequestInit | undefined} init 
  */
 export async function fetchText(url, init) {
   return (await strictFetch(url, init)).text();
@@ -169,16 +209,16 @@ export async function fetchText(url, init) {
 
 /**
  * @param {string} url 
- * @param {RequestInit?} init 
+ * @param {RequestInit | undefined} init 
  */
 export async function fetchJson(url, init) {
   return (await strictFetch(url, init)).json();
 }
 
 /**
- * @param  {(() => any)[]} callbacks 
- * @returns {any[]}
+ * @async
+ * @param {(() => any)[]} callbacks 
  */
 export function parallel(...callbacks) { 
-  return Promise.all(callbacks.map(async callback => await callback()));
+  return Promise.all(callbacks.map(callback => callback()));
 }

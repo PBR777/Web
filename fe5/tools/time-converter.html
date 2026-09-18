@@ -94,7 +94,7 @@
 </style>
 
 <script type="module" class="to-be-executed">
-  import Time from "/fe5/modules/time-system.js";
+  import { createTime } from "/fe5/modules/time-system.js";
 
   const root = document.getElementById("time-convert");
   const valMap = new Map();
@@ -124,7 +124,7 @@
       s: getVal("s")
     };
 
-    return Time.create(time).toSecond();
+    return createTime(time).toSecond();
   }
 
   function getEarthSec() {
@@ -160,14 +160,14 @@
       setEarthTime(time);
     
     } else {
-      const time = Time.secToTime(getEarthSec());
+      const time = secToTime(getEarthSec());
       setFe5Time(time);
 
     }
   }
 
   function convertToSpecifiedUnit(unit, sec) {
-    const time = Time.create(sec);
+    const time = createTime(sec);
 
     switch(unit) {
       case "Y": return time.toY(sec);
@@ -218,7 +218,7 @@
   root.querySelector("#time-simplify").addEventListener("click", () => {
     const sec = getEarthSec();
     setEarthTime(secToTime(sec));
-    setFe5Time(Time.create(sec));
+    setFe5Time(createTime(sec));
   });
 
 </script>

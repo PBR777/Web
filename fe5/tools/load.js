@@ -11,15 +11,15 @@ async function getToolObject(toolName) {
   
   const toolDiv = create("info-box")
     .addClass("tool-div")
-    .build();
+    .get();
 
   const heading = create("ah-")
     .addClass("h2")
-    .build();
+    .get();
 
   const div = create("div")
     .append(heading, toolDiv)
-    .build();
+    .get();
 
   try {
   
@@ -45,7 +45,7 @@ async function getToolObject(toolName) {
         
         const newScript = create("script")
           .setHTML(script.innerText)
-          .build();
+          .get();
 
         newScript.type = script.type;
         script.remove();
