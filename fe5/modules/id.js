@@ -50,7 +50,7 @@ export function parse(rawId) {
 }
 
 /**
- * @param {string | object} id
+ * @param {string | idObj} id
 */
 export function idToBinary(id) {
   let idObj;

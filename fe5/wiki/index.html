@@ -45,10 +45,20 @@
   </style>
 
   <script type="module">
+    import { create } from "/fe5/modules/index.js"
     import { loadMap } from "/fe5/modules/map.js";
+    import { treeMap } from "/fe5/modules/solar.js"
 
     (await loadMap("fe5-winkel_tripel-lined"))
       .appendTo(document.querySelector("#locations"));
+
+    const linkDiv = document.getElementById("solar-links");
+    const links = treeMap.map((v, k) => create("a")
+      .setText(v.name)
+      .setAttribute("href", `/fe5/wiki/solar/${k}/`)
+      .build());
+
+    linkDiv.append(...links);
 
   </script>
 </head>
@@ -61,13 +71,8 @@
     <text-box>
       <ah->恒星系统</ah->
 
-      <div class="link-div">
+      <div class="link-div" id="solar-links">
         <a href="solar/sofar-system/">远征系</a>
-        <a href="solar/main-star/">主星</a>
-        <a href="solar/next-star/">序星</a>
-        <a href="solar/pbr_7/">PBR-7</a>
-        <a href="solar/fe5/">Fe5</a>
-        <a href="solar/electron/">电子星</a>
       </div>
     </text-box>
     <text-box id="locations">

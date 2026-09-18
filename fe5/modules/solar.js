@@ -126,7 +126,7 @@ const tree = [
 ]
 
 /**@type Map<string, {children: string[];} & solarTreeFormat> */
-const treeMap = new Map();
+export const treeMap = new Map();
 
 function buildMap() {
   for(const data of tree) {
