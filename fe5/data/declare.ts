@@ -44,3 +44,11 @@ type solarTreeFormat = {
     temperature: number; // In K
   }
 };
+
+type zoneCode = "E" | "O" | "P" | "M";
+
+type idObj = {
+  zoneCode: zoneCode;
+
+  id: number;
+}
