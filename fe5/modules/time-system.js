@@ -1,7 +1,7 @@
 import { fetchJson } from "./index.js";
 import { period } from "./solar.js";
 
-/**@typedef {Time | {Y?: number; D?: number; H?: number; Hp?: number; s?: number;}} time */
+/**@typedef {Time | timestamp} time */
 /**@typedef {number | time} t */
 
 const toFull = time => ({

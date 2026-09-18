@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta name="no-sidebar">
+
+  <link rel="stylesheet" href="/fe5/root.css">
+
+  <script type="module" src="/fe5/root.js"></script>
+
+  <script type="module">
+    import { buildTimeline } from "./index.js";
+
+    (await buildTimeline("l-25"))
+      .appendTo(document.body)
+
+  </script>
+
+  <style>
+    .log-div {
+      display: flex;
+
+      height: 100px;
+    }
+
+    .log-timeline {
+
+      width: 20%;
+      height: 100%;
+      
+      border: 2px solid white;
+      box-shadow: 0 0 4px white;
+    }
+  </style>
+</head>
+
+<body>
+  <svg style="width: 100%;">
+    <line x1="0" y1="0" x2="30" y2="30" stroke="white"></line>
+  </svg>
+</body>
+
+</html>
