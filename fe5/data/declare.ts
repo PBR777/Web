@@ -74,6 +74,8 @@ type logsFormat = {
   /**时间 */
   t: fullTimestamp | number,
 
+  title?: string;
+
   /**编写者 */
   writer?: string,
 

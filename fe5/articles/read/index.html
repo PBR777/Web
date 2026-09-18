@@ -76,6 +76,7 @@
 
   <script type="module">
     import { create, fetchText } from "/fe5/modules/index.js"
+    import { parseHTML } from "/fe5/modules/id.js";
 
     const ARTICLE_ROOT = "/fe5/data/article/";
     const TRUSTED_AUTHORS = new Set()
@@ -92,20 +93,6 @@
 
     const textbox = document.querySelector("text-box");
 
-    function replaceId(text) {
-      return text.split("$").map(line => {
-        const index = line.match(/[^\dEOPM]/)?.index;
-
-        if(index !== 0) {
-          const id = line.slice(0, index);
-          const remainingLine = index ? line.slice(index) : "";
-          return `<id->${id}</id->${remainingLine}`;
-        }
-
-        return line;
-      }).join("")
-    }
-
     try {
       const articleName = new URLSearchParams(location.search).get("name");
       if (!articleName || articleName === "") throw new Error("Missing 'name'");
@@ -116,7 +103,7 @@
       const rawText = await fetchText(`${ARTICLE_ROOT}${articleId}.txt`);
 
       /**@type string[] */
-      const lines = replaceId(rawText).replaceAll("\r", "").replaceAll("  ", "　").split("\n");
+      const lines = parseHTML(rawText).replaceAll("\r", "").replaceAll("  ", "　").split("\n");
 
       let pos = 0;
       const next = () => {

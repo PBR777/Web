@@ -5,6 +5,12 @@ const tooltip = create("div", "tooltip");
 let isTooltipShowing = false;
 let frameId = null;
 
+const observer = new IntersectionObserver(entries => {
+  for(const entry of entries) {
+    entry.target.toggle(entry.isIntersecting);
+  }
+});
+
 class Tooltip extends HTMLElement {
   static observedAttributes = ["text"];
 
@@ -38,7 +44,7 @@ class Tooltip extends HTMLElement {
     frameId = requestAnimationFrame(() => {
       tooltip
         .setStyle("left", ev.clientX + "px")
-        .setStyle("top", ev.clientY + "px")
+        .setStyle("top", ev.clientY + "px");
 
       frameId = null;
     });
@@ -52,16 +58,25 @@ class Tooltip extends HTMLElement {
     this.#text = newValue;
   }
 
+  toggle(enable) {
+    if(enable) {
+      this.addEventListener("pointerenter", this.showTooltip);
+      this.addEventListener("pointerleave", this.hideTooltip);
+      this.addEventListener("pointermove", this.updateTooltip);
+    } else {
+      this.removeEventListener("pointerenter", this.showTooltip);
+      this.removeEventListener("pointerleave", this.hideTooltip);
+      this.removeEventListener("pointermove", this.updateTooltip);
+    }
+  }
+
   connectedCallback() {
-    this.addEventListener("pointerenter", this.showTooltip);
-    this.addEventListener("pointerleave", this.hideTooltip);
-    this.addEventListener("pointermove", this.updateTooltip);
+    observer.observe(this);
   }
 
   disconnectedCallback() {
-    this.removeEventListener("pointerenter", this.showTooltip);
-    this.removeEventListener("pointerleave", this.hideTooltip);
-    this.removeEventListener("pointermove", this.updateTooltip);
+    observer.unobserve(this);
+    this.toggle(false);
   }
 }
 

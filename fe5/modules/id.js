@@ -79,8 +79,29 @@ export function binaryToId(bin) {
   return ZONE_CODE_BIN[zoneCodeBin] + parseInt(idBin, 2).toString();
 }
 
+/**
+ * Parse all id string with "$" prefix into <id-></id->.
+ * @param {string} html 
+ */
+export function parseHTML(html) {
+  const texts = html.split("$");
+  const first = texts.shift();
+
+  return first + texts.map(line => {
+    const index = line.match(/[^\dEOPM]/)?.index;
+
+    const id = line.slice(0, index);
+    const remainingLine = index ? line.slice(index) : "";
+    if(id.length > 0)
+      return `<id->${id}</id->${remainingLine}`;
+
+    return "$" + line;
+  }).join("");
+}
+
 export default {
   parse,
+  parseHTML,
   idToBinary,
   binaryToId
 };

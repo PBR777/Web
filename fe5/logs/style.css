@@ -2,13 +2,17 @@
   display: flex;
 
   justify-content: center;
+  position: relative;
 }
 
 .log-timeline {
-  translate: 5px 0;
-
+  translate: -50% 0;
   width: 10px;
   height: 100%;
+
+  overflow: visible;
+
+  position: absolute;
 }
 
 .log-div {
@@ -23,14 +27,16 @@
 
 .log-block {
   display: flex;
-  align-items: center;
+  flex-direction: column;
 
   position: relative;
 
-  min-height: 50px;
+  height: 50px;
 
   margin: 15px 0;
   padding-left: 15px;
+
+  transition: height 250ms;
 }
 
 .log-timestamp-spot {
@@ -76,4 +82,41 @@
   padding-right: 15px;
 
   width: 115px;
+}
+
+.log-title {
+  color: #675dff;
+
+  font-size: 2.5ch;
+  
+  margin: 0;
+
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.log-heading {
+  color: gray;
+
+  font-size: 80%;
+}
+
+.log-heading::before {
+  content: "--";
+}
+
+.log-content {
+  width: 100%;
+  height: 100%;
+
+  border: 2px solid #57575723;
+  border-radius: 10px;
+  background-color: #30303017;
+
+  opacity: 0;
+
+  padding: 10px;
+
+  transition: opacity 250ms;
 }
