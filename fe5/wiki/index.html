@@ -54,6 +54,7 @@
 
     const linkDiv = document.getElementById("solar-links");
     const links = treeMap.map((v, k) => create("a")
+      .setText(v.name)
       .setAttribute("href", `/fe5/wiki/solar/${k}/`)
       .build());
 
