@@ -80,3 +80,10 @@ type logsFormat = {
   /**内容，可以为HTML。*/
   content: string | string[]
 }[];
+type zoneCode = "E" | "O" | "P" | "M";
+
+type idObj = {
+  zoneCode: zoneCode;
+
+  id: number;
+}
