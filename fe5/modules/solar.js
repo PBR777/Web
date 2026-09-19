@@ -1,6 +1,7 @@
-const tree = [
+const CENTROID = "_centroid"
+const TREE = [
   {
-    id: "_centroid",
+    id: CENTROID,
     name: "远征系重心",
   },
   {
@@ -34,7 +35,7 @@ const tree = [
     rotationPeriod: 0
   },
   {
-    id: "pbr-7.1",
+    id: "pbr-7-1",
     name: "PBR-7.1",
     parent: "pbr-7",
 
@@ -44,7 +45,7 @@ const tree = [
     rotationPeriod: 19314.9819
   },
   {
-    id: "pbr-7.2",
+    id: "pbr-7-2",
     name: "PBR-7.2",
     parent: "pbr-7",
 
@@ -54,7 +55,7 @@ const tree = [
     rotationPeriod: 30819.3789
   },
   {
-    id: "pbr-7.3",
+    id: "pbr-7-3",
     name: "PBR-7.3",
     parent: "pbr-7",
 
@@ -74,7 +75,7 @@ const tree = [
     rotationPeriod: 0
   },
   {
-    id: "luna-1", // To be fixed
+    id: "lunar-1", // To be fixed
     name: "耀月",
     parent: "fe5",
 
@@ -84,7 +85,7 @@ const tree = [
     rotationPeriod: 148332.4961
   },
   {
-    id: "luna-2", // To be fixed
+    id: "lunar-2", // To be fixed
     name: "潜月",
     parent: "fe5",
 
@@ -96,7 +97,7 @@ const tree = [
   {
     id: "electron",
     name: "系外电子",
-    parent: "_centroid",
+    parent: CENTROID,
 
     mass: 6.451e24,
     near: 3.1762e12,
@@ -104,7 +105,7 @@ const tree = [
     rotationPeriod: 2217917.7512
   },
   {
-    id: "electron.1",
+    id: "electron-1",
     name: "电子-α",
     parent: "electron",
 
@@ -114,7 +115,7 @@ const tree = [
     rotationPeriod: 1132289.1326
   },
   {
-    id: "electron.2",
+    id: "electron-2",
     name: "电子-β",
     parent: "electron",
 
@@ -129,7 +130,7 @@ const tree = [
 export const treeMap = new Map();
 
 function buildMap() {
-  for(const data of tree) {
+  for(const data of TREE) {
     const obj = {...data, children: []};
     delete obj.id;
 
@@ -142,7 +143,8 @@ function buildMap() {
     treeMap.get(data.parent).children.push(id);
   }
 
-  const centroid = treeMap.get("_centroid");
+
+  const centroid = treeMap.get(CENTROID);
 
   centroid.mass = getObject("sun-1").mass + getObject("sun-2").mass;
 }
@@ -151,7 +153,9 @@ function buildMap() {
  * @param {string} id 
  */
 export function getObject(id) {
-  return treeMap.get(id);
+  const result = treeMap.get(id);
+  if(!result) throw new Error(`Sky Object:${id} not found.`);
+  return result;
 }
 
 buildMap();
@@ -183,4 +187,15 @@ export function calOrbitalPeriod(id) {
   const parent = getObject(getParentId(id));
   const self = getObject(id);
   return period(self.near, self.far, parent.mass + self.mass);
+}
+
+/**
+ * Iterate all sky objects except centroid.
+ * @param {Parameters<treeMap["forEach"]>[0]} cb 
+ */
+export function forEachOfTree(cb) {
+  for(const [k, v] of treeMap) {
+    if(k === CENTROID) continue;
+    cb(v, k, treeMap);
+  }
 }

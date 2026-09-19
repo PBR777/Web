@@ -45,10 +45,16 @@ export class PackedElement {
 
   /**
    * @param {keyof CSSStyleDeclaration} name 
-   * @param {string | null} value 
+   * @param {string | undefined} value 
    */
   setStyle(name, value) {
     this.#element.style[name] = value;
+    return this;
+  }
+
+  /**@param {string} style */
+  overrideStyle(style) {
+    this.#element.style.cssText = style;
     return this;
   }
 
@@ -64,7 +70,7 @@ export class PackedElement {
   /**
    * @param {keyof HTMLElementEventMap} type 
    * @param {(this: HTMLElement, ev: HTMLElementEventMap[keyof HTMLElementEventMap]) => any} listener 
-   * @param {boolean | AddEventListenerOptions?} options 
+   * @param {boolean | AddEventListenerOptions  | undefined} options 
    */
   addListener(type, listener, options) {
     this.#element.addEventListener(type, listener, options);
@@ -74,7 +80,7 @@ export class PackedElement {
   /**
    * @param {keyof HTMLElementEventMap} type 
    * @param {(this: HTMLElement, ev: HTMLElementEventMap[keyof HTMLElementEventMap]) => any} listener 
-   * @param {boolean | AddEventListenerOptions?} options 
+   * @param {boolean | EventListenerOptions | undefined} options 
    */
   removeListener(type, listener, options) {
     this.#element.removeEventListener(type, listener, options);
@@ -123,6 +129,14 @@ export class PackedElement {
 
   getClass() {
     return this.#element.classList;
+  }
+
+  /**
+   * 
+   * @param {string} name 
+   */
+  hasClass(name) {
+    return this.#element.classList.contains(name);
   }
 }
 
@@ -216,9 +230,50 @@ export async function fetchJson(url, init) {
 }
 
 /**
- * @async
- * @param {(() => any)[]} callbacks 
+ * @param {string} url 
  */
-export function parallel(...callbacks) { 
-  return Promise.all(callbacks.map(callback => callback()));
+export async function loadImage(url) {
+  const img = create("img");
+  const controller = new AbortController();
+
+  try {
+   await new Promise((resolve, reject) => {
+      img.addListener("load", resolve, { once: true, signal: controller.signal });
+      img.addListener("error", reject, { once: true, signal: controller.signal });
+
+      img.setAttribute("src", url);
+    });
+
+    return {
+      image: img,
+      success: true
+    };
+  } catch(ev) {
+    console.error(ev.error);
+
+    const alt = create("div")
+      .addClass("load-failed")
+      .setText("图片加载失败 :(")
+      .overrideStyle(`
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        text-align: center;
+        font-size: 130%;
+        font-family: 'Courier New';
+
+        user-select: none;`);
+
+      return {
+        image: alt,
+        success: false
+      }
+  } finally {
+    controller.abort();
+  }
 }

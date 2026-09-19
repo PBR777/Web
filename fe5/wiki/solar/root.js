@@ -1,20 +1,18 @@
+import { dirName, loadImage } from "/fe5/modules/index.js";
 import { headingDiv } from "/fe5/root.js";
-import { create, dirName, fetchJson } from "/fe5/modules/index.js";
 import { createCard } from "/fe5/modules/infocard.js";
 import { getObject, calOrbitalPeriod } from "/fe5/modules/solar.js";
-import "/fe5/modules/solar.js";
+import { setTitle } from "/fe5/modules/sidebar.js";
 
-const img = create("img")
-  .setAttribute("src", `/fe5/assets/solar/${dirName}-800x800.webp`)
-  .get();
+const img = await loadImage(`/fe5/assets/solar/${dirName}-800x800.webp`);
 
-const div = createCard(img, "天体数据");
-
-headingDiv.append(div.get());
+const div = (await createCard(img.image.get(), "天体数据"))
+  .appendTo(headingDiv);
 
 try {
-  /**@type solarDataFormat */
   const data = getObject(dirName);
+
+  setTitle(data.name);
 
   const info = [];
 
@@ -34,15 +32,27 @@ try {
     info.push("自转周期：" + getData(data.rotationPeriod, "s"));
     info.push("公转周期：" + getData(orbitalPeriod, "s"));
   }
+
+  info.push("");
+
+  const createLink = id => {
+    return `<a class="inline" href="/fe5/wiki/solar/${id}/">${getObject(id).name}</a>`
+  }
+
+  info.push("父级天体：" + (data.parent ? createLink(data.parent) : "无"));
+
+  const childLinks = data.children.length === 0 
+    ? "无"
+    : data.children
+      .map(id => createLink(id))
+      .join(", ");
   
-
-
+  info.push("子天体：" + childLinks);
+  
   div.setInfo(info.join("\n"));
 
 } catch(err) {
   console.error(err);
-  
-}
 
-console.log();
- 
+  div.setInfo("加载失败 :( <br>" + err);
+}

@@ -1,6 +1,7 @@
 import { loadStyle, create } from "./index.js"
 
 const DURATION = 300;
+const HAS_SIDEBAR = !document.head.querySelector("meta[name='no-sidebar']");
 
 let isSpaceEnough = false;
 let isSidebarShowing = false;
@@ -51,31 +52,30 @@ const updateTree = (() => {
     const allHeading = [...document.querySelectorAll(AnchorHeading.ELEMENT_ID)];
     
     const allAnchor = allHeading.map(element => {
-
       const anchor = element.anchor;
 
       anchor.classList.remove("sidebar-anchor-end");
       anchor.classList.add("sidebar-anchor-mid");
 
-      return element.anchor;
+      return anchor;
     });
 
-    anchorDiv.append(...allAnchor);
+    const lastElement = allAnchor.at(-1);
 
-    const lastElement = anchorDiv.getChildren().at(-1);;
-
-    if(lastElement && !lastElement.getClass().contains("sidebar-anchor-title")) {
-      lastElement.removeClass("sidebar-anchor-mid");
-      lastElement.addClass("sidebar-anchor-end");
+    if(lastElement) {
+      lastElement.classList.remove("sidebar-anchor-mid");
+      lastElement.classList.add("sidebar-anchor-end");
     }
+
+    anchorDiv.append(...allAnchor);
 
     timeoutId = null;
   }
 
-  return () => {
+  return HAS_SIDEBAR ? () => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(update, 100);
-  }
+  } : () => {};
 })();
 
 class AnchorHeading extends HTMLElement {
@@ -180,24 +180,6 @@ const sidebarControl = (() => {
   }
 })();
 
-function onResize() {
-  if(window.innerWidth > 1500) {
-    if(isSpaceEnough) return;
-    isSpaceEnough = true;
-
-    sidebarControl(true);
-    button.setStyle("visibility", "hidden");
-    overlay.setStyle("visibility", "hidden");
-
-  } else {
-    if(!isSpaceEnough) return;
-    isSpaceEnough = false;
-    
-    button.setStyle("visibility", null);
-    overlay.setStyle("visibility", null);
-  }
-}
-
 /**
  * 
  * @param {string} title 
@@ -206,12 +188,12 @@ export function setTitle(title) {
   document.title = title;
   const titleHeading = document.querySelector("#document-title");
   if(titleHeading) titleHeading.innerText = title;
+  
   updateTree();
 }
 
 loadStyle("sidebar").then(() => {
-  window.addEventListener("resize", onResize);
-  onResize();
-
-  document.body.append(button.get(), div.get(), overlay.get());
+  if(HAS_SIDEBAR) {
+    document.body.append(button.get(), div.get(), overlay.get());
+  }
 });

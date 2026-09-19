@@ -1,4 +1,3 @@
-import { parseHTML } from "/fe5/modules/id.js";
 import { create, fetchJson, PackedElement } from "/fe5/modules/index.js";
 import Time from "/fe5/modules/time-system.js";
 import "/fe5/modules/tooltip.js"
@@ -21,11 +20,14 @@ export class Timeline extends PackedElement {
       .addClass("log-div")
       .appendTo(this);
 
-    logsDiv.setHTML(`<svg class="log-timeline">
+    logsDiv.setHTML(
+    `<svg class="log-timeline">
       <defs>
-        <linearGradient id="g1">
+        <linearGradient id="g1" 
+          x1="0%" y1="0" 
+          x2="0%" y2="100%">
           <stop offset="0%" stop-color="#ffffff" />
-          <stop offset="100%" stop-color="#ffffff00" />
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
         </linearGradient>
       </defs>
       <line
@@ -33,10 +35,9 @@ export class Timeline extends PackedElement {
         stroke="white" 
         stroke-width="4"/>
       <line
-        x1="50%" y1="calc(100% - 60px)" x2="50%" y2="calc(100%)"
+        x1="50.001%" y1="calc(100% - 60px)" x2="50%" y2="100%"
         stroke="url(#g1)" 
-        stroke-width="4"
-        stroke-linecap="round"/>
+        stroke-width="4"/>
     </svg>`);
 
     function clickHandler(ev) {
@@ -60,7 +61,7 @@ export class Timeline extends PackedElement {
 
             const data = logsData[i];
             
-            const html = `<span class="log-heading">记录者：${parseHTML(data.writer ?? "$777")}</span><br>`
+            const html = `<span class="log-heading">记录者：${data.writer ?? "<id->777</id->"}</span><br>`
               + (typeof data.content === "string" 
               ? data.content 
               : data.content.join("<br>"));

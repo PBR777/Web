@@ -1,5 +1,5 @@
 import { headingDiv } from "/fe5/root.js";
-import { create, dirName, fetchJson } from "/fe5/modules/index.js";
+import { create, dirName, fetchJson, loadImage } from "/fe5/modules/index.js";
 import { createCard } from "/fe5/modules/infocard.js";
 
 const ALT_TEXT = {
@@ -25,27 +25,28 @@ const ALT_TEXT = {
   ]
 };
 
+const textList = ALT_TEXT[dirName[0]];
+const seed = Number(dirName.slice(1));
+
 const writer = document.head
   .querySelector("meta[name='writer']")
   ?.content
 
-const img = create("img")
-  .setAttribute("src", `/fe5/assets/bio/${dirName}/profile.png`)
-  .get();
+const img = await loadImage(`/fe5/assets/bio/${dirName}/profile.png`);
+if(!img.success) {
+  img.image.setHTML(
+    textList[Math.abs((seed * 258015 | 0) - 152) % textList.length]
+    + "<br>图片不存在"
+  );
+}
 
 const subheading = create("h1", "profile-subheading")
   .setHTML(writer && writer !== dirName ? `由<id->${writer}</id->撰写` : "自我撰写")
   .get();
 
-const div = createCard(img, "基础信息");
+const div = await createCard(img.image.get(), "基础信息");
 
-const textList = ALT_TEXT[dirName[0]];
-const seed = Number(dirName.slice(1));
 
-const alt = textList[Math.abs((seed * 258015 | 0) - 152) % textList.length]
-  + "\n图片不存在"
-
-div.setImgAlt(alt)
 
 headingDiv.append(subheading, div.get());
 

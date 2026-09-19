@@ -47,19 +47,22 @@
   <script type="module">
     import { create } from "/fe5/modules/index.js"
     import { loadMap } from "/fe5/modules/map.js";
-    import { treeMap } from "/fe5/modules/solar.js"
+    import { treeMap, forEachOfTree } from "/fe5/modules/solar.js"
 
     (await loadMap("fe5-winkel_tripel-lined"))
       .appendTo(document.querySelector("#locations"));
 
     const linkDiv = document.getElementById("solar-links");
+    const fragment = document.createDocumentFragment();
 
-    const links = [...treeMap].map(([k, v]) => create("a")
-      .setText(v.name)
-      .setAttribute("href", `/fe5/wiki/solar/${k}/`)
-      .get())
+    forEachOfTree((v, k) => {
+      create("a")
+        .setText(v.name)
+        .setAttribute("href", `/fe5/wiki/solar/${k}/`)
+        .appendTo(fragment)
+    });
 
-    linkDiv.append(...links);
+    linkDiv.append(fragment);
 
   </script>
 </head>

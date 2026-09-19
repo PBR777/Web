@@ -1,18 +1,16 @@
 import { create, loadStyle, PackedElement } from "./index.js";
 
 export class Infocard extends PackedElement {
-  #imgAlt = "图片加载失败 :("
-
   #imgBox;
 
   /**
-   * @param {HTMLDivElement} img 
-   * @param {string?} title 
-   * @param {string?} descriptions 
+   * @param {HTMLElement} img 
+   * @param {string | undefined} title 
+   * @param {string | undefined} descriptions 
    */
   constructor(img, title = "信息", descriptions) {
-    super("div");
-    this.addClass("infocard-div")
+    super("div")
+      .addClass("infocard-div");
 
     img.classList.add("infocard-img");
     
@@ -42,43 +40,31 @@ export class Infocard extends PackedElement {
 
     this.#imgBox = create("info-box")
       .addClass("infocard-img-box")
-      .addListener("error", () => {
-        this.#imgBox.setHTML("");
-
-        create("div")
-          .addClass("infocard-img-err")
-          .setHTML(this.#imgAlt)
-          .appendTo(this.#imgBox);
-
-      }, { once: true, capture: true })
       .append(img)
       .appendTo(profileImgDiv);
-
-  }
-
-  /**
-   * @param {string} text 
-   */
-  setImgAlt(text) {
-    this.#imgAlt = text.replaceAll("\n", "<br>");
   }
 
   /**
    * @param {string} info 
    */
   setInfo(info) {
-    this.select(".infocard-span").setHTML(info.replaceAll("\n", "<br>"));
-  }  
+    this
+      .select(".infocard-span")
+      .setHTML(info.replaceAll("\n", "<br>"));
+  }
 }
+
+const {promise: stylePromise, resolve} = Promise.withResolvers();
 
 /**
  * 
- * @param {HTMLDivElement} img 
+ * @param {HTMLElement} img 
  * @param {string} title 
  * @param {string} descriptions 
  */
-export function createCard(img, title, descriptions) {
+export async function createCard(img, title, descriptions) {
+  await stylePromise;
   return new Infocard(img, title, descriptions);
 }
 
-loadStyle("infocard");
+loadStyle("infocard").then(resolve);

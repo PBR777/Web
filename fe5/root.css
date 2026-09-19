@@ -69,13 +69,17 @@ a:hover {
   background-color: var(--background-glow);
 }
 
-p>a {
+p>a,
+a.inline {
   color: #708aff;
   display: inline;
   width: min-content;
+
+  padding: 0;
 }
 
-p>a:hover {
+p>a:hover,
+a.inline:hover {
   background-color: transparent
 }
 

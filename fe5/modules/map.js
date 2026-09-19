@@ -55,11 +55,11 @@ class Map extends PackedElement {
 
         const spot = create("tool-tip")
           .addClass("map-spot", "map-spot-main", "hidden")
+          .setAttribute("text", name)
           .setStyle("left", xPct)
           .setStyle("top", yPct)
           .appendTo(mapDiv);
-        
-        spot.text = name;
+      
 
         if(href)
           spot.addListener("click", () => location.href = href);
