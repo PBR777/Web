@@ -63,8 +63,8 @@ export class Timeline extends PackedElement {
             
             const html = `<span class="log-heading">记录者：${data.writer ?? "<id->777</id->"}</span><br>`
               + (typeof data.content === "string" 
-              ? data.content 
-              : data.content.join("<br>"));
+              ? ("　　" + data.content)
+              : data.content.map(line => "　　" + line).join("<br>"));
   
             content.innerHTML = html; 
           }
