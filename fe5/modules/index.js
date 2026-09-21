@@ -237,7 +237,7 @@ export async function loadImage(url) {
   const controller = new AbortController();
 
   try {
-   await new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       img.addListener("load", resolve, { once: true, signal: controller.signal });
       img.addListener("error", reject, { once: true, signal: controller.signal });
 

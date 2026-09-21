@@ -102,7 +102,7 @@ loadStyle("background").then(() => {
     urlHash = urlHash + url.charCodeAt(i) * i | 0;
   }
 
-  initCanvas((urlHash * -2156926 | 0) + 137697);
+  // initCanvas((urlHash * -2156926 | 0) + 137697);
 });
 
 export {};

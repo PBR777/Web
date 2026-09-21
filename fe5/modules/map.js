@@ -1,11 +1,11 @@
 import "./tooltip.js"
-import { loadStyle, create, fetchJson, PackedElement } from "./index.js";
+import { loadStyle, create, fetchJson, PackedElement, loadImage } from "./index.js";
 
 class Map extends PackedElement {
   static STATUS = loadStyle("map");
   static MAP_ROOT= "/fe5/data/map/";
 
-  #ok;
+  #ok = false;
 
   constructor(element) {
     super(element);
@@ -27,27 +27,20 @@ class Map extends PackedElement {
     const mapDiv = create("info-box")
       .addClass("map-div");
 
-    const mapImg = create("img")
-      .addClass("map")
-      .appendTo(mapDiv);
-
     const map = new Map(mapDiv);
 
-    let status = true;
     try {
       await Map.STATUS;
 
-      mapImg.setAttribute("src", Map.MAP_ROOT + mapImgName + ".webp");
+      const mapImgPromise = loadImage(`/fe5/assets/maps/${mapImgName}.webp`);
 
-      const mapImgPromise = new Promise((resolve, reject) => mapImg
-        .addListener("load", resolve, {once: true})
-        .addListener("error", reject, {once: true})
-      );
+      const mapDataPromise = fetchJson(`/fe5/data/maps/${mapDataName}.json`);
 
-      const mapDataPromise = fetchJson(Map.MAP_ROOT + mapDataName + ".json");
-
-      /**@type mapDataFormat */
-      const [ mapData ] = await Promise.all([mapDataPromise, mapImgPromise]);
+      const [ mapData, mapImg ] = await Promise.all([mapDataPromise, mapImgPromise]);
+      if(!mapImg.success) throw new Error("Map image load failed.");
+      mapImg.image
+        .addClass("map-img")
+        .appendTo(mapDiv)
 
       const createSpot = (x, y, name, href) => {
         const xPct = `${x * 50 + 50}%`;
@@ -60,7 +53,6 @@ class Map extends PackedElement {
           .setStyle("top", yPct)
           .appendTo(mapDiv);
       
-
         if(href)
           spot.addListener("click", () => location.href = href);
 
@@ -71,6 +63,7 @@ class Map extends PackedElement {
           .appendTo(mapDiv);
       };
 
+      
       for(const data of mapData) {
         if(Array.isArray(data.pos[0])) {
           data.pos.forEach(spot =>
@@ -80,18 +73,14 @@ class Map extends PackedElement {
         }
       }
 
-
+      map.#ok = true;
     } catch(err) {
       console.error(err);
-
-      mapImg.remove();
       
       create("span")
         .addClass("map-fail")
         .setText("看上去地图加载失败了 :(")
         .appendTo(mapDiv);
-
-      status = false;
     }
 
     return map;
