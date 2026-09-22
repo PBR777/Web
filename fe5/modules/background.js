@@ -22,15 +22,9 @@ const starImg = new Image();
 
 // Listen reize event
 let starSizeFactor = 0;
-const observer = new ResizeObserver(
-    (function resizeListener() {
-      canvas.width  = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
+let resized = true;
 
-      starSizeFactor = Math.min(canvas.width, canvas.height);
-
-      return resizeListener;
-    })());
+const observer = new ResizeObserver(() => resized = true);
 
 observer.observe(canvas);
 
@@ -71,6 +65,14 @@ async function initCanvas(initialSeed = seed, starCount = 256) {
   pngCtx.drawImage(starImg, 0, 0, starSize, starSize);
 
   const tick = t => {
+    if(resized) {
+      resized = false;
+      canvas.width  = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+
+      starSizeFactor = Math.min(canvas.width, canvas.height);
+    }
+
     const scrollOffset = window.scrollY / canvas.height * 10;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -98,11 +100,11 @@ loadStyle("background").then(() => {
 
   const url = window.location.href;
   let urlHash = 0;
-  for(let i = url.length; i >= 0; i--) {
+  for(let i = url.length - 1; i >= 0; i--) {
     urlHash = urlHash + url.charCodeAt(i) * i | 0;
   }
 
-  // initCanvas((urlHash * -2156926 | 0) + 137697);
+  initCanvas((urlHash * -2156926 | 0) + 137697);
 });
 
 export {};
