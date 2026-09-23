@@ -1,4 +1,5 @@
 import { loadImage, fetchJson, dirName, create } from "/fe5/modules/index.js";
+import { setTitle } from "/fe5/modules/sidebar.js";
 import "/fe5/root.js";
 
 /**
@@ -40,6 +41,8 @@ function parseJson(json) {
 
   return fragment;
 }
+
+setTitle("Gallery\n" + dirName)
 
 const json = await fetchJson(`/fe5/data/gallery/${dirName}.json`);
 parseJson(json).appendTo(document.body);

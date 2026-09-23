@@ -2,7 +2,7 @@ import { create, dirName, calStyleStatus } from "/fe5/modules/index.js";
 import "/fe5/modules/background.js";
 import "/fe5/modules/id.js";
 import "/fe5/modules/text-obfucation.js";
-import {} from "/fe5/modules/sidebar.js"
+import { setTitle } from "/fe5/modules/sidebar.js"
 
 function loadEaseBox() {
   const observeTarget = document.querySelectorAll(".observed-element");
@@ -36,9 +36,10 @@ if(!document.querySelector("meta[name='no-title']")) {
 
   if(document.title === "") {
     heading.setText(dirName);
-    document.title = dirName;
+    setTitle(dirName);
   } else {
     heading.setText(document.title);
+    setTitle(document.title);
   }
 }
 
