@@ -29,12 +29,13 @@ class Tooltip extends HTMLElement {
     isTooltipShowing = false;
   }
 
-  showTooltip() {
+  showTooltip(ev) {
     tooltip
       .setHTML(this.text)
       .addClass("show");
 
     isTooltipShowing = true;
+    this.updateTooltip(ev);
   }
 
   updateTooltip(ev) {
