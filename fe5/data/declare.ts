@@ -91,3 +91,9 @@ type idObj = {
 
   id: number;
 }
+
+type galleryFormat = {
+  name: string;
+  url?: string;
+  description?: string;
+}[];

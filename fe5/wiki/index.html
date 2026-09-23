@@ -49,7 +49,7 @@
     import { loadMap } from "/fe5/modules/map.js";
     import { treeMap, forEachOfTree } from "/fe5/modules/solar.js"
 
-    (await loadMap("fe5-winkel_tripel-lined"))
+    loadMap("fe5-winkel_tripel-lined")
       .appendTo(document.querySelector("#locations"));
 
     const linkDiv = document.getElementById("solar-links");

@@ -231,49 +231,48 @@ export async function fetchJson(url, init) {
 
 /**
  * @param {string} url 
+ * @param {boolean} isLazy 
  */
-export async function loadImage(url) {
-  const img = create("img");
+export function loadImage(url, isLazy = false) {
+
+  const div = create("div");
   const controller = new AbortController();
 
-  try {
-    await new Promise((resolve, reject) => {
-      img.addListener("load", resolve, { once: true, signal: controller.signal });
-      img.addListener("error", reject, { once: true, signal: controller.signal });
+  const promise = new Promise((resolve, reject) => {
 
-      img.setAttribute("src", url);
-    });
+    const defaultSetting = { once: true, signal: controller.signal };
 
-    return {
-      image: img,
-      success: true
-    };
-  } catch(ev) {
-    console.error(ev.error);
+    const img = create("img")
+      .addListener("load", resolve, defaultSetting)
+      .addListener("error", ev => {
+        
+        div.setText("图片加载失败 :(")
+          .addClass("img-load-failed")
+          .overrideStyle(`
+            width: 100%;
+            height: 100%;
 
-    const alt = create("div")
-      .addClass("load-failed")
-      .setText("图片加载失败 :(")
-      .overrideStyle(`
-        width: 100%;
-        height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+            text-align: center;
+            font-size: 130%;
+            font-family: 'Courier New';
 
-        text-align: center;
-        font-size: 130%;
-        font-family: 'Courier New';
+            user-select: none;`);
+        
+        reject(ev);
 
-        user-select: none;`);
+      }, defaultSetting)
+      .setAttribute("loading", isLazy ? "lazy" : "eager")
+      .setAttribute("src", url)
+      .appendTo(div);
+  }).finally(() => controller.abort());
 
-      return {
-        image: alt,
-        success: false
-      }
-  } finally {
-    controller.abort();
+  return {
+    image: div,
+    promise: promise
   }
 }

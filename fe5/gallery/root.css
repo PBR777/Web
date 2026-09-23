@@ -1,0 +1,14 @@
+.gallery-box {
+  width: 80%;
+  max-width: 500px;
+}
+
+.gallery-img {
+  width: 100%;
+
+  cursor: pointer;
+}
+
+.gallery-description {
+  text-align: center;
+}

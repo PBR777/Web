@@ -11,15 +11,15 @@
   }
 }
 
-.map-img {
+.map-img>img {
   width: 100%;
-  position: relative;
-
   display: block;
 }
 
 .map-div {
   width: 100%;
+
+  position: relative;
 }
 
 .map-spot {
@@ -50,6 +50,10 @@
 
   transform: scale(1.5);
   box-shadow: 0 0 8px;
+}
+
+.map-spot-main.map-spot-nohref:hover {
+  cursor: unset;
 }
 
 .map-spot-main:active {
