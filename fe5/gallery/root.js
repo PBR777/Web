@@ -17,7 +17,7 @@ function parseJson(json) {
     const box = create("info-box")
       .addClass("gallery-box")
       .appendTo(fragment);
-    const imgUrl = data.url ?? `/fe5/assets/gallery/${dirName}/${data.name}.webp`;
+    const imgUrl = data.url ?? `/fe5/assets/gallery/${dirName}/${data.name}`;
 
     const img = loadImage(imgUrl, true);
     img.image
