@@ -80,8 +80,8 @@ const TREE = [
     parent: "fe5",
 
     mass: 5.104e22,
-    near: 341277.810,
-    far: 348574.107,
+    near: 341277810,
+     far: 348574107,
     rotationPeriod: 148332.4961
   },
   {
@@ -90,8 +90,8 @@ const TREE = [
     parent: "fe5",
 
     mass: 3.0339e23,
-    near: 656599.042,
-    far: 689143.759,
+    near: 656599042,
+     far: 689143759,
     rotationPeriod: 206129.3621
   },
   {
@@ -101,7 +101,7 @@ const TREE = [
 
     mass: 6.451e24,
     near: 3.1762e12,
-    far: 3.8631e12,
+     far: 3.8631e12,
     rotationPeriod: 2217917.7512
   },
   {
@@ -110,8 +110,8 @@ const TREE = [
     parent: "electron",
 
     mass: 3.0356e22,
-    near: 551614.9360,
-    far: 597949.3767,
+    near: 551614936.0,
+     far: 597949376.7,
     rotationPeriod: 1132289.1326
   },
   {
@@ -120,21 +120,114 @@ const TREE = [
     parent: "electron",
 
     mass: 9.6855e21,
-    near: 1097025.8645,
-    far: 1126651.9058,
+    near: 1097025864.5,
+     far: 1126651905.8,
     rotationPeriod: 2160140.0737
   }
-]
+];
 
-/**@type Map<string, {children: string[];} & solarTreeFormat> */
-export const treeMap = new Map();
+export const G = (6.674184e-11 + 6.674484e-11) / 2;
+
+/**
+ * @param {number} near 
+ * @param {number} far 
+ * @param {number} mass 
+ */
+export const period = (near, far, mass) => 2 * Math.PI * ((near + far) ** 3 / (8 * G * mass)) ** 0.5;
+
+/**@type {Map<string, {children: string[];} & solarTreeFormat>} */
+const treeMap = new Map();
+
+class SkyObject {
+  #rawData;
+
+  /**
+   * @param {string} id 
+   */
+  constructor(id) {
+    const obj = treeMap.get(id);
+    if(!obj) throw new Error(`Sky Object:${id} not found.`)
+    this.#rawData = obj;
+  }
+
+  get children() {
+    return this.#rawData.children
+      .map(id => new SkyObject(id));
+  }
+
+  /**
+   * @returns {SkyObject | null}
+   */
+  get parent() {
+    const id = this.#rawData.parent;
+    if(!id) return null;
+    return new SkyObject(id);
+  }
+
+  get mass() {
+    return this.#rawData.mass;
+  }
+
+  /**近拱点 */
+  get near() {
+    return this.#rawData.near;
+  }
+
+  /**远拱点 */
+  get far() {
+    return this.#rawData.far;
+  }
+
+  /**半长轴 */
+  get long() {
+    return (this.far + this.near) / 2;
+  }
+
+  /**半短轴 */
+  get short() {
+    return Math.sqrt(this.far * this.near);
+  }
+
+  get id() {
+    return this.#rawData.id;
+  }
+
+  get name() {
+    return this.#rawData.name;
+  }
+
+  get rotationPeriod() {
+    if(this.isTidalLocked) return this.orbitalPeriod
+    return this.#rawData.rotationPeriod;
+  }
+
+  get isTidalLocked() {
+    return this.#rawData.rotationPeriod === 0;
+  }
+
+  get orbitalPeriod() {
+    const parent = this.parent;
+    if(!parent) return null;
+    return period(this.near, this.far, parent.mass + this.mass);
+  }
+
+  get orbitalEccentricity() {
+    return (this.far - this.near) / (this.far + this.near);
+  }
+
+  get hillRadius() {
+    return this.near * Math.cbrt(this.mass / (3 * this.parent.mass));
+  }
+}
 
 function buildMap() {
   for(const data of TREE) {
-    const obj = {...data, children: []};
-    delete obj.id;
+    const obj = Object.defineProperty(data, "children", {
+      enumerable: true,
+      value: [],
+    });
 
-    treeMap.set(data.id, obj);
+    treeMap.set(obj.id, obj);
   }
 
   for(const [id, data] of treeMap) {
@@ -146,56 +239,18 @@ function buildMap() {
 
   const centroid = treeMap.get(CENTROID);
 
-  centroid.mass = getObject("sun-1").mass + getObject("sun-2").mass;
-}
-
-/**
- * @param {string} id 
- */
-export function getObject(id) {
-  const result = treeMap.get(id);
-  if(!result) throw new Error(`Sky Object:${id} not found.`);
-  return result;
+  centroid.mass = new SkyObject("sun-1").mass + new SkyObject("sun-2").mass;
 }
 
 buildMap();
 
-export const G = (6.674184e-11 + 6.674484e-11) / 2;
-
-/**
- * @param {number} near 
- * @param {number} far 
- * @param {number} mass 
- */
-export const period = (near, far, mass) => 2 * Math.PI * ((near + far) ** 3 / (8 * G * mass)) ** 0.5;
-
 /**
  * @param {string} id 
  */
-export function getParentId(id) {
-  return treeMap.get(id).parent;
-}
+export const getSkyObject = id => new SkyObject(id);
 
-/**
- * @param {string} id 
- */
-export function getChildrenId(id) {  
-  return treeMap.get(id).children;
-}
-
-export function calOrbitalPeriod(id) {
-  const parent = getObject(getParentId(id));
-  const self = getObject(id);
-  return period(self.near, self.far, parent.mass + self.mass);
-}
-
-/**
- * Iterate all sky objects except centroid.
- * @param {Parameters<treeMap["forEach"]>[0]} cb 
- */
-export function forEachOfTree(cb) {
-  for(const [k, v] of treeMap) {
-    if(k === CENTROID) continue;
-    cb(v, k, treeMap);
-  }
+export default {
+  G,
+  period,
+  getSkyObject
 }

@@ -36,6 +36,7 @@
 .infocard-info-div {
   min-width: 300px;
   width: min-content;
+  min-height: 300px;
 
   flex-grow: 1;
 
@@ -58,11 +59,4 @@
 
 .infocard-title:hover {
   border-color: var(--border-glow);
-}
-
-.infocard-img-err {
-  font-size: 150%;
-  font-family: 'Courier New';
-  text-align: center;
-  user-select: none;
 }

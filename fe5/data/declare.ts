@@ -37,9 +37,9 @@ type solarTreeFormat = {
   /**单位千克（kg） */
   mass: number;
 
-  /**单位米（m），近日点。计算半长轴：long / 2 = (near + far)。*/
+  /**单位米（m），近拱点。*/
   near: number;
-  /**单位米（m），远日点。计算半长轴：long / 2 = (near + far)。*/
+  /**单位米（m），远拱点。*/
   far: number;
 
   /**自转周期，为0时代表该天体已被潮汐锁定。 */

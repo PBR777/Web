@@ -242,7 +242,8 @@ export function loadImage(url, isLazy = false) {
 
     const defaultSetting = { once: true, signal: controller.signal };
 
-    const img = create("img")
+    create("img")
+      .setStyle("width", "100%")
       .addListener("load", resolve, defaultSetting)
       .addListener("error", ev => {
         

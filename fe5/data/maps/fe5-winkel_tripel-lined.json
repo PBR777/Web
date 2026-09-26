@@ -1,7 +1,7 @@
 [
   {
     "name": "发展区",
-    "href": "wiki/locations/devland/deversity/",
+    "href": "/fe5/wiki/locations/devland/deversity/",
     "pos": [
       0,
       0
@@ -9,7 +9,7 @@
   },
   {
     "name": "发展大陆",
-    "href": "wiki/locations/devland/",
+    "href": "/fe5/wiki/locations/devland/",
     "pos": [
       0.07,
       0.03
@@ -17,7 +17,7 @@
   },
   {
     "name": "屏障之峰",
-    "href": "wiki/locations/barrierpeak/",
+    "href": "/fe5/wiki/locations/barrierpeak/",
     "pos": [
       -0.5,
       0.18
@@ -25,7 +25,7 @@
   },
   {
     "name": "屏障之星",
-    "href": "wiki/locations/barrierstar/",
+    "href": "/fe5/wiki/locations/barrierstar/",
     "pos": [
       -0.45,
       -0.35
@@ -33,7 +33,7 @@
   },
   {
     "name": "阀岛",
-    "href": "wiki/locations/valve/",
+    "href": "/fe5/wiki/locations/valve/",
     "pos": [
       -0.39,
       0.68
@@ -41,7 +41,7 @@
   },
   {
     "name": "独立区块",
-    "href": "wiki/locations/standard-chunk/",
+    "href": "/fe5/wiki/locations/standard-chunk/",
     "pos": [
       0.19,
       0.39
@@ -49,7 +49,7 @@
   },
   {
     "name": "北极雨林",
-    "href": "wiki/locations/northern-rainforest/",
+    "href": "/fe5/wiki/locations/northern-rainforest/",
     "pos": [
       -0.1,
       -0.7
@@ -57,7 +57,7 @@
   },
   {
     "name": "自由峰",
-    "href": "wiki/locations/freepeak/",
+    "href": "/fe5/wiki/locations/freepeak/",
     "pos": [
       0.35,
       -0.6
@@ -65,7 +65,7 @@
   },
   {
     "name": "自由平原",
-    "href": "wiki/locations/unlimited-plain/",
+    "href": "/fe5/wiki/locations/unlimited-plain/",
     "pos": [
       0.15,
       -0.6
@@ -73,7 +73,7 @@
   },
   {
     "name": "雨林半岛",
-    "href": "wiki/locations/rainforest-peninsula/",
+    "href": "/fe5/wiki/locations/rainforest-peninsula/",
     "pos": [
       -0.23,
       -0.9
@@ -81,7 +81,7 @@
   },
   {
     "name": "沙漠半岛",
-    "href": "wiki/locations/desert-peninsula/",
+    "href": "/fe5/wiki/locations/desert-peninsula/",
     "pos": [
       -0.32,
       -0.95
@@ -89,7 +89,7 @@
   },
   {
     "name": "炎热荒漠",
-    "href": "wiki/locations/deserren/",
+    "href": "/fe5/wiki/locations/deserren/",
     "pos": [
       [
         0.7,
@@ -103,7 +103,7 @@
   },
   {
     "name": "小沙陆",
-    "href": "wiki/locations/deserty/",
+    "href": "/fe5/wiki/locations/deserty/",
     "pos": [
       0.72,
       -0.15
@@ -111,7 +111,7 @@
   },
   {
     "name": "燃原",
-    "href": "wiki/locations/flameplain/",
+    "href": "/fe5/wiki/locations/flameplain/",
     "pos": [
       [
         0.9,
@@ -125,7 +125,7 @@
   },
   {
     "name": "岩石碎地",
-    "href": "wiki/locations/rockland/",
+    "href": "/fe5/wiki/locations/rockland/",
     "pos": [
       0.53,
       0.4
@@ -133,7 +133,7 @@
   },
   {
     "name": "陨坑平原",
-    "href": "wiki/locations/meteorplain/",
+    "href": "/fe5/wiki/locations/meteorplain/",
     "pos": [
       -0.89,
       -0.28
@@ -141,7 +141,7 @@
   },
   {
     "name": "集成冰区",
-    "href": "wiki/locations/intergrated-iceland/",
+    "href": "/fe5/wiki/locations/intergrated-iceland/",
     "pos": [
       -0.1,
       0.72
@@ -149,7 +149,7 @@
   },
   {
     "name": "南极稀树草原",
-    "href": "wiki/locations/southern-savanna/",
+    "href": "/fe5/wiki/locations/southern-savanna/",
     "pos": [
       0,
       0.98

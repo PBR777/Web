@@ -60,10 +60,10 @@ export const secToTime = (() => {
 export const timeToSec = time => {
   const fullTime = toFull(time);
 
-  const result = fullTime.Y * Time.Y_CONST
-    + fullTime.D * Time.D_CONST
-    + fullTime.H * Time.H_CONST
-    + fullTime.Hp * Time.HP_CONST
+  const result = fullTime.Y * Y_CONST
+    + fullTime.D * D_CONST
+    + fullTime.H * H_CONST
+    + fullTime.Hp * HP_CONST
     + fullTime.s;
   
   if(result < 0) {
@@ -130,10 +130,9 @@ class Time {
 
   /**@param {number | TimeObject} t */
   static construct(t) {
-    if(typeof t === "number") {
-      return new Time(secToTime(t))
-    }
-
+    if(typeof t === "number")
+      return new Time(secToTime(t));
+    
     return new Time(simplify(t));
   }
 
@@ -142,19 +141,19 @@ class Time {
   }
 
   toHp() {
-    return this.toSecond() / Time.HP_CONST;
+    return this.toSecond() / HP_CONST;
   }
 
   toH() {
-    return this.toSecond() / Time.H_CONST;
+    return this.toSecond() / H_CONST;
   }
 
   toD() {
-    return this.toSecond() / Time.D_CONST;
+    return this.toSecond() / D_CONST;
   }
 
   toY() {
-    return this.toSecond() / Time.Y_CONST;
+    return this.toSecond() / Y_CONST;
   }
 
   /**
