@@ -1,5 +1,5 @@
 const CENTROID = "_centroid"
-const TREE = [
+export const TREE = [
   {
     id: CENTROID,
     name: "远征系重心",
@@ -216,7 +216,9 @@ class SkyObject {
   }
 
   get hillRadius() {
-    return this.near * Math.cbrt(this.mass / (3 * this.parent.mass));
+    const parent = this.parent;
+    if(!parent) return null;
+    return this.near * Math.cbrt(this.mass / (3 * parent.mass));
   }
 }
 
