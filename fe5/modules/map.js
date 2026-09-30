@@ -16,12 +16,14 @@ class Map extends PackedElement {
       .addClass("map-div")
       .addListener("click", ev => {
         const target = ev.target;
-        if(target.classList.contains("map-spot-main")) {
+        if(target.classList.contains("map-spot-main")
+          && !target.classList.contains("map-spot-nohref")) {
           window.location.href = target.getAttribute("data-href");
         }
       });
 
     const mapImg = loadImage(`/fe5/assets/maps/${mapImgName}.webp`);
+
     mapImg.image
       .addClass("map-img")
       .appendTo(this)
@@ -41,9 +43,12 @@ class Map extends PackedElement {
       .catch(err => {
         console.error(err);
 
-        mapImg.image
+        mapImg.image.remove();
+        
+        create("div")
           .addClass("map-fail")
-          .setText("看上去地图加载失败了 :(");
+          .setText("看上去地图加载失败了 :(")
+          .appendTo(this);
       });
   }
 

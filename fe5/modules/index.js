@@ -139,8 +139,9 @@ export class PackedElement {
     return this.#element.classList.contains(name);
   }
 
-  clone(subtree = true) {
-    return new PackedElement(this.#element.cloneNode(subtree));
+  remove() {
+    this.#element.remove();
+    return this;
   }
 }
 
