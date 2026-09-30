@@ -1,9 +1,6 @@
-.infocard-div {
-  width: 100%;
-}
-
 .infocard-textbox {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;

@@ -1,5 +1,5 @@
-import { headingDiv } from "/fe5/root.js";
 import { create, dirName, fetchJson, loadImage } from "/fe5/modules/index.js";
+import { headingDiv } from "/fe5/root.js";
 import { createCard } from "/fe5/modules/infocard.js";
 
 const ALT_TEXT = {
@@ -32,21 +32,20 @@ const writer = document.head
   .querySelector("meta[name='writer']")
   ?.content
 
-const img = await loadImage(`/fe5/assets/bio/${dirName}/profile.png`);
-if(!img.success) {
+const img = loadImage(`/fe5/assets/bio/${dirName}/profile.png`);
+
+img.promise.catch(() => {
   img.image.setHTML(
     textList[Math.abs((seed * 258015 | 0) - 152) % textList.length]
     + "<br>图片不存在"
   );
-}
+})
 
 const subheading = create("h1", "profile-subheading")
   .setHTML(writer && writer !== dirName ? `由<id->${writer}</id->撰写` : "自我撰写")
   .get();
 
 const div = await createCard(img.image.get(), "基础信息");
-
-
 
 headingDiv.append(subheading, div.get());
 

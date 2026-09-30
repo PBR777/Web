@@ -138,6 +138,10 @@ export class PackedElement {
   hasClass(name) {
     return this.#element.classList.contains(name);
   }
+
+  clone(subtree = true) {
+    return new PackedElement(this.#element.cloneNode(subtree));
+  }
 }
 
 /**

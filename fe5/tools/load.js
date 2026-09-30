@@ -8,18 +8,19 @@ import { create, fetchText } from "/fe5/modules/index.js";
  */
 
 async function getToolObject(toolName) {
-  
-  const toolDiv = create("info-box")
-    .addClass("tool-div")
-    .get();
+
+  const div = create("div")
+    .setStyle("display", "flex")
+    .setStyle("flexDirection", "column")
+    .setStyle("alignItems", "center");
 
   const heading = create("ah-")
     .addClass("h2")
-    .get();
-
-  const div = create("div")
-    .append(heading, toolDiv)
-    .get();
+    .appendTo(div);
+  
+  const toolDiv = create("info-box")
+    .addClass("tool-div")
+    .appendTo(div);
 
   try {
   
@@ -27,30 +28,32 @@ async function getToolObject(toolName) {
 
     if(!/^[a-zA-Z0-9_-]*$/g.test(toolName)) throw new Error("Parameter unsafe, stop loading");
 
-    toolDiv.innerHTML = await fetchText(`/fe5/tools/${toolName}.html`);
+    toolDiv.setHTML(await fetchText(`/fe5/tools/${toolName}.html`));
 
   } catch(err) {
     console.error(err);
-    toolDiv.innerHTML = `tool:${toolName}加载失败 <br> ${err}`;
+    toolDiv.setHTML(`tool:${toolName}加载失败 <br> ${err}`);
   }
 
-  const name = toolDiv.querySelector("meta[name='tool-name']")?.content ?? null;
-  heading.innerText = name;
+  const name = toolDiv.select("meta[name='tool-name']");
+  heading.setText(name ? name.get().content : null);
 
   return {
-    tool: div,
+    tool: div.get(),
     name: name,
-    execute: function () {
-      toolDiv.querySelectorAll(".to-be-executed").forEach(script => {    
-        
-        const newScript = create("script")
-          .setHTML(script.innerText)
-          .get();
+    execute: () => {
 
-        newScript.type = script.type;
-        script.remove();
-        toolDiv.append(newScript);        
+      const scripts = toolDiv.selectAll(".to-be-executed")
+        .map(scrpit => scrpit.get())
+        .map(script => {
+          script.remove();
+          return create("script")
+            .setHTML(script.innerText)
+            .setAttribute("type", script.type)
+            .get();   
       });
+
+      toolDiv.append(...scripts);
     }
   };
 }

@@ -39,7 +39,7 @@ try {
   info.push("");
 
   const createLink = obj => {
-    return `<a class="inline" href="/fe5/wiki/solar/${obj.id}/">${obj.name}</a>`
+    return `<a href="/fe5/wiki/solar/${obj.id}/">${obj.name}</a>`
   }
 
   info.push("父级天体：" + (data.parent ? createLink(data.parent) : "无"));

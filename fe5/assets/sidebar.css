@@ -44,9 +44,6 @@ ah-.h2 {
   color: #ff7878;
   display: block;
   width: fit-content;
-  position: relative;
-  left: 50%;
-  translate: -50%;
 
   font-size: 150%;
 

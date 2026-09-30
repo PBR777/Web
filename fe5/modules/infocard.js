@@ -9,22 +9,19 @@ export class Infocard extends PackedElement {
    * @param {string | undefined} descriptions 
    */
   constructor(img, title = "信息", descriptions) {
-    super("div")
-      .addClass("infocard-div");
+    super("text-box")
+      .addClass("infocard-textbox");
 
     img.classList.add("infocard-img");
     
-    const profileTextbox = create("text-box")
-      .addClass("infocard-textbox")
-      .appendTo(this);
     
     const profileImgDiv = create("div")
       .addClass("infocard-img-div")
-      .appendTo(profileTextbox);
+      .appendTo(this);
     
     const profileInfoDiv = create("div")
       .addClass("infocard-info-div")
-      .appendTo(profileTextbox);
+      .appendTo(this);
 
     create("span")
       .addClass("infocard-title")

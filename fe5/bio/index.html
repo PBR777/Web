@@ -15,10 +15,6 @@
       min-width: 100px;
       max-width: 800px;
 
-      position: relative;
-      left: 50%;
-      translate: -50%;
-
       text-align: center;
 
       transition: width 500ms;
@@ -45,6 +41,9 @@
       border-bottom-style: solid;
     }
     
+    #search-result {
+      width: 100%;
+    }
   </style>
 
   <script type="module">
@@ -54,9 +53,13 @@
     /**@type string[] */
     let idSet = [];
 
-    const textbox = create("text-box").get();
-    const resultDiv = create("div", "search-result").get();
-    const resultTextDiv = create("div", "result-text-div").get();
+    const textbox = create("text-box");
+
+    const resultTextDiv = create("div", "result-text-div")
+      .appendTo(textbox);
+
+    const resultDiv = create("div", "search-result")
+      .appendTo(textbox);
 
     const searchbar = create("input", "search-bar").get();
     searchbar.placeholder = "输入编号...";
@@ -76,7 +79,6 @@
      * @param {string} str 
      */
     function search(str) {
-      if(!idSet) return [];
       if(str.trim() === "") return idSet;
 
       const {zoneCode, id, fullId} = IdUtils.parse(str);
@@ -106,23 +108,21 @@
       const results = search(str);
 
       if(str === "") {
-        resultTextDiv.innerText = `${idSet.length}个编号已收录`;
+        resultTextDiv.setText(`${idSet.length}个编号已收录`);
       } else if(results.length === 0) {
-        resultTextDiv.innerHTML = `ID:${str}未找到，他/她可能未被收录，或者根本不存在<br><br>￣へ￣`;
+        resultTextDiv.setText(`ID:${str}未找到，他/她可能未被收录，或者根本不存在<br><br>￣へ￣`);
       } else {
-        resultTextDiv.innerText = `找到${results.length}个与ID:${str}相似的结果`;
+        resultTextDiv.setText(`找到${results.length}个与ID:${str}相似的结果。已按相似度排序`);
       }
 
-      resultDiv.innerHTML = "";
-
       const links = results.map(name => {
-        const link = create("a")
+        return create("a")
           .setText(name)
+          .setAttribute("href", `/fe5/bio/${name}/`)
           .get();
-        link.href = `/fe5/bio/${name}/`;
-        return link;
       });
 
+      resultDiv.setHTML("");
       resultDiv.append(...links);
 
       return results;
@@ -148,9 +148,7 @@
       }
 
       document.body.querySelector("#placeholder").remove();
-      document.body.append(searchbar);
-      textbox.append(resultTextDiv, resultDiv);
-      document.body.append(textbox);
+      document.body.append(searchbar, textbox.get());
     })().catch(err => {
       console.error(err);
 
@@ -161,8 +159,6 @@ ${err}`
 
     });
 
-    
-    
   </script>
 </head>
 
