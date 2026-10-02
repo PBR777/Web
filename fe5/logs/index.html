@@ -154,8 +154,8 @@
        * @param {logsFormat} logsData 
        */
       constructor(logsData) {
-        super(create("div")
-          .addClass("log-main-div"));
+        super("div");
+        this.addClass("log-main-div");
 
         const logsDiv = create("div")
           .addClass("log-div")

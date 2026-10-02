@@ -5,10 +5,14 @@
   translate: -50% -110%;
   padding: 3px;
 
+  width: max-content;
   max-width: 300px;
   overflow-wrap: break-word;
 
+  text-align: center;
+
   interactivity: inert;
+  user-select: none;
 
   background-color: var(--background-color);
   border: 3px solid var(--border-color);

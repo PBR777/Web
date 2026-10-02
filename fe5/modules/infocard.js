@@ -9,8 +9,9 @@ export class Infocard extends PackedElement {
    * @param {string | undefined} descriptions 
    */
   constructor(img, title = "信息", descriptions) {
-    super("text-box")
-      .addClass("infocard-textbox");
+    super("text-box");
+    
+    this.addClass("infocard-textbox");
 
     img.classList.add("infocard-img");
     

@@ -12,8 +12,9 @@ class Map extends PackedElement {
    * @param {string} mapDataName 
    */
   constructor(mapImgName, mapDataName = mapImgName) {
-    super("div")
-      .addClass("map-div")
+    super("div");
+    
+    this.addClass("map-div")
       .addListener("click", ev => {
         const target = ev.target;
         if(target.classList.contains("map-spot-main")
