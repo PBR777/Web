@@ -9,7 +9,7 @@
   },
   {
     "name": "教学区（绿洲）",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/ez-o/",
     "pos": [
       -0.33,
       -0.36
@@ -17,7 +17,7 @@
   },
   {
     "name": "教学区（能源）",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/ez-e/",
     "pos": [
       -0.55,
       0.58
@@ -25,7 +25,7 @@
   },
   {
     "name": "教学区（秘境）",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/ez-m/",
     "pos": [
       0.7,
       -0.57
@@ -33,7 +33,7 @@
   },
   {
     "name": "交换大堂（东）",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/eh-e/",
     "pos": [
       1,
       0
@@ -41,7 +41,7 @@
   },
   {
     "name": "交换大堂（北）",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/eh-n/",
     "pos": [
       0,
       -1
@@ -49,7 +49,7 @@
   },
   {
     "name": "交换大堂（西）",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/eh-w/",
     "pos": [
       -1,
       0
@@ -57,7 +57,7 @@
   },
   {
     "name": "交换大堂（南）",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/eh-s/",
     "pos": [
       0,
       1
@@ -65,7 +65,7 @@
   },
   {
     "name": "山谷火山I",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/valley-volcano-1/",
     "pos": [
       0.51,
       0.36
@@ -73,7 +73,7 @@
   },
   {
     "name": "山谷火山II",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/valley-volcano-2/",
     "pos": [
       0.69,
       0.6
@@ -81,7 +81,7 @@
   },
   {
     "name": "山谷发电站",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/valley-power-station/",
     "pos": [
       0.46,
       0.42
@@ -89,15 +89,7 @@
   },
   {
     "name": "地之创伤",
-    "href": "",
-    "pos": [
-      -0.05,
-      -0.8
-    ]
-  },
-  {
-    "name": "地之创伤",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/?.?/",
     "pos": [
       -0.05,
       -0.8
@@ -105,7 +97,7 @@
   },
   {
     "name": "暗谷",
-    "href": "",
+    "href": "/fe5/wiki/locations/devland/deversity/dark-valley/",
     "pos": [
       0.38,
       -0.13

@@ -43,6 +43,8 @@
   transition: transform 200ms, box-shadow 200ms;
 
   z-index: 2;
+
+  user-select: none;
 }
 
 .map-spot-main:hover {
@@ -74,38 +76,6 @@
   box-shadow: none;
 
   z-index: 1;
-}
-
-.map-tooltip {
-  position: absolute;
-  width: max-content;
-  height: auto;
-
-  padding: 10px;
-
-  translate: -50% -120%;
-
-  border-color: #c0c0c08e;
-  border-width: 3px;
-  border-radius: 10px;
-  border-style: solid;
-  
-
-  background-color: #d6d6d69f;
-  color: #052cad;
-  text-shadow: 0 0 1px;
-  text-decoration: underline;
-  font-size: 80%;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
-  z-index: 3;
-
-  opacity: 0;
-  transition: opacity 200ms;
-}
-
-.map-tooltip-show {
-  opacity: 1;
 }
 
 .map-fail {
