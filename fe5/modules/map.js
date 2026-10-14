@@ -1,4 +1,4 @@
-import "./tooltip.js"
+import "./tooltip.js";
 import { loadStyle, create, fetchJson, PackedElement, loadImage } from "./index.js";
 
 class Map extends PackedElement {

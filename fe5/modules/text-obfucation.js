@@ -18,6 +18,7 @@ class ObfucatedText extends HTMLElement {
   }
 
   connectedCallback() {
+    this.style.width = this.textContent.length + "ch";
     observer.observe(this);
   }
 
@@ -32,13 +33,10 @@ customElements.define("obf-text", ObfucatedText);
 loadStyle("text-obfucation").then(() => {
   setInterval(() => {
     visibleObfucatedText.forEach(element => {
-      
-      const str = Array
+      element.textContent = Array
         .from({ length: element.textContent.length }, () => 
           String.fromCharCode((Math.random() * 94 | 0) + 33))
         .join("");
-
-      element.textContent = str;
     });
   }, 40);
 }).catch(err => {

@@ -79,9 +79,6 @@
     import { parseHTML } from "/fe5/modules/id.js";
 
     const ARTICLE_ROOT = "/fe5/data/article/";
-    const TRUSTED_AUTHORS = new Set()
-      .add("PBR777")
-      .add("");
 
     // From MDN
     async function getHash(name) {
@@ -144,7 +141,7 @@
         .get();
 
       const div = create("div")
-        .setHTML(text.join("<br-space>"))
+        .setHTML(text.join("<br-space></br-space>"))
         .get();
 
       textbox.innerHTML = "";
