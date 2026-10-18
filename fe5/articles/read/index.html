@@ -68,9 +68,13 @@
       
     }
 
-    br-space {
-      display: block;
-      margin: 15px 0;
+    #article>p {
+      padding: 7px 0;
+    }
+
+
+    #article>p::before {
+      content: "";
     }
   </style>
 
@@ -140,12 +144,14 @@
         .setHTML(`<span>日期：${date.join(", ")}</span>`)
         .get();
 
-      const div = create("div")
-        .setHTML(text.join("<br-space></br-space>"))
+      const div = create("div", "article")
+        .setHTML(text
+          .map(line => `<p>${line}</p>`)
+          .join(""))
         .get();
 
       textbox.innerHTML = "";
-      textbox.append(authorText, dateText, heading, ...div.childNodes);
+      textbox.append(authorText, dateText, heading, div);
 
 
       textbox.classList.remove("loading");

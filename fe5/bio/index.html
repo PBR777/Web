@@ -61,19 +61,28 @@
     const resultDiv = create("div", "search-result")
       .appendTo(textbox);
 
-    const searchbar = create("input", "search-bar").get();
+    const searchbar = create("input", "search-bar")
+      .addListener("input", (() => {
+        let id;
+        return () => {
+          clearTimeout(id);
+          id = setTimeout(update, 300);
+        }
+      })())
+      .addListener("keydown", ev => {
+        
+        if(ev.keyCode !== 13) return; // Not pressed Enter
+
+        update();
+        const children = resultDiv.getChildren();
+        if(children.length === 1)
+          children[0].get().click();
+      })
+      .addListener("change", update)
+      .get();
+
     searchbar.placeholder = "输入编号...";
     searchbar.maxLength = "16";
-
-    (() => {
-      let id;
-      searchbar.addEventListener("input", () => {
-        clearTimeout(id);
-        id = setTimeout(update, 300);
-      });
-
-      searchbar.addEventListener("change", update);
-    })();
 
     /**
      * @param {string} str 
@@ -89,9 +98,9 @@
       }
 
       results = results
-        .map(val => ({ name: val, weight: val.lastIndexOf(id)}))
-        .filter(obj => obj.weight !== -1)
-        .sort((a, b) => b.weight - a.weight)
+        .map(val => ({ name: val, weight: val.length - val.lastIndexOf(id)}))
+        .filter(obj => obj.weight <= obj.name.length)
+        .sort((a, b) => a.weight - b.weight)
         .map(obj => obj.name);
 
       return results;
@@ -110,7 +119,7 @@
       if(str === "") {
         resultTextDiv.setText(`${idSet.length}个编号已收录`);
       } else if(results.length === 0) {
-        resultTextDiv.setText(`ID:${str}未找到，他/她可能未被收录，或者根本不存在<br><br>￣へ￣`);
+        resultTextDiv.setHTML(`ID:${str}未找到，他/她可能未被收录，或者根本不存在<br><br>￣へ￣`);
       } else {
         resultTextDiv.setText(`找到${results.length}个与ID:${str}相似的结果。已按相似度排序`);
       }
@@ -129,7 +138,7 @@
     }
 
     (async () => {
-      idSet = await fetchJson("/fe5/data/bio/index.json");
+      idSet = (await fetchJson("/fe5/data/bio/index.json")).sort();
 
       const url = new URLSearchParams(location.search);
       const id = url.get("id");
