@@ -38,7 +38,7 @@
       }
 
       (async () => {
-        const RES = await fetch(`../${ID}/index.txt`);
+        const RES = await fetch(`../${ID}.txt`);
 
         if(!RES.ok) {
           switch (RES.status) {
