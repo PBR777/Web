@@ -13,6 +13,7 @@ body {
   font-family: 'Times New Roman', Times, serif;
 
   margin: 100px;
+  user-select: none;
 }
 
 .body {

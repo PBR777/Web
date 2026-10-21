@@ -6,6 +6,20 @@
   <script src="/script.js"></script>
   
   <script src="/auto_resize.js"></script>
+
+  <script id="script" type="module">
+    const heading = document.getElementById("heading");
+    heading.addEventListener("click", (() => {
+      let i = 7;
+      return () => {
+        console.log("Why do you do that?");
+        
+        if(--i <= 0) window.location.href = "/fe5/";
+      };
+    })());
+
+    document.getElementById("script").remove();
+  </script>
 </head>
 
 <body>
