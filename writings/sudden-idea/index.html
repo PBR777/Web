@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <link rel="stylesheet" href="./style.css">
+
+  <script src="/script.js"></script>
+
+  <script type="module">
+    import { load } from "../script.js";
+    document.querySelector(".body").append(await load("sudden-idea"));
+  </script>
+</head>
+
+<body>
+  <p-component id="upper_banner"></p-component>
+
+  <h1 id="heading">
+    ﹥Writings: Sudden Idea
+  </h1>
+
+  <div class="body">
+    <h2>提醒</h2>
+    <p>作者精神状态十分的良好啊！</p>
+    <h2>文章</h2>
+  </div>
+</body>
+
+</html>

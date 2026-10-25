@@ -12,54 +12,49 @@
   <p-component id="upper_banner"></p-component>
 
   <h1 id="heading">
-    ﹥My Writings
+    ﹥Writings
   </h1>
 
   <div class="body">
-    <script id="script">
-      const MAIN = document.createElement("p")
+    <script id="script" type="module">
+      const main = document.createElement("p");
 
-      MAIN.innerText = "Loading..."
-
-      MAIN.style = "white-space: pre-wrap; size: 10px"
+      main.innerText = "Loading...";
+      main.style = "white-space: pre-wrap; size: 10px";
 
       document
-        .getElementsByClassName("body")
-        .item(0)
-        .appendChild(MAIN);
+        .querySelector(".body")
+        .append(main);
 
-      const ID = new URLSearchParams(window.location.search).get("id");
-
-      const REG = /^[0-9a-f]{32}$/;
-
-      if(!ID || !REG.test(ID)) {
-        MAIN.innerText = "Invalid ID: " + ID;
-        throw new Error(`For safty reason, parsing of id ${ID} was stopped.`);
+      async function hash(str) {
+        const nameBuffer = new TextEncoder().encode(str);
+        const array = await crypto.subtle.digest("sha-1", nameBuffer);
+        return Array
+          .from(new Uint8Array(array))
+          .map(byte => byte.toString(16).padStart(2, "0"))
+          .join("");
       }
 
-      (async () => {
-        const RES = await fetch(`../${ID}.txt`);
+      try {
+        const params = new URLSearchParams(window.location.search);
 
-        if(!RES.ok) {
-          switch (RES.status) {
-            case 404:
-            MAIN.innerText = `Writing:${ID} no found`;
-            return;
+        const name = params.get("n");
+        if(!name) throw new Error("Missing parameter \"n\" (name)");
 
-            case 403:
-            case 400:
-            MAIN.innerText = `Access denied of Wirting:${ID}`;
-            return;
-          }
+        const category = params.get("c");
+        if(!name) throw new Error("Missing parameter \"c\" (category)");
 
-          MAIN.innerText = `Wirting:${ID} load failed`
-          return;
-        }
+        const hashcode = await hash(name);
+        const res = await fetch(`/data/writings/${category}/${hashcode}.txt`);
+        if(!res.ok) throw new Error(`Cannot find Writing:${category}/${hashcode}(${name})`);
+        
+        const writing = await res.text();
 
-        const TEXT = await RES.text();
-        MAIN.innerText = TEXT.replace(/  /g, "　");
-      })();
-
+        main.innerText = writing.replaceAll("  ", "　");
+      } catch(err) {
+        main.innerText = "Load failed \n" + err.message;
+      }
+      
       document.getElementById("script").remove();
     </script>
   </div>

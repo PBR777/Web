@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <link rel="stylesheet" href="./style.css">
+
+  <script src="/script.js"></script>
+
+  <script type="module">
+    import { load } from "../script.js";
+    document.querySelector(".body").append(await load("forced-project"));
+  </script>
+</head>
+
+<body>
+  <p-component id="upper_banner"></p-component>
+
+  <h1 id="heading">
+    ﹥Writings: Forced Projects
+  </h1>
+
+  <div class="body">
+    <h2>简介</h2>
+    <p>强制要求写的 ;<</p>
+    <h2>文章</h2>
+  </div>
+</body>
+
+</html>
