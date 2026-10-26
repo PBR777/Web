@@ -36,9 +36,14 @@ export async function load(category) {
   const fragment = document.createDocumentFragment();
   for(const name of json) {
     const elememt = document.createElement("a");
+    const params = new URLSearchParams({
+      c: category,
+      n: name
+    });
+
     elememt.classList.add("writings-link");
     elememt.innerText = name;
-    elememt.href = `/writings/read/?c=${category}&n=${name}`;
+    elememt.href = "/writings/read/?" + params.toString();
     fragment.append(elememt);
   }
 
