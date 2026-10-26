@@ -2,7 +2,17 @@ body {
   background-color: black;
 }
 
-#heading {
+@keyframes flashing-title {
+  0% {
+    text-shadow: currentColor 0 0 13px;
+  }
+
+  100% {
+    text-shadow: currentColor 0 0 19px;
+  }
+}
+
+h1 {
   color: aliceblue;
 
   overflow: hidden;
@@ -12,8 +22,14 @@ body {
   font-variant: small-caps;
   font-family: 'Times New Roman', Times, serif;
 
-  margin: 100px;
+  margin: 100px 0;
   user-select: none;
+
+  animation: flashing-title 500ms ease-in-out alternate infinite;
+}
+
+h1::before {
+  content: "﹥";
 }
 
 .body {

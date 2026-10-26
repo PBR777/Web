@@ -2,7 +2,7 @@ window.addEventListener("load", load);
 
 function load() {
 
-  const HEADING =  document.getElementById("heading");
+  const HEADING =  document.querySelector("h1");
   if(!HEADING) return;
 
   const COUNT_DOWN = document.createElement("p");

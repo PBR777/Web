@@ -6,25 +6,49 @@
   <script src="/script.js"></script>
 
   <script src="/components/init.js"></script>
+
+  <style>
+    .writing-text {
+      white-space: pre-wrap;
+      size: 10px;
+      overflow-wrap: break-word;
+    }
+
+    .writing-msg {
+      width: 100%;
+      min-height: 100px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+    }
+
+    .writing-title {
+      text-align: center;
+
+      font-size: 180%;
+    }
+  </style>
 </head>
 
 <body>
   <p-component id="upper_banner"></p-component>
 
-  <h1 id="heading">
-    ﹥Writings
-  </h1>
+  <h1>Writings</h1>
 
   <div class="body">
     <script id="script" type="module">
-      const main = document.createElement("p");
+      const fragment = document.createDocumentFragment();
+      const p = document.createElement("p");
+      const title = document.createElement("h2");
+      const msg = document.createElement("div");
+      fragment.append(msg, title, p);
 
-      main.innerText = "Loading...";
-      main.style = "white-space: pre-wrap; size: 10px";
-
-      document
-        .querySelector(".body")
-        .append(main);
+      p.innerText = "Loading...";
+      p.classList.add("writing-text");
+      msg.classList.add("writing-msg");
+      title.classList.add("writing-title");
 
       async function hash(str) {
         const nameBuffer = new TextEncoder().encode(str);
@@ -50,10 +74,23 @@
         
         const writing = await res.text();
 
-        main.innerText = writing.replaceAll("  ", "　");
+        const parts = writing
+          .replaceAll("  ", "　")
+          .replaceAll("\r", "")
+          .split("\n\n");
+
+        msg.innerHTML = `写作时间：<br>${parts.shift()}<br><br>作者：<br>${parts.shift().split(";").map(name => name.trim()).join("<br>")}`;
+
+        title.innerHTML = parts.shift();
+        
+        p.innerText = parts.join("\n\n")
       } catch(err) {
-        main.innerText = "Load failed \n" + err.message;
+        p.innerText = "Load failed \n" + err.message;
       }
+
+      document
+        .querySelector(".body")
+        .append(fragment);
       
       document.getElementById("script").remove();
     </script>

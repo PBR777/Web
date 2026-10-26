@@ -8,7 +8,7 @@
   <script src="/auto_resize.js"></script>
 
   <script id="script" type="module">
-    const heading = document.getElementById("heading");
+    const heading = document.querySelector("h1");
     heading.addEventListener("click", (() => {
       let i = 7;
       return () => {
@@ -26,10 +26,7 @@
   <p-component id="upper_banner"></p-component>
   
 
-  <h1 id="heading">
-    ﹥Welcome To <br>
-    ﹥PBR's Page! &ThinSpace;
-  </h1>
+  <h1>Welcome To<br>PBR's Page! &ThinSpace;</h1>
 
   <div class="body">
     <h2>关于我</h2>

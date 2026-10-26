@@ -1,0 +1,73 @@
+2026-08-05  19:50 - 20:45
+
+PBR777 <-宇宙一级大帅B
+
+《上下文》hello?
+
+    今天我不小心走到学校地下室，不小心黑人了学校门禁，然后意外地击倒了所有守卫，在地下室尽头发现了一个超立方体。
+    这个老牧师超立方体貌似可以接人USb-A接口里，噢我的上帝，那是激动的。
+    我将立方体强行塞人家中电脑里，显示器瞬间黑屏，跳出一个黑调的低客终端界面：
+
+    欢迎访问宇宙接口！该接口允许你：
+    -调用任意数量的线程；
+    -查找宇宙中所有目标相似性；
+    -修改任意宇宙场（需要权限）；
+    另外，为了迎合人类宝宝体制，请使用JavaScript调用接口，正则是被允许的。
+    你的权限：User（就是个弟弟！）
+
+    我艹！可以调用宇宙？wcnm。我没什么idea，随便输人了：context.，结果终端直接建议了一堆代码，我随便输人了个context.print("哇袄！")↵
+哇袄！并回车了下去。
+    嗯，看上去多了个“哇袄！”出来。我欣喜若狂，直接输人了for(let i = 0; i < 10; i++) context.println("你老牧师了！你老牧师了！")↵
+你老牧师了！你老牧师了！
+你老牧师了！你老牧师了！
+你老牧师了！你老牧师了！
+
+老牧师了！
+老牧师了！
+
+老牧师了！
+老牧师了？
+
+老牧师了！
+你老牧师了！你老牧师了！
+你老牧师了！你老牧师了！哟吼吼吼吼吼
+你老牧师了！你老牧师了！
+你老牧师？？？了！你老牧师了！！
+    这么强？！让我看看……context.print(context.sliceLine())↵
+[object Context]返回了一个撒哔上下文对象。我直接let ctx = context.sliceLine(); ctx.replaceAll("正常的", "撒哔")↵
+。我的fa？“一个正常的上下文对象”真的变成“一个撒哔上下文对象”了？！
+    嘿嘿嘿！我吐了吐舌头，直接context.sliceLine(-6).print("哟吼吼吼吼吼")↵
+。第22行真的变了！
+    context.sliceLine(-6).insertAfter("？？？", 3)↵
+卧槽？
+    我tm直接for(let i = 0; i < 50; i++) context.print("sz")↵
+szszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszsz，哈哈好多艾斯贼！
+    让我看看……ctx = context.sliceLine(-16, -13)↵
+直接获取16行前（现在是17行吧）到14行前的上下文[-16, -13)，然后ctx.replaceAll("你", "\n")↵
+    真好玩！context.sliceLine(-16).delete()↵
+删掉！删掉！！
+    context.sliceLine(-22, -20).replaceAll("!", "?")↵
+
+    ……怎么没反应？哦，对了，充能面包，应该是context.sliceLine(-22, -20).replaceAll("！", "？")↵
+才对，没问题了。
+    ……啧，不应该替换地22行吗？哦~你吗，刚刚应该输人sliceLine(-24, -22)而不是sliceLine(-22, -20)。
+
+    好了，不玩上下文了……
+    ……
+    不行，我试试context.sliceAbsCtxLine(-2).print("hello?\n")↵
+，好吧，好像什么都没发生。但它没有越界报错，说明还是更改了什么东西……
+    context.sliceAbsCtxLine(-4).print(" <-宇宙一级大帅B")↵
+。反正我也不知道上下文的-4行是什么意思，哪位幸运儿看到了就将自己的名字加到前面吧。
+    继续context.sliceLine(-9999, 0).replaceAll("U盘", "超立方体")↵
+context.sliceLine(-9999, 0).replaceAll("入", "人")↵
+呵呵，都看不懂了。
+    嗯，让我看看：context.println("我生命垂危！")↵
+我生命垂危！，会发生……
+    不对！胸口好……痛！
+    救救我！你别光顾着看……啊！救救我！
+    context.
+    快点……
+    context.replaceAll("我生命垂
+    不……我没有敲键盘的力气了！
+    完……了！
+    ……
