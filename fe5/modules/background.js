@@ -1,14 +1,13 @@
 import { loadStyle, create } from "./index.js";
 
-const canvas = create("canvas", "background").get();
+const canvasDiv = create("div", "#background-div");
+
+const canvas = create("canvas", "#background")
+  .appendTo(canvasDiv)
+  .get();
 
 const ctx = canvas.getContext("2d");
 if(!ctx) throw new Error("Canvas is not supported in this browser.");
-
-const canvasDiv = create("div")
-  .setId("background-div")
-  .append(canvas)
-  .appendTo(document.body);
 
 // Load star svg
 const starPNG = create("canvas").get();
@@ -106,5 +105,7 @@ loadStyle("background").then(() => {
 
   initCanvas((urlHash * -2156926 | 0) + 137697);
 });
+
+canvasDiv.appendTo(document.body);
 
 export {};

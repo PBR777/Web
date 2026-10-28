@@ -97,3 +97,8 @@ type galleryFormat = {
   url?: string;
   description?: string;
 }[];
+
+type linkFormat = {
+  path: string;
+  name: string;
+}

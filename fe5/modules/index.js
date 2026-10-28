@@ -146,14 +146,24 @@ export class PackedElement {
 }
 
 /**
- * @param {string} name 
- * @param {string?} id 
+ * @param {string | PackedElement | HTMLElement} element 
+ * @param {string?} initRule 
  */
-export function create(name, id) {
-  if(id) return new PackedElement(name)
-    .setId(id);
+export function create(element, initRule) {
+  const packed = new PackedElement(element);
 
-  return new PackedElement(name);
+  if(!initRule) return packed;
+
+  const rules = initRule.split(/(?<!\\)\./g);
+  const first = rules.shift()
+  
+  if(first[0] === "#") {
+    packed.setId(first.slice(1));
+  }
+  if(rules.length > 0)
+    packed.addClass(...rules)
+
+  return packed;
 }
 
 const stylePromiseSet = [];

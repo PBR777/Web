@@ -3,41 +3,32 @@ import { loadStyle, create } from "./index.js"
 const DURATION = 300;
 const HAS_SIDEBAR = !document.head.querySelector("meta[name='no-sidebar']");
 
-let isSpaceEnough = false;
 let isSidebarShowing = false;
 
-const button = create("div")
-  .addClass("sidebar-button")
+const button = create("div", ".sidebar-button")
   .addListener("click", () => sidebarControl(!isSidebarShowing));
 
-const buttonArrow = create("div")
-  .addClass("sidebar-button-arrow")
+const buttonArrow = create("div", ".sidebar-button-arrow")
   .appendTo(button);
 
-const div = create("div")
-  .addClass("sidebar-div");
+const div = create("div", ".sidebar-div");
 
-const homeDiv = create("div")
-  .addClass("sidebar-title-div")
+const homeDiv = create("div", ".sidebar-title-div")
   .setText("Fe5: Our Home")
   .addListener("click", () => window.location.href = "/fe5/")
   .appendTo(div);
 
-const icon = create("img")
-  .addClass("sidebar-title-icon")
+const icon = create("img", ".sidebar-title-icon")
   .setAttribute("src", "/fe5/assets/solar/fe5-256x256.webp")
   .appendTo(homeDiv);
 
-const anchorDiv = create("div")
-  .addClass("sidebar-anchor-div")
+const anchorDiv = create("div", ".sidebar-anchor-div")
   .appendTo(div);
 
-const anchorTitle = create("div")
-  .addClass("sidebar-anchor-title", "sidebar-anchor")
+const anchorTitle = create("div", ".sidebar-anchor-title.sidebar-anchor")
   .addListener("click", () => window.scrollTo(0, 0));
 
-const overlay = create("div")
-  .addClass("sidebar-overlay")
+const overlay = create("div", ".sidebar-overlay")
   .addListener("click", () => sidebarControl(false));
 
 const updateTree = (() => {
@@ -88,8 +79,7 @@ class AnchorHeading extends HTMLElement {
 
   #rawId = "";
 
-  #anchor = create("div")
-    .addClass("sidebar-anchor")
+  #anchor = create("div", ".sidebar-anchor")
     .addListener("click", this.onClick.bind(this))
     .get();
 

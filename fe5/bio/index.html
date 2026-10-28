@@ -55,13 +55,13 @@
 
     const textbox = create("text-box");
 
-    const resultTextDiv = create("div", "result-text-div")
+    const resultTextDiv = create("div", "#result-text-div")
       .appendTo(textbox);
 
-    const resultDiv = create("div", "search-result")
+    const resultDiv = create("div", "#search-result")
       .appendTo(textbox);
 
-    const searchbar = create("input", "search-bar")
+    const searchbar = create("input", "#search-bar")
       .addListener("input", (() => {
         let id;
         return () => {

@@ -41,7 +41,7 @@ img.promise.catch(() => {
   );
 })
 
-const subheading = create("h1", "profile-subheading")
+const subheading = create("h1", "#profile-subheading")
   .setHTML(writer && writer !== dirName ? `由<id->${writer}</id->撰写` : "自我撰写")
   .get();
 

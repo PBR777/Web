@@ -120,8 +120,7 @@
       const title = next()[0];
       const text = lines.slice(pos);
 
-      const authorText = create("info-box")
-        .addClass("author-box")
+      const authorText = create("info-box", ".author-box")
         .setHTML(`<span>作者：${author}</span>`)
         .get();
 
@@ -139,12 +138,11 @@
         .setText(title)
         .get();
 
-      const dateText = create("info-box")
-        .addClass("date-box")
+      const dateText = create("info-box", ".date-box")
         .setHTML(`<span>日期：${date.join(", ")}</span>`)
         .get();
 
-      const div = create("div", "article")
+      const div = create("div", "#article")
         .setHTML(text
           .map(line => `<p>${line}</p>`)
           .join(""))

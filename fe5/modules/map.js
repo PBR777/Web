@@ -19,7 +19,7 @@ class Map extends PackedElement {
         const target = ev.target;
         if(target.classList.contains("map-spot-main")
           && !target.classList.contains("map-spot-nohref")) {
-          window.location.href = target.getAttribute("data-href");
+          window.location.href = target.dataset.href;
         }
       });
 
@@ -46,8 +46,7 @@ class Map extends PackedElement {
 
         mapImg.image.remove();
         
-        create("div")
-          .addClass("map-fail")
+        create("div", ".map-fail")
           .setText("看上去地图加载失败了 :(")
           .appendTo(this);
       });
@@ -61,8 +60,7 @@ class Map extends PackedElement {
     const xPct = `${x * 50 + 50}%`;
     const yPct = `${y * 50 + 50}%`;
 
-    const spot = create("tool-tip")
-      .addClass("map-spot", "map-spot-main", "hidden")
+    const spot = create("tool-tip", ".map-spot.map-spot-main.hidden")
       .setAttribute("text", name)
       .setStyle("left", xPct)
       .setStyle("top", yPct)
@@ -74,8 +72,7 @@ class Map extends PackedElement {
       spot.addClass("map-spot-nohref")
     }
 
-    create("div")
-      .addClass("map-spot", "map-spot-pulse")
+    create("div", ".map-spot.map-spot-pulse")
       .setStyle("left", xPct)
       .setStyle("top", yPct)
       .appendTo(this);

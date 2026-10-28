@@ -15,8 +15,7 @@ function parseJson(json) {
     });
 
   for(const data of json) {
-    const box = create("info-box")
-      .addClass("gallery-box")
+    const box = create("info-box", ".gallery-box")
       .appendTo(fragment);
     const imgUrl = data.url ?? `/fe5/assets/gallery/${dirName}/${data.name}`;
 
@@ -32,8 +31,7 @@ function parseJson(json) {
     });
 
     if(data.description) {
-      create("span")
-        .addClass("gallery-description")
+      create("span", ".gallery-description")
         .setHTML(data.description)
         .appendTo(box);
     }

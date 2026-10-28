@@ -157,8 +157,7 @@
         super("div");
         this.addClass("log-main-div");
 
-        const logsDiv = create("div")
-          .addClass("log-div")
+        const logsDiv = create("div", ".log-div")
           .appendTo(this);
 
         logsDiv.setHTML(
@@ -186,13 +185,12 @@
           const target = ev.target;
           const block = target.parentElement;
 
-          const i = Number(block.getAttribute("data-index"));
+          const i = Number(block.dataset.index);
 
           if (target.classList.contains("log-expand")) {
 
             const content = block.querySelector(".log-content")
-              ?? create("div")
-                .addClass("log-content")
+              ?? create("div", ".log-content")
                 .appendTo(block)
                 .get();
 
@@ -227,41 +225,38 @@
           /**@type HTMLElement */
           const target = ev.target;
 
-          const i = Number(target.parentElement.getAttribute("data-index"));
+          const i = Number(target.parentElement.datasetindex);
           const time = Time.stringify(logsData[i].t, "full", 0);
 
           target.setAttribute("text", time);
         }
 
-        const logBlockDiv = create("div")
-          .addClass("log-block-div")
+        const logBlockDiv = create("div", ".log-block-div")
           .addListener("click", clickHandler)
           .appendTo(logsDiv);
 
 
         const blocks = logsData.map((data, i) => {
-          const block = create("div")
-            .addClass("log-block")
+          const block = create("div", ".log-block")
+            .addClass()
             .setAttribute("data-index", i)
 
           const time = Time.stringify(data.t, "YDH", 0);
 
-          create("tool-tip")
-            .addClass("log-timestamp-box", "hidden")
+          create("tool-tip", ".log-timestamp-box.hidden")
             .setText(time)
             .addListener("pointerenter", lazyCb, { once: true, capture: true })
             .appendTo(block);
 
-          create("div")
-            .addClass("log-timestamp-spot", "log-timestamp-spot-pulse")
+          create("div", ".log-timestamp-spot.log-timestamp-spot-pulse")
+            .addClass()
             .appendTo(block);
 
-          create("div")
-            .addClass("log-timestamp-spot", "log-expand")
+          create("div", ".log-timestamp-spot.log-expand")
+            .addClass()
             .appendTo(block);
 
-          create("h3")
-            .addClass("log-title", "log-expand")
+          create("h3", ".log-title.log-expand")
             .setHTML(data.title ?? "&lt;无标题&gt;")
             .appendTo(block);
 

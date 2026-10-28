@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Fe5 Wiki</title>
+
+  <link rel="stylesheet" href="/fe5/root.css">
+  <script type="module" src="/fe5/root.js"></script>
+
+  <style>
+    .wiki-tab-menu {
+      margin-top: 10px;
+
+      width: 80%;
+
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .wiki-tab {
+      border: 1.5px solid #1b1b1b;
+      background-color: #2e2e2e;
+
+      text-align: center;
+
+      flex-grow: 1;
+      max-width: 100px;
+      min-width: fit-content;
+
+      padding: 3px 8px;
+      cursor: pointer;
+      user-select: none;
+
+      transition: background-color 200ms;
+    }
+
+    .wiki-tab:hover {
+      background-color: #222222;
+    }
+
+    .wiki-tab-selected,
+    .wiki-tab-selected:hover {
+      background-color: #1a1a1a;
+    }
+
+    .wiki-description {
+      text-align: center;
+    }
+  </style>
+
+  <script type="module">
+    import { create, fetchJson } from "/fe5/modules/index.js";
+    const index = await fetchJson("/fe5/data/wiki/index.json");
+
+    const description = create("span", ".wiki-description")
+      .setText("　");
+
+    const tabMenu = create("div", ".wiki-tab-menu")
+      .addListener("click", ev => {
+        const target = ev.target;
+        if(!target.classList.contains("wiki-tab")) return;
+
+        tabMenu.select(".wiki-tab-selected")?.removeClass("wiki-tab-selected");
+        target.classList.add("wiki-tab-selected");
+
+        changePage(parseInt(target.dataset.i));
+      });
+
+    const textbox = create("text-box", ".wiki-main");
+
+    function changePage(i) {
+      const tabData = index[i];
+      description.setHTML(tabData.description ?? "　");
+    }
+
+    for(let i = 0; i < index.length; i++) {
+      create("div", ".wiki-tab")
+        .setText(index[i].name)
+        .setAttribute("data-i", i)
+        .appendTo(tabMenu);
+
+      if(i["dynamic-js"]) {
+
+      } else {
+
+      }
+    }
+
+    document.body.append(description.get(), tabMenu.get(), textbox.get())
+
+  </script>
+</head>
+<body>
+  <text-box>
+    <p>欢迎来到Fe5 Wiki：一个只关于Fe5的百科。制度、地理、恒星系统、生物……等等都被记录于此。你想看些什么？</p>
+  </text-box>
+</body>
+</html>

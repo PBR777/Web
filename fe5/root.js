@@ -28,10 +28,10 @@ function loadEaseBox() {
   }
 }
 
-export const headingDiv = create("div", "document-title-div");
+export const headingDiv = create("div", "#document-title-div");
 
 if(!document.querySelector("meta[name='no-title']")) {
-  const heading = create("h1", "document-title")
+  const heading = create("h1", "#document-title")
     .appendTo(headingDiv);
 
   if(document.title === "") {

@@ -16,28 +16,23 @@ export class Infocard extends PackedElement {
     img.classList.add("infocard-img");
     
     
-    const profileImgDiv = create("div")
-      .addClass("infocard-img-div")
+    const profileImgDiv = create("div", ".infocard-img-div")
       .appendTo(this);
     
-    const profileInfoDiv = create("div")
-      .addClass("infocard-info-div")
+    const profileInfoDiv = create("div", ".infocard-info-div")
       .appendTo(this);
 
-    create("span")
-      .addClass("infocard-title")
+    create("span", ".infocard-title")
       .setHTML(title)
       .appendTo(profileInfoDiv);
 
-    create("span")
-      .addClass("infocard-span")
+    create("span", ".infocard-span")
       .appendTo(profileInfoDiv);
 
     if(!descriptions)
       this.setInfo("加载中...");
 
-    this.#imgBox = create("info-box")
-      .addClass("infocard-img-box")
+    this.#imgBox = create("info-box", ".infocard-img-box")
       .append(img)
       .appendTo(profileImgDiv);
   }

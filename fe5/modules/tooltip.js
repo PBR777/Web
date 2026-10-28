@@ -1,6 +1,6 @@
 import { loadStyle, create } from "./index.js";
 
-const tooltip = create("div", "tooltip");
+const tooltip = create("div", "#tooltip");
 
 let isTooltipShowing = false;
 let frameId = null;

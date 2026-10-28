@@ -99,6 +99,10 @@ a:visited {
   color: #d270ff;
 }
 
+ol, ul {
+  width: 80%;
+}
+
 text-box>a,
 div>a {
   display: inline-block;
