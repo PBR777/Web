@@ -33,7 +33,7 @@ export class PackedElement {
 
   /**@param {string} text */
   setText(text) {
-    this.#element.textContent = text;
+    this.#element.innerText = text;
     return this;
   }
 

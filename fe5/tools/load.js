@@ -30,7 +30,7 @@ async function getToolObject(toolName) {
 
   } catch(err) {
     console.error(err);
-    toolDiv.setHTML(`tool:${toolName}加载失败 <br> ${err}`);
+    toolDiv.setText(`tool:${toolName}加载失败\n${err}`);
   }
 
   const name = toolDiv.select("meta[name='tool-name']");
@@ -46,7 +46,7 @@ async function getToolObject(toolName) {
         .map(script => {
           script.remove();
           return create("script")
-            .setHTML(script.innerText)
+            .setText(script.innerText)
             .setAttribute("type", script.type)
             .get();   
       });

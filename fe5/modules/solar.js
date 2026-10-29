@@ -155,6 +155,10 @@ class SkyObject {
       .map(id => new SkyObject(id));
   }
 
+  get hasChild() {
+    return this.#rawData.children.length > 0;
+  }
+
   /**
    * @returns {SkyObject | null}
    */

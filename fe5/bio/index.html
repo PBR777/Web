@@ -119,7 +119,7 @@
       if(str === "") {
         resultTextDiv.setText(`${idSet.length}个编号已收录`);
       } else if(results.length === 0) {
-        resultTextDiv.setHTML(`ID:${str}未找到，他/她可能未被收录，或者根本不存在<br><br>￣へ￣`);
+        resultTextDiv.setText(`ID:${str}未找到，他/她可能未被收录，或者根本不存在\n\n￣へ￣`);
       } else {
         resultTextDiv.setText(`找到${results.length}个与ID:${str}相似的结果。已按相似度排序`);
       }

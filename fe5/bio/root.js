@@ -35,9 +35,9 @@ const writer = document.head
 const img = loadImage(`/fe5/assets/bio/${dirName}/profile.png`);
 
 img.promise.catch(() => {
-  img.image.setHTML(
+  img.image.setText(
     textList[Math.abs((seed * 258015 | 0) - 152) % textList.length]
-    + "<br>图片不存在"
+    + "\n图片不存在"
   );
 })
 
