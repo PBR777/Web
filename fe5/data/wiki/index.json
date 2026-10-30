@@ -1,29 +1,34 @@
 [
   {
-    "path": "settings",
     "name": "设定",
+    "path": "settings",
     "description": "Fe5基础中的基础"
   },
   {
-    "path": "solar",
     "name": "恒星系统",
+    "path": "solar",
     "description": "关于远征系——Fe5所在的恒星系统的数据",
     "dynamic-js": true
   },
   {
-    "path": "env",
     "name": "生态",
+    "path": "env",
     "description": "Fe5的气候、生物、地形、昼夜和更多自然现象"
   },
   {
-    "path": "locations",
     "name": "地图",
+    "path": "locations",
     "description": "Fe5的超大地图！去你想去的地方！",
     "dynamic-js": true
   },
   {
-    "path": "tech",
     "name": "科技",
+    "path": "tech",
     "description": "Fe5上的特有科技、武器、产品等等各种小发明"
+  },
+  {
+    "name": "武器",
+    "path": "weapons",
+    "description": "一些武器，用于格斗，还可以用于战斗！"
   }
 ]
