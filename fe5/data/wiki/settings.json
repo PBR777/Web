@@ -1,22 +1,22 @@
 [
   {
-    "path": "time-system",
-    "name": "时间系统"
+    "name": "时间系统",
+    "path": "time-system"
   },
   {
-    "path": "deversity",
-    "name": "发展区"
+    "name": "发展区",
+    "path": "deversity"
   },
   {
-    "path": "identity",
-    "name": "身份系统"
+    "name": "身份系统",
+    "path": "identity"
   },
   {
-    "path": "lifestyle",
-    "name": "生活方式"
+    "name": "生活方式",
+    "path": "lifestyle"
   },
   {
-    "path": "voting",
-    "name": "投票系统"
+    "name": "投票系统",
+    "path": "voting"
   }
 ]

@@ -1,0 +1,14 @@
+[
+  {
+    "name": "随身小刀",
+    "path": "knife"
+  },
+  {
+    "name": "刀剑",
+    "path": "knife-sword"
+  },
+  {
+    "name": "对空烟花",
+    "path": "fireworks"
+  }
+]

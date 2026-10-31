@@ -10,6 +10,10 @@
   <script type="module" src="/fe5/root.js"></script>
 
   <style>
+    text-box {
+      max-width: 800px;
+    }
+
     #search-bar {
       width: 30%;
       min-width: 100px;
@@ -40,10 +44,28 @@
       border-color: inherit;
       border-bottom-style: solid;
     }
-    
-    #search-result {
-      width: 100%;
+
+    li {
+      margin: 0;
     }
+
+    .bio-links {
+      display: inline-block;
+      font-size: 110%;
+      width: calc(100% - 30px);
+
+      transition: background-color 200ms;
+    }
+
+    .bio-links:hover {
+      background-color: var(--background-glow);
+    }
+
+    .bio-icon {
+      width: 28px;
+      image-rendering: pixelated;
+    }
+
   </style>
 
   <script type="module">
@@ -58,7 +80,7 @@
     const resultTextDiv = create("div", "#result-text-div")
       .appendTo(textbox);
 
-    const resultDiv = create("div", "#search-result")
+    const resultDiv = create("ol", "#search-result")
       .appendTo(textbox);
 
     const searchbar = create("input", "#search-bar")
@@ -74,9 +96,8 @@
         if(ev.keyCode !== 13) return; // Not pressed Enter
 
         update();
-        const children = resultDiv.getChildren();
-        if(children.length === 1)
-          children[0].get().click();
+        if(resultDiv.childrenCount === 1)
+          resultDiv.select(".bio-links").get().click();
       })
       .addListener("change", update)
       .get();
@@ -124,12 +145,13 @@
         resultTextDiv.setText(`找到${results.length}个与ID:${str}相似的结果。已按相似度排序`);
       }
 
-      const links = results.map(name => {
-        return create("a")
+      const links = results.map(name => create("li").append(
+        create("img", ".bio-icon")
+          .setAttribute("src", `/fe5/assets/zone/${name[0]}.png`),
+        create("a", ".bio-links")
           .setText(name)
           .setAttribute("href", `/fe5/bio/${name}/`)
-          .get();
-      });
+        ).get());
 
       resultDiv.setHTML("");
       resultDiv.append(...links);
@@ -161,11 +183,7 @@
     })().catch(err => {
       console.error(err);
 
-      document.body.querySelector("#placeholder").innerText = 
-
-`加载失败 :(
-${err}`
-
+      document.body.querySelector("#placeholder").innerText = `加载失败 :(\n${err}`;
     });
 
   </script>
@@ -173,7 +191,5 @@ ${err}`
 
 <body>
   <span id="placeholder">加载中</span>
-
 </body>
-
 </html>

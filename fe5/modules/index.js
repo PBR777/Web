@@ -143,6 +143,10 @@ export class PackedElement {
     this.#element.remove();
     return this;
   }
+
+  get childrenCount() {
+    return this.#element.children.length;
+  }
 }
 
 /**
