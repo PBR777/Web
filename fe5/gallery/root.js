@@ -6,7 +6,7 @@ import "/fe5/root.js";
  * @param {galleryFormat} json 
  */
 function parseJson(json) {
-  const fragment = create("div")
+  const div = create("div", ".gallery-body")
     .addListener("click", ev => {
       const target = ev.target;
       if(target.classList.contains("gallery-img")) {
@@ -16,7 +16,7 @@ function parseJson(json) {
 
   for(const data of json) {
     const box = create("info-box", ".gallery-box")
-      .appendTo(fragment);
+      .appendTo(div);
     const imgUrl = data.url ?? `/fe5/assets/gallery/${dirName}/${data.name}`;
 
     const img = loadImage(imgUrl, true);
@@ -37,10 +37,10 @@ function parseJson(json) {
     }
   }
 
-  return fragment;
+  return div;
 }
 
-setTitle("Gallery\n" + dirName)
+setTitle("Gallery\n" + dirName);
 
 const json = await fetchJson(`/fe5/data/gallery/${dirName}.json`);
 parseJson(json).appendTo(document.body);
