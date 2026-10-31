@@ -42,13 +42,14 @@ async function getToolObject(toolName) {
     execute: () => {
 
       const scripts = toolDiv.selectAll(".to-be-executed")
-        .map(scrpit => scrpit.get())
         .map(script => {
+          const newScript = create("script")
+            .setAttribute("type", script.get().type)
+            .get();
+
+          newScript.textContent = script.get().textContent;
           script.remove();
-          return create("script")
-            .setText(script.innerText)
-            .setAttribute("type", script.type)
-            .get();   
+          return newScript;
       });
 
       toolDiv.append(...scripts);

@@ -1,6 +1,6 @@
 .gallery-box {
   width: 80%;
-  max-width: 500px;
+  max-width: 800px;
 }
 
 .gallery-img {
@@ -11,4 +11,10 @@
 
 .gallery-description {
   text-align: center;
+}
+
+.gallery-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

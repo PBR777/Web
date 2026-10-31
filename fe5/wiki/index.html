@@ -101,6 +101,13 @@
       z-index: 10;
     }
 
+    .wiki-links {
+      width: 33%;
+    }
+
+    .wiki-textbox {
+      max-width: 500px;
+    }
   </style>
 
   <script type="module">
@@ -138,7 +145,7 @@
 
       description.setHTML(data.description ?? "　");
       if(!data.content) {
-        data.content = create("text-box");
+        data.content = create("text-box", ".wiki-textbox");
         const statusText = create("span")
           .setStyle("text-align", "center")
           .setText("加载中...")
@@ -151,7 +158,7 @@
           }).catch(err => {
             console.error(err);
             
-            statusText.setText(`加载失败 U_U\n\n${err}`)
+            statusText.setText(`加载失败 U_U\n\n${err}`);
           });
       }
 
@@ -215,14 +222,14 @@
               white-space-collapse: preserve;
 
               line-height: 1;
-              
-
-              user-select: none;
+            
               cursor: pointer;
             }
 
             .indents {
+              font-family: sans-serif;
               font-size: 150%;
+              user-select: none;
             }
 
             .links {
@@ -231,7 +238,8 @@
 
               width: fit-content;
               padding: 0 5px;
-              
+
+              user-select: none;
 
               transition: background-color 200ms;
             }

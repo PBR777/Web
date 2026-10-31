@@ -83,15 +83,14 @@ class AnchorHeading extends HTMLElement {
     .addListener("click", this.onClick.bind(this))
     .get();
 
+  #initalized = false;
+
   get anchor() {
     return this.#anchor;
   }
 
   constructor() {
     super();
-
-    this.setId(this.textContent);
-    this.setContent(this.textContent)
     this.#anchor.classList.toggle("sidebar-anchor-h2", this.classList.contains("h2"));
   }
 
@@ -131,6 +130,13 @@ class AnchorHeading extends HTMLElement {
   }
 
   connectedCallback() {
+    if(!this.#initalized) {
+      this.#initalized = true;
+      
+      this.setId(this.textContent);
+      this.setContent(this.textContent);
+    }
+
     this.addEventListener("click", this.onClick);
     updateTree();
   }
