@@ -22,6 +22,11 @@
       flex-direction: column;
       justify-content: center;
 
+      color: #080e3fbe;
+      font-weight: bold;
+      text-shadow: none;
+      font-size: large;
+      font-family: monospace;
     }
 
     .writing-title {
@@ -79,7 +84,7 @@
           .replaceAll("\r", "")
           .split("\n\n");
 
-        msg.innerHTML = `写作时间：<br>${parts.shift()}<br><br>作者：<br>${parts.shift().split(";").map(name => name.trim()).join("<br>")}`;
+        msg.innerHTML = `写作时间：<br>${parts.shift().replaceAll("\n", "<br>")}<br><br>作者：<br>${parts.shift().split(";").map(name => name.trim()).join("<br>")}`;
 
         title.innerHTML = parts.shift();
         
