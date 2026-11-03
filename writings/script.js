@@ -1,5 +1,3 @@
-
-
 new CSSStyleSheet().replace(`
   .writings-link {
     display: block;
@@ -29,7 +27,7 @@ new CSSStyleSheet().replace(`
  * @param {string} category
  */
 export async function load(category) {
-  const res = await fetch(`/data/writings/${category}/index.json`);
+  const res = await fetch(`/data/writings/${category}.json`);
   /**@type {string[]} */
   const json = await res.json();
 
