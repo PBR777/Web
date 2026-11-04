@@ -74,6 +74,9 @@
         if(!name) throw new Error("Missing parameter \"c\" (category)");
 
         const hashcode = await hash(name);
+
+        console.log(hashcode);
+
         const res = await fetch(`/data/writings/${category}/${hashcode}.txt`);
         if(!res.ok) throw new Error(`Cannot find Writing:${category}/${hashcode}(${name})`);
         

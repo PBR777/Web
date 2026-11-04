@@ -24,7 +24,7 @@
   border: 2px solid #838bff56;
   border-radius: 5px;
 
-  animation: breathing-bg 800ms ease-in-out infinite alternate;
+  animation: breathing-bg 1000ms ease-in-out infinite alternate;
 }
 
 #newest-title {
@@ -45,20 +45,22 @@
   display: block;
   width: 100%;
 
-  margin: 5px 0;
+  margin: 8px 0;
   padding: 5px 0 5px 5px;
 
-  border-left: 3px solid #709bd4;
+  border-left: 3px solid #006eff7c;
   font-size: 120%;
 
-  transition: background-color 150ms;
+  transition: background-color 150ms, translate 200ms, box-shadow 200ms;
 
   user-select: none;
   cursor: pointer;
 }
 
 .writings-link:hover {
-  background-color: #9be8fd5b
+  background-color: #afcfff5b;
+  translate: 0 -5px;
+  box-shadow: #00000063 3px 5px 8px;
 }
 
 .writings-link.writings-newest-links {

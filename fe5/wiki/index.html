@@ -101,10 +101,6 @@
       z-index: 10;
     }
 
-    .wiki-links {
-      width: 33%;
-    }
-
     .wiki-textbox {
       max-width: 500px;
     }
@@ -222,8 +218,6 @@
               white-space-collapse: preserve;
 
               line-height: 1;
-            
-              cursor: pointer;
             }
 
             .indents {
@@ -237,15 +231,16 @@
               font-size: 110%;
 
               width: fit-content;
-              padding: 0 5px;
+              padding: 0 20px 0 5px;
 
               user-select: none;
+              cursor: pointer;
 
-              transition: background-color 200ms;
+              transition: background-color 150ms, translate 200ms;
             }
 
             .links:hover {
-              background-color: var(--background-glow);
+              translate: 8px 0;
             }
           `).appendTo(fragment);
 
@@ -261,7 +256,6 @@
           children: tree
         }));
         
-
         break
       }
 
