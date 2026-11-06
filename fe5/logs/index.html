@@ -44,7 +44,7 @@
 
       height: 50px;
 
-      margin: 15px 0;
+      margin: 15px 0 30px 0;
       padding-left: 15px;
 
       transition: height 250ms;
@@ -225,7 +225,7 @@
           /**@type HTMLElement */
           const target = ev.target;
 
-          const i = Number(target.parentElement.datasetindex);
+          const i = Number(target.parentElement.dataset.index);
           const time = Time.stringify(logsData[i].t, "full", 0);
 
           target.setAttribute("text", time);
