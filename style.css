@@ -41,7 +41,7 @@ h1::before {
 }
 
 h2 {
-  --color: #f33737;
+  --color: #db1305;
 
   color: var(--color);
   text-shadow: 
