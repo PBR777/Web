@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="zh-CN">
 
 <head>
+  <title>Writings: Outer Projects</title>
+
   <link rel="stylesheet" href="/style.css">
+
+  <script type="module" src="/script.js"></script>
+
   <link rel="stylesheet" href="/writings/style.css">
 
-  <script src="/script.js"></script>
-
   <script type="module">
-    import { load } from "../script.js";
-    document.querySelector(".body").append(await load("outer-project"));
+    import { load } from "/writings/script.js";
+    await load("outer-project");
   </script>
 </head>
 
 <body>
-  
-
-  <h1>Writings: Outer Projects</h1>
-
   <div class="body">
     <h2>简介</h2>
     <p>这些文章并不出自我手，也不由我维护。</p>

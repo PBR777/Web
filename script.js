@@ -1,30 +1,26 @@
-/**
- * Global data
- */
-const WEB_DATA = {
-  title: "PBR's Web",
-  favicon: "/favicon.ico",
-  appleFavicon: "/apple-favicon.png"
+const div = document.createElement("div");
+div.id = "upper_banner";
+
+div.append(
+  ...[
+    {name: "主页", path: "/"},
+    {name: "项目", path: "/projects/"},
+    {name: "作文:有感而发", path: "/writings/sudden-idea/"},
+    {name: "作文:外部作品", path: "/writings/outer-project/"},
+    {name: "作文:硬性要求", path: "/writings/forced-project/"}
+  ].map(link => {
+    const a = document.createElement("a");
+    a.innerText = link.name;
+    a.href = link.path;
+    return a;
+  })
+);
+
+if(!document.querySelector("h1")) {
+  const title = document.createElement("h1");
+  title.innerText = document.title;
+  document.body.insertAdjacentElement("afterbegin", title);
 }
 
-document.title = WEB_DATA.title
-
-const FAVICON = document.createElement("link");
-FAVICON.rel  = "icon";
-FAVICON.href = WEB_DATA.favicon;
-
-const APPLE_FAVICON = document.createElement("link");
-APPLE_FAVICON.rel  = "apple-touch-icon";
-APPLE_FAVICON.href = WEB_DATA.appleFavicon;
-
-document.head.append(FAVICON, APPLE_FAVICON);
-
-(async () => {
-  const res = await fetch(`/components/upper_banner.html`);
-  const div = document.createElement("div");
-  div.id = "upper_banner";
-  div.innerHTML = await res.text();
-  document.body.insertAdjacentElement("afterbegin", div);
-
-  document.body.classList.add("show");
-})();
+document.body.insertAdjacentElement("afterbegin", div);
+document.body.classList.add("show");

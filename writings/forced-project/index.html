@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="zh-CN">
 
 <head>
+  <title>Writings: Forced Projects</title>
+
   <link rel="stylesheet" href="/style.css">
+
+  <script type="module" src="/script.js"></script>
+
   <link rel="stylesheet" href="/writings/style.css">
 
-  <script src="/script.js"></script>
-
   <script type="module">
-    import { load } from "../script.js";
-    document.querySelector(".body").append(await load("forced-project"));
+    import { load } from "/writings/script.js";
+    await load("forced-project");
   </script>
 </head>
 
 <body>
-  
-
-  <h1>Writings: Forced Projects</h1>
-
   <div class="body">
     <h2>简介</h2>
     <p>强制要求写的 ;<</p>

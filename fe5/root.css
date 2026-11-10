@@ -75,14 +75,14 @@ body.show {
   margin: 30px 0;
 
   transform: translateY(10%);
-  opacity: 0%;
+  opacity: 0;
 
   transition: transform 400ms, opacity 400ms;
 }
 
 .observed-element-visible {
   transform: none;
-  opacity: 100%;
+  opacity: 1;
 }
 
 #document-title-div {
@@ -149,7 +149,7 @@ text-box>a:hover,
 div>a:hover {
   background-color: var(--background-glow);
   translate: 8px 0;
-  box-shadow: #000000 -8px 0 8px;
+  box-shadow: #000000 -8px 0 10px, #000000bd -8px 0;
 }
 
 input {

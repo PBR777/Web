@@ -26,10 +26,9 @@ export async function load(category) {
   newestDiv.append(". . .");
 
   fragment.append("以下作文按创作时间排序：");
-
   fragment.append(...json.map(name => createLink(category, name)));
 
-  return fragment;
+  document.querySelector(".body").append(fragment);
 }
 
 function createLink(category, name) {
