@@ -79,6 +79,24 @@ async function initCanvas(initialSeed = seed, starCount = 256) {
   
   tick(0);
   return true;
+    ctx.drawImage(starPNG, x, y, starSize, starSize);
+  }
+  
+  requestAnimationFrame(tick);
+}
+
+async function initCanvas(initialSeed = seed, starCount = 256) {
+  if(!ctx) return false;
+
+  await starImgLoadPromise;
+
+  seed = initialSeed;
+  for(let i = starCount; i > 0; i--) {
+    stars.push(random(), random(), random() * 96 + 40, (random() + 0.3) * 0.003);
+  }
+  
+  tick(0);
+  return true;
 }
 
 loadStyle("background").then(() => {
