@@ -6,21 +6,18 @@ const HAS_SIDEBAR = !document.head.querySelector("meta[name='no-sidebar']");
 let isSidebarShowing = false;
 
 const button = create("div", ".sidebar-button")
-  .addListener("click", () => sidebarControl(!isSidebarShowing));
-
-const buttonArrow = create("div", ".sidebar-button-arrow")
-  .appendTo(button);
+  .addListener("click", () => sidebarControl(!isSidebarShowing))
+  .append(create("div", ".sidebar-button-arrow"));
 
 const div = create("div", ".sidebar-div");
 
-const homeDiv = create("div", ".sidebar-title-div")
+create("div", ".sidebar-title-div")
   .setText("Fe5: Our Home")
   .addListener("click", () => window.location.href = "/fe5/")
-  .appendTo(div);
-
-const icon = create("img", ".sidebar-title-icon")
-  .setAttribute("src", "/fe5/assets/solar/fe5-256x256.webp")
-  .appendTo(homeDiv);
+  .append(
+    create("img", ".sidebar-title-icon")
+      .setAttribute("src", "/fe5/assets/solar/fe5-256x256.webp")
+  ).appendTo(div);
 
 const anchorDiv = create("div", ".sidebar-anchor-div")
   .appendTo(div);
@@ -82,6 +79,8 @@ class AnchorHeading extends HTMLElement {
   #anchor = create("div", ".sidebar-anchor")
     .addListener("click", this.onClick.bind(this))
     .get();
+
+  #initalized = false;
 
   #initalized = false;
 

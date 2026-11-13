@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="zh-CN">
 
 <head>
+  <title>Projects</title>
+
+  <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="./style.css">
 
   <style>
@@ -10,16 +13,24 @@
       width: 480px;
       height: 360px;
     }
+
+    .gameshot span {
+      display: none;
+    }
+
+    .gameshot:hover span {
+      display: inline-block;
+    }
+
+    .body {
+      margin-top: -8px;
+    }
   </style>
 
-  <script src="/script.js"></script>
+  <script type="module" src="/script.js"></script>
 </head>
 
 <body>
-  <p-component id="upper_banner"></p-component>
-
-  <h1>My Projects</h1>
-
   <div class="body">
     <h2>多人游戏</h2>
 

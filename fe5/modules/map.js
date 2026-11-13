@@ -2,8 +2,7 @@ import "./tooltip.js";
 import { loadStyle, create, fetchJson, PackedElement, loadImage } from "./index.js";
 
 class Map extends PackedElement {
-  static STATUS = loadStyle("map");
-  static MAP_ROOT= "/fe5/data/map/";
+  static STATE = loadStyle("map");
 
   #ok = false;
 
@@ -32,7 +31,7 @@ class Map extends PackedElement {
     /**@type Promise<mapDataFormat> */
     const mapDataPromise = fetchJson(`/fe5/data/maps/${mapDataName}.json`);
 
-    Promise.all([mapDataPromise, Map.STATUS, mapImg.promise])
+    Promise.all([mapDataPromise, Map.STATE, mapImg.promise])
       .then(([mapData]) => mapData.forEach(data => {
         if(Array.isArray(data.pos[0])) {
           data.pos.forEach(spot => this.#createSpot(spot[0], spot[1], data.name, data.href));

@@ -1,44 +1,26 @@
-/**
- * Global data
- */
-const WEB_DATA = {
-  title: "PBR's Web",
-  favicon: "/favicon.ico",
-  appleFavicon: "/apple-favicon.png",
-  style: "/style.css"
+const div = document.createElement("div");
+div.id = "upper_banner";
+
+div.append(
+  ...[
+    {name: "主页", path: "/"},
+    {name: "项目", path: "/projects/"},
+    {name: "作文:有感而发", path: "/writings/sudden-idea/"},
+    {name: "作文:外部作品", path: "/writings/outer-project/"},
+    {name: "作文:硬性要求", path: "/writings/forced-project/"}
+  ].map(link => {
+    const a = document.createElement("a");
+    a.innerText = link.name;
+    a.href = link.path;
+    return a;
+  })
+);
+
+if(!document.querySelector("h1")) {
+  const title = document.createElement("h1");
+  title.innerText = document.title;
+  document.body.insertAdjacentElement("afterbegin", title);
 }
 
-document.title = WEB_DATA.title
-
-const FAVICON = document.createElement("link");
-FAVICON.rel  = "icon";
-FAVICON.href = WEB_DATA.favicon;
-
-const APPLE_FAVICON = document.createElement("link");
-APPLE_FAVICON.rel  = "apple-touch-icon";
-APPLE_FAVICON.href = WEB_DATA.appleFavicon;
-
-const STYLE = document.createElement("link");
-STYLE.rel  = "stylesheet";
-STYLE.href = WEB_DATA.style;
-
-document.head.append(FAVICON);
-document.head.append(APPLE_FAVICON);
-document.head.append(STYLE);
-
-class Component extends HTMLElement {
-  async connectedCallback() {
-    if(!this.id) throw new Error("ID is missing.");
-
-    const res = await fetch(`/components/${this.id}.html`);
-
-    if(!res.ok) {
-      this.innerText = `${this.id} loaded failed.`;
-      return;
-    }
-    
-    this.innerHTML = await res.text();
-  }
-}
-
-customElements.define("p-component", Component);
+document.body.insertAdjacentElement("afterbegin", div);
+document.body.classList.add("show");

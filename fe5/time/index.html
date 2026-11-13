@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="zh-CN">
 
 <head>
-  <meta name="no-sidebar">
-  <meta name="no-title">
+  <title>Time</title>
+
+  <meta name="no-sidebar" content="">
+  <meta name="no-title" content="">
 
   <link rel="stylesheet" href="/fe5/root.css">
 
@@ -15,9 +17,9 @@
 
     Time.calibrate();
 
-    const HEADING = document.querySelector("h1");
-    const STAGE = document.getElementById("stage");
-    const CTX = STAGE.getContext("2d");
+    const title = document.querySelector("h1");
+    const canvas = document.getElementById("stage");
+    const ctx = canvas.getContext("2d");
 
     const HpInSec = Time.H_CONST / 100;
     const D_IN_d = (Time.H_CONST * 36 / 60 / 60 / 24).toFixed(5);
@@ -42,7 +44,7 @@
         }
       };
       return obj;
-    })(CTX);
+    })(ctx);
 
     setInterval((function update() {
       const ts = Time.now();
@@ -50,35 +52,30 @@
       const Y = String(ts.Y);
       const D = String(ts.D).padStart(2, "0");
       const H = String(ts.H).padStart(2, "0");
-
       const Hp = String(ts.Hp | 0).padStart(2, "0");
-
       const s = String(ts.s.toFixed(2)).padStart(6, "0");
 
-      const STATUS = ts.isDaytime ? "☀️日" : "🌙夜";
+      const daynightState = ts.isDaytime ? "☀️日" : "🌙夜";
+      const sleepingState = Hp < 70 ? "活动" : "睡觉";
 
-      const SLEEPING_STATUS = Hp < 70 ? "活动" : "睡觉";
-
-
-
-      HEADING.innerHTML = `${Y}-${D}-${H} ${STATUS}<br>` +
+      title.innerHTML = `${Y}-${D}-${H} ${daynightState}<br>` +
         `${Hp}:${s}<br><br>` +
-        `现在应该：${SLEEPING_STATUS}！`;
+        `现在应该：${sleepingState}！`;
 
       if(isSizeChanged) {
         isSizeChanged = false;
 
-        const rect = STAGE.getBoundingClientRect();
+        const rect = canvas.getBoundingClientRect();
 
         const height = 300;
 
-        STAGE.style.height = `${height}px`;
+        canvas.style.height = `${height}px`;
 
-        STAGE.height = height;
-        STAGE.width = rect.width;
+        canvas.height = height;
+        canvas.width = rect.width;
       }
 
-      canvasTick(CTX, ts);
+      canvasTick(ctx, ts);
 
       return update;
     })(), 1000 / 30);
@@ -91,7 +88,7 @@
     function canvasTick(ctx, ts) {
       if (!ctx) return;
 
-      ctx.clearRect(0, 0, STAGE.width, STAGE.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const CVS = ctx.canvas;
       const CENTER_X = CVS.width / 2 | 0;

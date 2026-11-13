@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="zh-CN">
 
 <head>
-  <script src="/script.js"></script>
+  <title>Writings</title>
 
-  <script src="/components/init.js"></script>
+  <link rel="stylesheet" href="/style.css">
+  
+  <script type="module" src="/script.js"></script>
 
   <style>
     .writing-text {
@@ -22,6 +24,11 @@
       flex-direction: column;
       justify-content: center;
 
+      color: #080e3fbe;
+      font-weight: bold;
+      text-shadow: none;
+      font-size: large;
+      font-family: monospace;
     }
 
     .writing-title {
@@ -33,10 +40,6 @@
 </head>
 
 <body>
-  <p-component id="upper_banner"></p-component>
-
-  <h1>Writings</h1>
-
   <div class="body">
     <script id="script" type="module">
       const fragment = document.createDocumentFragment();
@@ -69,6 +72,9 @@
         if(!name) throw new Error("Missing parameter \"c\" (category)");
 
         const hashcode = await hash(name);
+
+        console.log(hashcode);
+
         const res = await fetch(`/data/writings/${category}/${hashcode}.txt`);
         if(!res.ok) throw new Error(`Cannot find Writing:${category}/${hashcode}(${name})`);
         
@@ -79,7 +85,7 @@
           .replaceAll("\r", "")
           .split("\n\n");
 
-        msg.innerHTML = `写作时间：<br>${parts.shift()}<br><br>作者：<br>${parts.shift().split(";").map(name => name.trim()).join("<br>")}`;
+        msg.innerHTML = `写作时间：<br>${parts.shift().replaceAll("\n", "<br>")}<br><br>作者：<br>${parts.shift().split(";").map(name => name.trim()).join("<br>")}`;
 
         title.innerHTML = parts.shift();
         

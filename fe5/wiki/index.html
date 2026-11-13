@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="zh-CN">
 <head>
   <title>Fe5 Wiki</title>
 
@@ -12,7 +12,7 @@
       overflow-x: hidden;
     }
 
-    body::-webkit-scrollbar {
+    html::-webkit-scrollbar {
       display: none;
     }
 
@@ -114,7 +114,7 @@
     import { loadMap } from "/fe5/modules/map.js";
     import { getSkyObject } from "/fe5/modules/solar.js";
 
-    const ANI_DURATION = 300;
+    const ANI_DURATION = 200;
 
     let previousIndex = -1;
 
@@ -145,6 +145,7 @@
       description.setHTML(data.description ?? "　");
       if(!data.content) {
         data.content = create("text-box", ".wiki-textbox");
+        data.content = create("text-box", ".wiki-textbox");
         const statusText = create("span")
           .setStyle("text-align", "center")
           .setText("加载中...")
@@ -157,6 +158,7 @@
           }).catch(err => {
             console.error(err);
             
+            statusText.setText(`加载失败 U_U\n\n${err}`);
             statusText.setText(`加载失败 U_U\n\n${err}`);
           });
       }
@@ -208,7 +210,7 @@
           .append(await loadMap("fe5-winkel_tripel-lined"))
           .appendTo(fragment);
 
-        break
+        break;
 
         case "solar":
 
@@ -227,7 +229,9 @@
 
             .indents {
               font-family: sans-serif;
+              font-family: sans-serif;
               font-size: 150%;
+              user-select: none;
               user-select: none;
             }
 
@@ -240,11 +244,11 @@
 
               user-select: none;
 
-              transition: background-color 200ms;
+              transition: background-color 150ms, translate 200ms;
             }
 
             .links:hover {
-              background-color: var(--background-glow);
+              translate: 8px 0;
             }
           `).appendTo(fragment);
 
@@ -260,8 +264,7 @@
           children: tree
         }));
         
-
-        break
+        break;
       }
 
       return fragment;

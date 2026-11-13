@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="zh-CN">
 
 <head>
-  <link rel="stylesheet" href="./style.css">
+  <title>Writings: Forced Projects</title>
 
-  <script src="/script.js"></script>
+  <link rel="stylesheet" href="/style.css">
+
+  <script type="module" src="/script.js"></script>
+
+  <link rel="stylesheet" href="/writings/style.css">
 
   <script type="module">
-    import { load } from "../script.js";
-    document.querySelector(".body").append(await load("forced-project"));
+    import { load } from "/writings/script.js";
+    await load("forced-project");
   </script>
 </head>
 
 <body>
-  <p-component id="upper_banner"></p-component>
-
-  <h1>Writings: Forced Projects</h1>
-
   <div class="body">
     <h2>简介</h2>
-    <p>强制要求写的 ;<</p>
+    <p>强制要求写的 ;&lt;</p>
     <h2>文章</h2>
   </div>
 </body>

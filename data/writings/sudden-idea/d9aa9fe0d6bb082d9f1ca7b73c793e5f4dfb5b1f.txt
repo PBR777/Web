@@ -50,7 +50,7 @@ szszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszszsz
 
     ……怎么没反应？哦，对了，充能面包，应该是context.sliceLine(-22, -20).replaceAll("！", "？")↵
 才对，没问题了。
-    ……啧，不应该替换地22行吗？哦~你吗，刚刚应该输人sliceLine(-24, -22)而不是sliceLine(-22, -20)。
+    ……啧，不应该替换第22行吗？哦~你吗，刚刚应该输人sliceLine(-24, -22)而不是sliceLine(-22, -20)。
 
     好了，不玩上下文了……
     ……

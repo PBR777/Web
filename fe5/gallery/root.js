@@ -42,5 +42,5 @@ function parseJson(json) {
 
 setTitle("Gallery\n" + dirName);
 
-const json = await fetchJson(`/fe5/data/gallery/${dirName}.json`);
-parseJson(json).appendTo(document.body);
+parseJson(await fetchJson(`/fe5/data/gallery/${dirName}.json`))
+  .appendTo(document.body);

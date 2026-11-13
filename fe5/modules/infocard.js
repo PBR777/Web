@@ -1,8 +1,6 @@
 import { create, loadStyle, PackedElement } from "./index.js";
 
 export class Infocard extends PackedElement {
-  #imgBox;
-
   /**
    * @param {HTMLElement} img 
    * @param {string | undefined} title 
@@ -32,7 +30,7 @@ export class Infocard extends PackedElement {
     if(!descriptions)
       this.setInfo("加载中...");
 
-    this.#imgBox = create("info-box", ".infocard-img-box")
+    create("info-box", ".infocard-img-box")
       .append(img)
       .appendTo(profileImgDiv);
   }
