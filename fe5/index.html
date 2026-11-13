@@ -86,16 +86,12 @@
   
   
   <script type="module">
-    import { loadMap } from "./modules/map.js";
-    import "/fe5/modules/tooltip.js";
-
-    loadMap("fe5-winkel_tripel-lined")
-      .appendTo(document.querySelector("#map-inner"));
+    import "/fe5/modules/tooltip.js";;
   </script>
 </head>
 
 <body>
-  <div class="observed-element" id="title">
+  <div id="title">
     <div class="text">
       <h1>
         Fe<span class="title-highlight">5</span>
@@ -111,6 +107,18 @@
   </div>
 
   <text-box>
+    <ah->快速连接</ah->
+    <div id="quick-action">
+      <a href="/fe5/wiki/">百科</a>
+      <a href="/fe5/bio/">已收录编号</a>
+      <a href="/fe5/time/">时钟</a>
+      <a href="/fe5/articles/">文章</a>
+      <a href="/fe5/logs/">日志</a>
+      <a href="/fe5/gallery/">画廊</a>
+    </div>
+  </text-box>
+
+  <text-box>
     <ah->Fe5：起航之地</ah->
     <p>在<obf-text>IDK.</obf-text>光年之外的一颗行星——Fe5上。人类已经登上这颗美丽行星，重写了许多旧有常识，更突破了很多科技难题。</p>
     <p>这一切都发生在未来某个时刻（反正是地球人类灭绝之前），或者现在正在发生……不知道，管他什么平行宇宙……反正有可能。</p>
@@ -121,22 +129,5 @@
     <p style="text-align: right; color: deepskyblue; margin-right: 60px;">-- <tool-tip text="...">777</tool-tip></p>
   </text-box>
 
-  <div class="observed-element" id="map">
-    <div id="map-inner"></div>
-    <p>Fe5地图（温克尔三重投影）</p>
-  </div>
-  
-  <text-box>
-    <ah->快速连接</ah->
-    <div id="quick-action">
-      <a href="/fe5/wiki/">百科</a>
-      <a href="/fe5/bio/">已收录编号</a>
-      <a href="/fe5/time/">时钟</a>
-      <a href="/fe5/articles/">文章</a>
-      <a href="/fe5/logs/">日志</a>
-      <a href="/fe5/gallery/">画廊</a>
-    </div>
-    
-  </text-box>
 </body>
 </html>

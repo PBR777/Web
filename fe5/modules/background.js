@@ -77,7 +77,7 @@ async function initCanvas(initialSeed = seed, starCount = 256) {
     stars.push(random(), random(), random() * 96 + 40, (random() + 0.3) * 0.003);
   }
   
-  tick();
+  tick(0);
   return true;
 }
 
