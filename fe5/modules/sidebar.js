@@ -122,11 +122,11 @@ class AnchorHeading extends HTMLElement {
   }
 
   /**
-   * @param {string} content 
+   * @param {string} html 
    */
-  setContent(content) {
-    this.textContent = content;
-    this.#anchor.textContent = content
+  setContent(html) {
+    this.innerHTML = html;
+    this.#anchor.innerHTML = html
   }
 
   connectedCallback() {
@@ -134,7 +134,7 @@ class AnchorHeading extends HTMLElement {
       this.#initalized = true;
       
       this.setId(this.textContent);
-      this.setContent(this.textContent);
+      this.setContent(this.innerHTML);
     }
 
     this.addEventListener("click", this.onClick);

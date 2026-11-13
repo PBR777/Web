@@ -4,30 +4,6 @@ import "/fe5/modules/id.js";
 import "/fe5/modules/text-obfucation.js";
 import { setTitle } from "/fe5/modules/sidebar.js"
 
-function loadEaseBox() {
-  const observeTarget = document.querySelectorAll(".observed-element");
-  let targetCount = observeTarget.length;
-
-  if(targetCount > 0) {
-    const observer = new IntersectionObserver(entries => {
-      for (const entry of entries) {
-
-        const element = entry.target;
-        if(entry.isIntersecting) {
-          element.classList.add("observed-element-visible");
-          observer.unobserve(element);
-
-          if(--targetCount === 0) return observer.disconnect();
-        }
-      }
-    }, {
-      threshold: 0.5
-    });
-
-    observeTarget.forEach(observer.observe.bind(observer));
-  }
-}
-
 export const headingDiv = create("div", "#document-title-div");
 
 if(!document.querySelector("meta[name='no-title']")) {
@@ -44,8 +20,6 @@ if(!document.querySelector("meta[name='no-title']")) {
 }
 
 document.body.insertAdjacentElement("afterbegin", headingDiv.get());
-
-loadEaseBox();
 
 Promise.race([
   calStyleStatus().then(console.log),
