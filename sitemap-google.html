@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <title>Sitemap for googlebot</title>
+
+  <style>
+    a {
+      display: block;
+    }
+  </style>
+
+  <script type="module">
+    const f = async u => await (await fetch(u)).json();
+    const r = "/fe5/data/wiki/";
+    const fr = document.createDocumentFragment();
+    (await Promise.all((await f(r + "index.json"))
+      .filter(o => !o["dynamic-js"])
+      .map(async o => {
+        const re = await f(r + o.path + ".json");
+        return {re, i: o.path};
+      })))
+      .forEach(i => fr.append(...i.re.map(l => {
+        const a = document.createElement("a");
+        a.innerText = l.path;
+        a.href = `/fe5/wiki/${i.i}/${l.path}/`
+        return a;
+      })));
+    document.body.append(fr);
+  </script>
+</head>
+<body></body>
+</html>
