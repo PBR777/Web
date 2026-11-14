@@ -35,6 +35,12 @@
     #a1-y {
       animation: a1-y 5s infinite;
     }
+
+    .overline {
+      display: inline-block;
+      border-top: 2px solid;
+      line-height: 80%;
+    }
   </style>
 </head>
 
@@ -45,10 +51,11 @@
     <p><info-text>全同论</info-text>是一种用数学探讨宇宙的理论，致力在哲学与宇宙学间建立联系，从宇宙的角度去解释悖论。</p>
     <ah- class="h2">前提</ah->
     <ul>
-      <li>宇宙在时间上必须是永恒的，或者在空间上是无限的。</li>
-      <li>宇宙总质能必须趋近于无限。</li>
-      <li>宇宙的物质分布在时空里大体上要是均匀的。</li>
+      <li>宇宙在空间上是无限的。</li>
+      <li>宇宙在任意时刻下的总质能必须趋近于无限。</li>
+      <li>宇宙在任意时刻下的物质分布大体上要是均匀的。</li>
     </ul>
+    <p>幸运的是，这三大前提在主流宇宙学中均成立。</p>
 
     <ah- class="h2">...</ah->
     <p>全同论与其他理论相比，更像是一种哲学思想。个人认为，它甚至能成为一种信念，令你对很多东西释怀。这非常有意思，建议深入了解 :)</p>
@@ -59,18 +66,21 @@
     <ah->理论</ah->
 
     <ah- class="h2">物体</ah->
-    <p>物体并不完全是物质，物体指所有具有动质能的物质，例如水、泥土、氢原子、电子、光子……</p>
-    <p>𝟎是一种特殊的物体，在现实中并不存在。𝟎满足 m<sub>𝟎</sub> = 0 和 -𝟎 = 𝟎。</p>
-    <p>物体不需要满足单时间性，意思是这个物体可以在时空中跨越时间。简单来说，一个铁块随着时间，在时空中构成一个柱体，在第1秒的铁块是一个物体，第3.5秒的铁块也是，它构成的柱体也是物体。</p>
-    <p>几乎你能想到的东西，都能归类为物体。</p>
+    <p>物体并不完全是物质，物体指所有动质能不为0的物质（有一个例外），例如水、泥土、氢原子、电子、光子……</p>
+    <p>物体可以划分为<info-text>扁平物体</info-text>和<info-text>非扁平物体</info-text>。一个在时间轴上投影的长度为0的物体是扁平物体，不为0则是非扁平物体。</p>
+    <p>在表示非扁平物体时，需要为符号添加上横线。例如<span class="overline">X</span>，<span class="overline">铁块<del-text>的世界超体积</del-text></span>……</p>
+    <p>若物体<span class="overline">X</span>为扁平物体，则 t<sub><span class="overline">X</span></sub> 用来表示 <span class="overline">X</span> 在时空中的时间。</p>
+    <p>若物体X为非扁平物体，则一般用 X(t) 来表示时刻t下X的扁平物体<span class="overline">X</span>。不难看出，我们有 X(t<sub><span class="overline">X</span></sub>) = <span class="overline">X</span>。</p>
+    <p>𝟎是一种特殊的物体，在现实中并不存在。我们规定：𝟎既是扁平物体也是非扁平物体，此时𝟎满足 <tool-tip text="m&lt;sub&gt;X&lt;/sub&gt;表示物体X的质量。">m<sub>𝟎</sub></tool-tip> = 0 和 t<sub>𝟎</sub> 为未定义，-𝟎 = 𝟎，&forall;t&isin;&reals; &Rightarrow; 𝟎(t) = 𝟎。</p>
+    <p>𝐔指宇宙本身，也是一种特殊的非扁平物体。对于任何质量有限的物体X，总是有 m<sub>𝐔</sub> &GreaterEqual; m<sub>X</sub>。</p>
 
-    <ah- class="h2">𝕆和𝕆群</ah->
+    <ah- class="h2">物体集合</ah->
     <p>𝕆是一个无限集，指物体集合，包含了所有物体。𝕆与物体加法构成𝕆群。</p>
-    
     <p>&forall;X, Y&isin;𝕆 : Y &NotEqual; X &Rightarrow; </p>
     <ul>
       <li>X - Y &NotEqual; 𝟎;</li>
     </ul>
+    <p><span class="overline">𝕆</span>是扁平物体集合，满足 <span class="overline">𝕆</span> &subset; 𝕆。</p>
 
     <ah- class="h2">物体的相加与相减</ah->
     <p>在𝕆群中，减法（-）是加法（+）的逆运算。</p>
@@ -80,7 +90,6 @@
       <li>m<sub>-X</sub> = -m<sub>X</sub>;</li>
       <li>m<sub>X</sub> + m<sub>Y</sub> = m<sub>X + Y</sub>.</li>
     </ul>
-    <p>其中 m<sub>X</sub>, X&isin;𝕆 被定义为物体X的质量。</p>
     <p>物体加法简单理解为将两个物体组合在一起。例如 玻璃瓶 + 软木塞 = 塞着软木塞的玻璃瓶。</p>
     <p>需要注意的是，物体间的加法运算并不考虑X和Y在时空中的重叠程度，最终结果会计重。</p>
     <info-box class="svg">
@@ -92,17 +101,21 @@
     <ah- class="h2">物体的交集和并集</ah->
     <p>注意：虽然称呼为交集和并集，甚至连符号都与集合论相同。但物体不是集合，在物体间使用&subset;、&nsub;……是不被允许的。</p>
     <ul>
-      <span>&forall;X, Y&isin;𝕆，满足：</span>
+      <span>&forall;X, Y&isin;𝕆 它们满足：</span>
       <li>X &Intersection; Y = Y &Intersection; X 和 X &Union; Y = Y &Union; X;</li>
       <li>X &Intersection; Y = X + Y - (X &Union; Y);</li>
       <li>X &Union; Y = X + Y - (X &Intersection; Y);</li>
-      <li>X &Intersection; 𝟎 = 𝟎 和 X &Union; 𝟎 = X.</li>
+      <li>X &Intersection; 𝟎 = 𝟎 和 X &Union; 𝟎 = X;</li>
+      <li>X &Intersection; 𝐔 = X 和 X &Union; 𝐔 = 𝐔.</li>
     </ul>
     <p>可见，物体的并集会去重。</p>
     <info-box class="svg">
       <svg width="480" height="360" viewBox="0 0 127 95.25" xmlns="http://www.w3.org/2000/svg"><circle cx="25.223" cy="20.575" r="11.922" fill="#708399" fill-opacity=".673"/><circle cx="42.344" cy="20.575" r="11.922" fill="#708399" fill-opacity=".673"/><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="23.558" y="22.465" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="23.558" y="22.465">X</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="40.663" y="22.375" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="40.663" y="22.375">Y</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="25.721" y="40.104" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="25.721" y="40.104">X + Y</tspan></text><path d="M86.302 8.653A11.922 11.922 0 0074.38 20.575a11.922 11.922 0 0011.922 11.922 11.922 11.922 0 008.56-3.64 11.922 11.922 0 01-3.36-8.282 11.922 11.922 0 013.36-8.282 11.922 11.922 0 00-8.56-3.64z" fill="#708399" fill-opacity=".673"/><path d="M94.863 12.293a11.922 11.922 0 013.361 8.282 11.922 11.922 0 01-3.361 8.282 11.922 11.922 0 008.56 3.64 11.922 11.922 0 0011.923-11.922 11.922 11.922 0 00-11.922-11.922 11.922 11.922 0 00-8.561 3.64z" fill="#995d5d" fill-opacity=".673"/><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="84.637" y="22.465" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="84.637" y="22.465">X</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="101.743" y="22.375" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="101.743" y="22.375">Y</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="86.801" y="40.104" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="86.801" y="40.104">X - Y</tspan></text><path d="M25.223 51.282A11.922 11.922 0 0013.3 63.204a11.922 11.922 0 0011.923 11.922 11.922 11.922 0 008.56-3.64 11.922 11.922 0 008.56 3.64 11.922 11.922 0 0011.923-11.922 11.922 11.922 0 00-11.922-11.922 11.922 11.922 0 00-8.56 3.64 11.922 11.922 0 00-8.561-3.64z" fill="#708399" fill-opacity=".673"/><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="23.558" y="65.093" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="23.558" y="65.093">X</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="40.663" y="65.003" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="40.663" y="65.003">Y</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="25.721" y="82.732" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="25.721" y="82.732">X ⋃ Y</tspan></text><path d="M93.973 54.922a11.922 11.922 0 00-3.363 8.282 11.922 11.922 0 003.363 8.281 11.922 11.922 0 003.361-8.281 11.922 11.922 0 00-3.361-8.282z" fill="#708399" fill-opacity=".673"/><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="83.747" y="65.093" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="83.747" y="65.093">X</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="100.852" y="65.003" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="100.852" y="65.003">Y</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="85.91" y="82.732" font-size="5.937" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" stroke-width=".397" stroke-linecap="round" stroke-linejoin="round"><tspan x="85.91" y="82.732">X ⋂ Y</tspan></text></svg>
       <span>四种物体运算的示意图</span>
     </info-box>
+
+    <ah- class="h2">与𝐔运算的严谨性论证</ah->
+    <p></p>
 
     <ah- class="h2"><tool-tip class="hidden" text="开始进入有趣的部分了">量化差异</tool-tip></ah->
     <p><sub>X</sub>D<sub>Y</sub> 是<tool-tip text="这里指“数量化”而不是“量子化”">量化</tool-tip>差异函数，用于指示物体之间差异，读作X到Y的差异。这个函数仅仅停留在概念阶段，它并不具备实际的计算方法。</p>
@@ -136,17 +149,29 @@
       &forall;X, Y&isin;𝕆 : X &NotEqual; Y &and; |m<sub>X</sub> - m<sub>Y</sub>| &lt; &epsilon;, 
       &exist;M, N&isin;𝕆 : M &NotEqual; N &and; |m<sub>M</sub> - m<sub>N</sub>| &lt; &epsilon; &and; |m<sub>X</sub> - m<sub>M</sub>| &gt; 2&epsilon; 
       &Rightarrow; <sub>X</sub>D<sub>Y</sub> &gt; <sub>M</sub>D<sub>N</sub></p>
+
+    <p>注意：<sub>X</sub>D<sub>Y</sub> = 0 &nRightarrow; t<sub>X</sub> = t<sub>Y</sub>。</p>
   
     <ah- class="h2">瞬时量化差异</ah->
-    <p>X(t)是物体X在时空中第t秒的状态，那么X在第t秒的瞬时量化差异为 lim<sub>h&rightarrow;0<sup>+</sup></sub> <sub>X(t)</sub>D<sub>X(t + h)</sub>，也可以写成 D<sub>X(t)</sub>。瞬时量化差异描述了一个物体在某一时刻变化的强度。</p>
+    <p>X在第t秒的瞬时量化差异为 lim<sub>h&rightarrow;0<sup>+</sup></sub> <sub>X(t)</sub>D<sub>X(t + h)</sub>，也可以写成 D<sub>X(t)</sub>。瞬时量化差异描述了一个物体在某一时刻变化的强度。</p>
     <p>对于一个不受外力的铁块X，D<sub>X(t)</sub>通常非常小，几乎为0。</p>
     <p>对于一罐正在被液压机缓慢压扁的易拉罐Y，D<sub>Y(t)</sub>会比0稍大一点。</p>
     <p>对于一个被子弹打碎的玻璃瓶Z，D<sub>Z(t)</sub>在开始的时候很小，被子弹击碎时突然增大，待玻璃散落一地时又会变小。</p>
     <p>不难注意到，瞬时量化差异和<tool-tip text="来自另一学科的名词">“熵”</tool-tip>的导数有关系：</p>
     <p>|dS/dt|增大时，D<sub>X(t)</sub>会增大。</p>
 
-    <ah- class="h2">碰撞全同定理</ah->
-    <!--WIP-->
+    <ah- class="h2">全同碰撞定理</ah->
+    <p>在讨论全同论前，我们假设了三个<a href="#前提">前提</a>。通过这些前提，我们就可以推导出全同碰撞定理：</p>
+    <p>&forall;<span class="overline">X</span>&isin;<span class="overline">𝕆</span> : <span class="overline">X</span> &NotEqual; 𝟎, &forall;n&isin;&integers;<sup>+</sup>,
+      S = { <span class="overline">Y</span>&isin;<span class="overline">𝕆</span> : t<sub><span class="overline">Y</span></sub> = t<sub><span class="overline">X</span></sub> &and; <sub><span class="overline">Y</span></sub>D<sub><span class="overline">X</span></sub> = 0 }, 
+      card(S) &GreaterEqual; n.
+    <p>全同碰撞定理是指在任意时刻下，对于该时刻下的任何质量有限但不为0的物体，一定存在无数个与其全同但在空间中不重叠的物体。</p>
+    <p>举个粒子，现在桌子上有一个微虫洞模块，那么我一定能在宇宙中找到另外无数多个微虫洞模块，哪怕最近的一个位于10^10^10^...光年开外，这些微虫洞模块都与彼此全同。</p>
+    <p>不单止是微虫洞模块，一个铁块，一把小刀，根据全同碰撞定理，你就一定会在同一时刻的宇宙里的某处，发现另一个全同的铁块、另一把全同的小刀。</p>
+    <p>全同碰撞定理很容易得出来。当某一时刻下的宇宙是空间无限，且质能无限还分布均匀的，在宇宙中形成了一个物体<span class="overline">X</span>，那么总是存在一个非常非常小的概率P，在宇宙另一处“误打误撞”形成了一个与物体<span class="overline">X</span>全同的物体<span class="overline">Y</span>。</p>
+    <p>由于宇宙是空间无限的，我们可以理解为“每时每刻宇宙都在尝试无数次，生成全同的物体”，也就是 &infin;&times;P。无论P有多小，只要 P &NotEqual; 0，宇宙的成功次数就一定趋向于无穷。</p>
+    <p>试想一下，宇宙中的两颗新星爆发了，炸出许多重元素。刚好这些铁原子组合在一起，刚好形成的块铁的原子排布都一模一样，又刚好所有的离域电子的排布也一致，甚至刚好形成于同一时刻下……一连串“刚好”发生的概率可想而知低得可怜，可是宇宙每秒钟都有无数枚新星爆炸，每秒钟都有无数块铁形成。在无数次尝试下，这些“刚好”总是会发生，甚至也发生了无数次。</p>
+
 
     <ah- class="h2">宇宙密度</ah->
     <p>物体X与它的全同物体的总质量，比上宇宙时空里总质量，就是X的宇宙密度，写作 Den X（或者Den(X)）。</p>
