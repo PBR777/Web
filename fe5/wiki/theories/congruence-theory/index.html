@@ -66,7 +66,7 @@
     <ah->理论</ah->
 
     <ah- class="h2">物体</ah->
-    <p>物体并不完全是物质，物体指所有动质能不为0的物质（有一个例外），例如水、泥土、氢原子、电子、光子……</p>
+    <p>物体并不完全是物质，物体指所有动质能不为0且有限的物质（有一个例外），例如水、泥土、氢原子、电子、光子……</p>
     <p>物体可以划分为<info-text>扁平物体</info-text>和<info-text>非扁平物体</info-text>。一个在时间轴上投影的长度为0的物体是扁平物体，不为0则是非扁平物体。</p>
     <p>在表示非扁平物体时，需要为符号添加上横线。例如<span class="overline">X</span>，<span class="overline">铁块<del-text>的世界超体积</del-text></span>……</p>
     <p>若物体<span class="overline">X</span>为扁平物体，则 t<sub><span class="overline">X</span></sub> 用来表示 <span class="overline">X</span> 在时空中的时间。</p>
@@ -160,22 +160,59 @@
     <p>&forall;<span class="overline">X</span>&isin;<span class="overline">𝕆</span> : <span class="overline">X</span> &NotEqual; 𝟎, &forall;n&isin;&integers;<sup>+</sup>,
       S = { <span class="overline">Y</span>&isin;<span class="overline">𝕆</span> : t<sub><span class="overline">Y</span></sub> = t<sub><span class="overline">X</span></sub> &and; <sub><span class="overline">Y</span></sub>D<sub><span class="overline">X</span></sub> = 0 }, 
       card(S) &GreaterEqual; n.
-    <p>全同碰撞定理是指在任意时刻下，对于该时刻下的任何质量有限但不为0的物体，一定存在无数个与其全同但在空间中不重叠的物体。</p>
+    <p>全同碰撞定理是指在任意时刻下，对于该时刻下的任何质量不为0的物体，一定存在无数个与其全同但在空间中不重叠的物体。</p>
     <p>举个粒子，现在桌子上有一个微虫洞模块，那么我一定能在宇宙中找到另外无数多个微虫洞模块，哪怕最近的一个位于10^10^10^...光年开外，这些微虫洞模块都与彼此全同。</p>
     <p>不单止是微虫洞模块，一个铁块，一把小刀，根据全同碰撞定理，你就一定会在同一时刻的宇宙里的某处，发现另一个全同的铁块、另一把全同的小刀。</p>
     <p>全同碰撞定理很容易得出来。当某一时刻下的宇宙是空间无限，且质能无限还分布均匀的，在宇宙中形成了一个物体<span class="overline">X</span>，那么总是存在一个非常非常小的概率P，在宇宙另一处“误打误撞”形成了一个与物体<span class="overline">X</span>全同的物体<span class="overline">Y</span>。</p>
     <p>由于宇宙是空间无限的，我们可以理解为“每时每刻宇宙都在尝试无数次，生成全同的物体”，也就是 &infin;&times;P。无论P有多小，只要 P &NotEqual; 0，宇宙的成功次数就一定趋向于无穷。</p>
     <p>试想一下，宇宙中的两颗新星爆发了，炸出许多重元素。刚好这些铁原子组合在一起，刚好形成的块铁的原子排布都一模一样，又刚好所有的离域电子的排布也一致，甚至刚好形成于同一时刻下……一连串“刚好”发生的概率可想而知低得可怜，可是宇宙每秒钟都有无数枚新星爆炸，每秒钟都有无数块铁形成。在无数次尝试下，这些“刚好”总是会发生，甚至也发生了无数次。</p>
-
+    <info-box>
+      <p>对于任何虚构的非零质量的物体，无论结构多么复杂，只要满足不违背物理定律，它也满足全同碰撞定理。</p>
+      <p>所有，不要停止想象！任何你脑子里的东西，总是会在宇宙某处真实存在！存在无数多个！哪怕距离再远！</p>
+      <p>保持你的想象力 ;)</p>
+      <p style="text-align: right; color: deepskyblue; margin-right: 60px;">-- 777</p>
+    </info-box>
+    
 
     <ah- class="h2">宇宙密度</ah->
-    <p>物体X与它的全同物体的总质量，比上宇宙时空里总质量，就是X的宇宙密度，写作 Den X（或者Den(X)）。</p>
-    
+    <p>扁平物体<span class="overline">X</span>与同一时刻下全同的物体的总质量，比上同一时刻下宇宙空间里的总质量，就是<span class="overline">X</span>的宇宙密度，写作 Den <span class="overline">X</span>（或者Den(<span class="overline">X</span>)）。</p>
     <ul>
-      <span>在 Den X = n 里：</span>
-      <li>X&isin;𝕆;</li>
-      <li>n&isin;[0, 1].</li>
+      <span>在 Den <span class="overline">X</span> = n 里：</span>
+      <li><span class="overline">X</span>&isin;<span class="overline">𝕆</span>;</li>
+      <li>n&isin;[0, 1).</li>
     </ul>
+    <p>宇宙密度是一个比值。其中分子是全同物体的总质量，即全同物体的数量乘以单个物体的质量；根据<a href="#全同碰撞定理">全同碰撞定理</a>，同一时刻下总是有无数多个全同物体，即分子趋近于无穷大。分母是宇宙质量，也趋近于无穷大。分子的发散速度要低于分母，但最终的比值总是会趋近于一个定值，而不会发散。</p>
+    <ul>
+      <span>Den函数有以下特征：</span>
+      <li>Den 𝟎 = 0，𝟎的质量为0，即分子为0，比值自然为0；</li>
+      <li>Den <span class="overline">X</span> = 0 &Leftrightarrow; <span class="overline">X</span> = 𝟎;</li>
+      <li>In general, &forall;<span class="overline">X</span>, <span class="overline">Y</span>&isin;<span class="overline">𝕆</span>, Den <span class="overline">X</span> > Den <span class="overline">Y</span> &Leftrightarrow; |m<sub><span class="overline">X</span></sub>| &lt; |m<sub><span class="overline">Y</span></sub>|.</li>
+    </ul>
+    <p>最后一条可以通过这个例子推导出来：Den(电子)，电子质量虽小，但宇宙中数量众多；Den(地球)，地球质量虽大，但宇宙中全同的数量却极其地少，导致 Den(电子) &gt; Den(地球) 。负质量的物体也一样。</p>
+    <p>换句话说，当物体的质量的绝对值以线性增长时，它在宇宙中的全同数量会指数级、甚至远远超过指数级地减少。</p>
+    <info-box class="svg">
+      <svg width="480" height="360" viewBox="0 0 127 95.25" xmlns="http://www.w3.org/2000/svg"><g stroke-linecap="round" stroke-linejoin="round"><path d="M63.508 88.15V14.791M8.775 14.205h54.16" fill="none" stroke="#fff" stroke-width=".397" stroke-dasharray="1.191 1.191"/><path d="M8.777 88.15h111.55M8.777 88.15V9.5M7.833 11.567L8.777 9.5l.915 2.058M118.26 87.207l2.067.943-2.059.915" fill="none" stroke="#fff" stroke-width=".397"/><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="122.265" y="89.684" font-size="5.159" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" fill-opacity=".969" stroke-width=".397"><tspan x="122.265" y="89.684">m</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="1.228" y="7.312" font-size="5.159" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" fill-opacity=".969" stroke-width=".397"><tspan x="1.228" y="7.312">Den X</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="125.19" y="90.527" font-size="2.588" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" fill-opacity=".969" stroke-width=".397"><tspan x="125.19" y="90.527">X</tspan></text><path d="M125.217 88.48h1.4M12.64 3.541h2.703" fill="none" stroke="#fff" stroke-width=".2"/><path d="M63.508 88.15v1.897" fill="none" stroke="#fff" stroke-width=".397"/><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="62.093" y="93.816" font-size="5.159" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" fill-opacity=".969" stroke-width=".397"><tspan x="62.093" y="93.816">0</tspan></text><circle cx="63.514" cy="88.15" fill="#6167e7" stroke="#6167e7" stroke-width=".397" r=".58"/><circle cx="63.514" cy="14.212" fill="none" stroke="#6167e7" stroke-width=".397" r=".58"/><path d="M6.88 88.15h1.897M6.88 14.205h1.897" fill="none" stroke="#fff" stroke-width=".397"/><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="3.722" y="89.762" font-size="5.159" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" fill-opacity=".969" stroke-width=".397"><tspan x="3.722" y="89.762">0</tspan></text><text style="line-height:1;-inkscape-font-specification:'Consolas, Normal';text-align:start" x="3.722" y="15.837" font-size="5.159" font-family="Consolas" letter-spacing="0" word-spacing="0" fill="#fff" fill-opacity=".969" stroke-width=".397"><tspan x="3.722" y="15.837">1</tspan></text><path d="M63.514 14.791s.603 52.742-7.126 62.187C46.345 89.251 22.46 87.513 8.777 87.627" fill="none" stroke="#6167e7" stroke-width=".397"/><path d="M63.514 14.791s-.602 52.742 7.127 62.187c10.043 12.273 33.929 10.535 47.611 10.649" fill="none" stroke="#6167e7" stroke-width=".397"/></g></svg>
+      <span>一张十分不严谨、不根比例的Den函数图，展示了在普通情况下，物体质量和它的宇宙密度的关系。</span>
+    </info-box>
+    <p>上图中，当质量为0时，Den也为0.</p>
+
+    <ah- class="h2">理论拓展</ah->
+    <p>当我们设扁平物体<span class="overline">𝐔</span>为宇宙时，一切都开始变得有趣起来。m<sub><span class="overline">𝐔</span></sub> = &infin;，这意味着它的质量不有限，但我们强行定义它是一个物体。</p>
+    <p>强行引入<span class="overline">X</span>，我们可以将 Den <span class="overline">𝐔</span> 写成 n &dot; m<sub><span class="overline">X</span></sub> / m<sub><span class="overline">𝐔</span></sub> 的形式，其中n为<span class="overline">𝐔</span>中与<span class="overline">X</span>全同且空间不重叠的物体的数量。我们可以很轻松地得出 Den <span class="overline">𝐔</span> = 1：宇宙中宇宙的质量占宇宙的质量的多少？100%。</p>
+    <p>但是，令 <span class="overline">Y</span> = <span class="overline">𝐔</span> &Union; <span class="overline">X</span>，如果<span class="overline">X</span>是<span class="overline">𝐔</span>的一部分，则Den <span class="overline">Y</span> = 1；如果不是，例如虚拟的物体，虽然 Den <span class="overline">X</span> &gt; 0 ，但 Den <span class="overline">Y</span> = 0 。</p>
+    <p>为什么会这样？Den <span class="overline">Y</span> 有n这个因子。当<span class="overline">X</span>是虚构的，例如我想象天空中有一个铁块，但实际上并没有，此时 <span class="overline">X</span> &Union; <span class="overline">𝐔</span> 将会得出一个“在<span class="overline">𝐔</span>中不存在的物体”，即 n = 0，整条式子自然就为0了。</p>
+    <ul>
+      <span>引入<span class="overline">𝐔</span>就好像将&infin;定义为实数一样，总是会得出奇妙的结果：</span>
+      <li>Den <span class="overline">𝐔</span> = 1, Den <span class="overline">-𝐔</span> = 0;</li>
+      <li><span class="overline">𝐔</span>不满足全同碰撞定理；</li>
+      <li><span class="overline">𝐔</span> &Union; <span class="overline">X</span> &NotEqual; <span class="overline">𝐔</span> &Rightarrow; <span class="overline">X</span>是虚构的；</li>
+      <li>&forall;m<sub><span class="overline">X</span></sub>&NotEqual;0&isin;&reals;, &forall;N&isin;&reals;, <sub><span class="overline">X</span></sub>D<sub><span class="overline">𝐔</span></sub> &GreaterEqual; N;</li>
+      <li>……</li>
+    </ul>
+  </text-box>
+
+  <text-box>
+    <ah->启示</ah->
   </text-box>
 </body>
 </html>
