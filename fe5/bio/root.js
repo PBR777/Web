@@ -1,6 +1,7 @@
 import { create, dirName, fetchJson, loadImage } from "/fe5/modules/index.js";
 import { headingDiv } from "/fe5/root.js";
 import { createCard } from "/fe5/modules/infocard.js";
+import "/fe5/modules/id.js";
 
 const ALT_TEXT = {
   E: [

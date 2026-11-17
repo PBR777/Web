@@ -20,7 +20,14 @@ create("div", ".sidebar-title-div")
   ).appendTo(div);
 
 const anchorDiv = create("div", ".sidebar-anchor-div")
-  .appendTo(div);
+  .addListener("click", ev => {
+
+    const target = ev.target;
+
+    if(target.classList.contains("sidebar-anchor")
+    && target.hasAttribute("href"))
+      location.href = target.getAttribute("href");
+  }).appendTo(div);
 
 const anchorTitle = create("div", ".sidebar-anchor-title.sidebar-anchor")
   .addListener("click", () => window.scrollTo(0, 0));
@@ -36,26 +43,33 @@ const updateTree = (() => {
     anchorTitle.setText(document.title);
     anchorDiv.append(anchorTitle);
 
-    /**@type AnchorHeading[] */
-    const allHeading = [...document.querySelectorAll(AnchorHeading.ELEMENT_ID)];
-    
-    const allAnchor = allHeading.map(element => {
-      const anchor = element.anchor;
+    const map = new Map();
+    const fragment = document.createDocumentFragment();
 
-      anchor.classList.remove("sidebar-anchor-end");
-      anchor.classList.add("sidebar-anchor-mid");
+    for(const heading of document.querySelectorAll("h2, h3")) {
 
-      return anchor;
-    });
+      heading.id = heading.textContent.replaceAll(/ /g, "-");
+      heading.onclick = () => location.href = "#" + heading.id;
 
-    const lastElement = allAnchor.at(-1);
+      const uid = map.get(heading.id) ?? 0;
+      map.set(heading.id, uid + 1)
 
-    if(lastElement) {
-      lastElement.classList.remove("sidebar-anchor-mid");
-      lastElement.classList.add("sidebar-anchor-end");
+      if(uid !== 0) {
+        heading.id += "-" + uid;
+      }
+
+      const quicklink = create("div", ".sidebar-anchor")
+        .setHTML(heading.innerHTML)
+        .setAttribute("href", "#" + heading.id)
+        .appendTo(fragment);
+
+      if(heading.tagName === "H3") {
+        quicklink.addClass("sidebar-anchor-h2");
+      }
+
     }
 
-    anchorDiv.append(...allAnchor);
+    anchorDiv.append(fragment);
 
     timeoutId = null;
   }
@@ -65,86 +79,6 @@ const updateTree = (() => {
     timeoutId = setTimeout(update, 100);
   } : () => {};
 })();
-
-class AnchorHeading extends HTMLElement {
-  static ELEMENT_ID = "ah-";
-  static nameMap = new Map();
-
-  onClick() {
-    window.location.href = "#" + this.id;
-  }
-
-  #rawId = "";
-
-  #anchor = create("div", ".sidebar-anchor")
-    .addListener("click", this.onClick.bind(this))
-    .get();
-
-  #initalized = false;
-
-  get anchor() {
-    return this.#anchor;
-  }
-
-  constructor() {
-    super();
-    this.#anchor.classList.toggle("sidebar-anchor-h2", this.classList.contains("h2"));
-  }
-
-  /**@param {string} id  */
-  setId(id) {
-    const map = AnchorHeading.nameMap;
-
-    const uid = (map.get(this.#rawId) ?? 0) - 1;
-    if(uid > 0) {
-      map.set(this.#rawId, uid);
-    } else {
-      map.delete(this.#rawId);
-    }
-
-    const safeId = CSS.escape(id);
-    if(map.has(safeId)) {
-
-      const uid = map.get(safeId) + 1;
-      map.set(safeId, uid);
-
-      this.id = safeId + "-" + uid;
-    } else {
-
-      map.set(safeId, 0);
-      this.id = safeId;
-    }
-
-    this.#rawId = safeId;
-  }
-
-  /**
-   * @param {string} html 
-   */
-  setContent(html) {
-    this.innerHTML = html;
-    this.#anchor.innerHTML = html
-  }
-
-  connectedCallback() {
-    if(!this.#initalized) {
-      this.#initalized = true;
-      
-      this.setId(this.textContent);
-      this.setContent(this.innerHTML);
-    }
-
-    this.addEventListener("click", this.onClick);
-    updateTree();
-  }
-
-  disconnectedCallback() {
-    this.removeEventListener("click", this.onClick);
-    updateTree();
-  }
-}
-
-customElements.define(AnchorHeading.ELEMENT_ID, AnchorHeading);
 
 const sidebarControl = (() => {
   let timeoutId;

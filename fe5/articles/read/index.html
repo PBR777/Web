@@ -6,7 +6,9 @@
   <title>Reading</title>
 
   <link rel="stylesheet" href="/fe5/root.css">
+  
   <script type="module" src="/fe5/root.js"></script>
+  <script type="module" src="/fe5/modules/text-obfucation.js"></script>
 
   <style>
     @keyframes flashingText {
@@ -134,7 +136,7 @@
         authorText.classList.add("author-box-untrusted");
       }
 
-      const heading = create("ah-")
+      const heading = create("h2")
         .setText(title)
         .get();
 

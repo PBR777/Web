@@ -132,6 +132,8 @@
 
       if(previousIndex === data.i) return;
 
+      localStorage.setItem("wikiPage", data.i);
+
       tabMenu.select(".wiki-tab-selected")
         ?.removeClass("wiki-tab-selected");
 
@@ -197,7 +199,7 @@
       switch(data.path) {
         case "locations":
 
-        create("ah-")
+        create("h2")
           .setText("Fe5地图")
           .appendTo(fragment)
         create("info-box")
@@ -319,7 +321,17 @@
     }
 
     document.body.append(description.get(), tabMenu.get());
-    changePage(tabData[0]);
+
+    let pageIndex = 0;
+    
+    const param = new URLSearchParams(location.search).get("page");
+    if(param) {
+      pageIndex = Number(param);
+    } else {
+      pageIndex = Number(localStorage.getItem("wikiPage"));
+    }
+
+    changePage(tabData[Number.isNaN(pageIndex) ? 0 : pageIndex]);
 
   </script>
 </head>

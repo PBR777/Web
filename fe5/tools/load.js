@@ -14,7 +14,7 @@ async function getToolObject(toolName) {
     .setStyle("flexDirection", "column")
     .setStyle("alignItems", "center");
 
-  const heading = create("ah-", ".h2")
+  const heading = create("h3")
     .appendTo(div);
   
   const toolDiv = create("info-box", ".tool-div")

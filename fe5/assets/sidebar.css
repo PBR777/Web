@@ -2,7 +2,8 @@
   --duration: 300ms;
 }
 
-ah- {
+h2, 
+h3 {
   color: #ff483b;
   display: block;
   width: 100%;
@@ -22,7 +23,8 @@ ah- {
   cursor: pointer;
 }
 
-ah-::before {
+h2::before, 
+h3::before {
   content: "#";
 
   color: #4649ff;
@@ -34,13 +36,14 @@ ah-::before {
   transition: opacity 200ms;
 }
 
-ah-:hover::before {
+h2:hover::before,
+h3:hover::before {
   content: "#";
 
   opacity: 1;
 }
 
-ah-.h2 {
+h3 {
   color: #ff7878;
   display: block;
   width: fit-content;
@@ -207,28 +210,12 @@ ah-.h2 {
   color: white;
 }
 
+.sidebar-anchor-h2::before {
+  content: "- ";
+}
+
 .sidebar-anchor:hover {
   background-color: var(--background-glow);
-}
-
-.sidebar-anchor-mid::before {
-  content: "├ ";
-  color: white;
-}
-
-.sidebar-anchor-mid.sidebar-anchor-h2::before {
-  content: "├… ";
-  color: white;
-}
-
-.sidebar-anchor-end::before {
-  content: "└ ";
-  color: white
-}
-
-.sidebar-anchor-end.sidebar-anchor-h2::before {
-  content: "└… ";
-  color: white;
 }
 
 .sidebar-overlay {
