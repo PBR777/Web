@@ -7,11 +7,12 @@ div.append(
     {name: "项目", path: "/projects/"},
     {name: "作文:有感而发", path: "/writings/sudden-idea/"},
     {name: "作文:外部作品", path: "/writings/outer-project/"},
-    {name: "作文:硬性要求", path: "/writings/forced-project/"}
+    {name: "作文:硬性要求", path: "/writings/forced-project/"},
+    {name: ""}
   ].map(link => {
     const a = document.createElement("a");
     a.innerText = link.name;
-    a.href = link.path;
+    if(link.path) a.href = link.path;
     return a;
   })
 );

@@ -41,7 +41,7 @@ h1::before {
 }
 
 h2 {
-  --color: #db1305;
+  --color: #d4180b;
 
   color: var(--color);
   text-shadow: 
@@ -56,7 +56,7 @@ h2 {
 
 a {
   text-decoration: none;
-  text-shadow: #0400ff9f 0px 0px 5px;
+  text-shadow: color-mix(in srgb, currentColor 60%, transparent) 0px 0px 6px;
 }
 
 hr {
@@ -84,10 +84,9 @@ button:hover {
   position: sticky;
   top: 0px;
 
-  background: linear-gradient(#3ee4fa, #bcf0f7);
+  background: #daf4ff;
 
-  border-bottom-style: solid;
-  border-color: #74ddf0;
+  border-bottom: 2px solid rgb(121, 128, 133);
 
   margin: -8px;
 
@@ -97,16 +96,22 @@ button:hover {
 
 #upper_banner>a {
   display: inline-block;
+  text-align: center;
 
-  background-color: #ddf4f8;
-  color: black;
+  color: #010955;
 
-  border-style: solid;
-  border-radius: 4px;
-  border-width: 2px;
-  border-color: #adc5c9;
+  border: 1px solid #96c4d6;
+  flex-grow: 1e10;
+
+  max-width: 200px;
 
   padding: 0px 10px;
+}
+
+#upper_banner>a:not([href]) {
+  padding: 0;
+  flex-grow: 1;
+  max-width: none;
 }
 
 .reference {
@@ -119,4 +124,6 @@ button:hover {
   background: linear-gradient(to right, #daf4ff 0%, #f0fcfb, #daf4ff 100%);
 
   text-shadow: color-mix(in srgb, currentColor 12%, rgba(255, 255, 255, 0)) 1px 1px;
+
+  min-height: 100%;
 }

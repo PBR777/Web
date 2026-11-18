@@ -3,6 +3,7 @@
 <html lang="zh-CN">
 
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PBR's Web</title>
 
   <link rel="stylesheet" href="/style.css">
@@ -52,7 +53,7 @@
       const iframe = document.createElement("iframe");
       iframe.src = "https://turbowarp.org/1218039929/embed?limitless&hqpen";
       iframe.innerText = "Well it looks like the iframe is failed to load or embed :(";
-      iframe.setAttribute("frameborder", "0");
+      iframe.style.border = "none";
 
       button.remove();
       div.append(iframe);
