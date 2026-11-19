@@ -183,7 +183,7 @@ export async function loadStyle(url) {
   stylePromiseSet.push(promise);
   
   try {
-    const data = await fetchText(`/fe5/assets/${url}.css`);
+    const data = await fetchText(`/fe5/assets/styles/${url}.css`);
     const css = new CSSStyleSheet();
     css.replaceSync(data);
 
