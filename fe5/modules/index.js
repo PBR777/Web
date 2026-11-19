@@ -1,10 +1,15 @@
 export const dirName = location.href.split("/").at(-2);
 
+/**
+ * @typedef {HTMLElement | PackedElement | keyof HTMLElementTagNameMap} PackedElementConstructParam
+ */
+
+
 export class PackedElement {
   /**@type HTMLElement */
   #element;
 
-  /**@param {string | HTMLElement | PackedElement} element */
+  /**@param {PackedElementConstructParam} element */
   constructor(element) {
     if(typeof element === "string") {
       this.#element = document.createElement(element);
@@ -22,12 +27,6 @@ export class PackedElement {
   /**@param {string[]} name */
   removeClass(...name) {
     this.#element.classList.remove(...name);
-    return this;
-  }
-
-  /**@param {string} id */
-  setId(id) {
-    this.#element.id = id;
     return this;
   }
 
@@ -147,10 +146,18 @@ export class PackedElement {
   get childrenCount() {
     return this.#element.children.length;
   }
+
+  /**
+   * @param {(element: HTMLElement) => void} cb
+   */
+  for(cb) {
+    cb(this.#element);
+    return this;
+  }
 }
 
 /**
- * @param {string | PackedElement | HTMLElement} element 
+ * @param {PackedElementConstructParam} element 
  * @param {string?} initRule 
  */
 export function create(element, initRule) {
@@ -162,7 +169,7 @@ export function create(element, initRule) {
   const first = rules.shift()
   
   if(first[0] === "#") {
-    packed.setId(first.slice(1));
+    packed.get().id = first.slice(1);
   }
   if(rules.length > 0)
     packed.addClass(...rules)

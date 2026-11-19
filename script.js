@@ -1,3 +1,9 @@
+const appleIcon = document.createElement("link");
+appleIcon.rel = "apple-touch-icon";
+appleIcon.sizes = "180x180";
+appleIcon.href = "/apple-favicon.png";
+document.head.append(appleIcon);
+
 const div = document.createElement("div");
 div.id = "upper_banner";
 

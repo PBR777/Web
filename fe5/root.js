@@ -2,12 +2,20 @@ import { create, dirName, calStyleStatus } from "/fe5/modules/index.js";
 import { setTitle } from "/fe5/modules/sidebar.js"
 import "/fe5/modules/background.js";
 
+create("link", "#favicon")
+  .for(element => {
+    element.rel = "apple-touch-icon";
+    element.sizes = "180x180";
+    element.href = "/apple-favicon.png";
+  })
+  .appendTo(document.head);
+
 export const headingDiv = create("div", "#document-title-div");
 
 if(!document.querySelector("meta[name='no-title']")) {
   const heading = create("h1", "#document-title")
     .appendTo(headingDiv);
-
+  
   if(document.title === "") {
     heading.setText(dirName);
     setTitle(dirName);
