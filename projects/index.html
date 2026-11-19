@@ -97,26 +97,23 @@
     #popup-div {
       display: flex;
       flex-wrap: wrap;
+
+      justify-content: center;
     }
 
     #popup-img {
-      width: 360px;
+      width: 240px;
 
       border-radius: 5px;
 
+      flex-shrink: 1;
       flex-grow: 1;
-
-      transition: filter 200ms;
-    }
-
-    #popup-img:hover {
-      filter: blur(1.5px);
     }
 
     #popup-description {
       display: block;
       
-      width: 360px;
+      width: 240px;
       aspect-ratio: 480 / 200;
       margin: 5px 8px;
 
