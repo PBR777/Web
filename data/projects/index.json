@@ -1,13 +1,27 @@
 [
   {
     "name": "多人枪战 1.5.4",
-    "id": "gunwar"
+    "id": "gunwar",
+    "description": [
+      "> 操作指南：",
+      "WSAD：移动",
+      "鼠标左键：开火",
+      "Q：瞄准",
+      "R：换弹",
+      "空格：冲刺"
+    ]
   },
   {
     "name": "大战 2.1",
     "id": "survive",
     "description": [
-      "音乐：",
+      "> 操作指南：",
+      "WSAD：移动",
+      "鼠标左键：挥砍",
+      "空格：技能（冲刺）",
+      "Q：技能（狂暴）",
+      "R：技能（回血）",
+      "> 音乐：",
       "<a href='https://youtu.be/2wml6eoLQ0U'>Elektronomia - Energy</a>",
       "<a href='https://youtu.be/VmPYf6FpsBA'>Elektronomia - Sky High pt.II</a>",
       "<a href='https://youtu.be/Ic-gZlPFTkQ'>TheFatRat - Never Be Alone</a>",
@@ -21,50 +35,104 @@
     "name": "快乐游戏",
     "id": "happy-game",
     "description": [
-      "注意：该游戏含有微量惊悚元素，以及闪烁画面。光敏性癫痫警告。"
+      "> 注意：该游戏含有微量惊悚元素，以及闪烁画面。光敏性癫痫警告。",
+      "> 操作指南：",
+      "WSAD：移动",
+      "鼠标左键：拾取/互动",
+      "空格：奔跑"
     ]
   },
   {
     "name": "贪吃蛇2",
     "id": "snake2",
     "description": [
-      "音乐：",
+      "> 操作指南：",
+      "鼠标左键：加速",
+      "> 音乐：",
       "<a href='https://youtu.be/Iv5P21D76bw'>Ampyx - Holo</a>"
     ]
   },
   {
     "name": "光线追踪",
-    "id": "raycasting"
+    "id": "raycasting",
+    "description": [
+      "> 操作指南：",
+      "每个物品都有一个轮盘，可以被拖动，拽住边缘旋转，双击可禁用。"
+    ]
   },
   {
     "name": "Renderer1",
-    "id": "renderer1"
+    "id": "renderer1",
+    "description": [
+      "> 音乐：",
+      "<a href='https://youtu.be/JGmPZs8b0vE'>HMage - Undivided Horizons (Thorinair Remix)</a>"
+    ]
   },
   {
     "name": "质点",
-    "id": "mass-point"
+    "id": "mass-point",
+    "description": [
+      "> 操作指南：",
+      "1，2，3：对应的工具快捷键",
+      "光标工具：拖拽以移动，点击质点可选择，按住 Shift 可选择多个",
+      "缩放工具：拖拽以缩放",
+      "放置工具：点击放置质点，按住拖拽将会对新质点设定初始速度",
+      "C：按住并移动光标以选择质点的质量，具体可查看右侧的质量标尺",
+      "Q：切换HUB可见性。",
+      "",
+      "对于选中的质点：",
+      "Delete：删除质点",
+      "L：将相机固定至质点上",
+      "F：锁定质点",
+      "E：选择质点质量，注意右侧的质量标尺"
+    ]
   },
   {
     "name": "画笔时钟",
     "id": "pen-clock",
     "description": [
-      "注意：周末时，按下 空格 即可触发闪烁画面。光敏性癫痫警告。"
+      "> 注意：周末时，按下 空格 即可触发闪烁画面。光敏性癫痫警告。"
     ]
   },
   {
     "name": "律动渲染",
     "id": "visible-soudbytes",
     "description": [
-      "音乐：",
+      "> 操作指南：",
+      "空格：切换HUB可见性",
+      "> 音乐：",
       "<a href='https://youtu.be/hDBwe0oOCPU'>Rameses B - Neon Rainbow (feat. Anna Yvette)</a>"
     ]
   },
   {
     "name": "复变可视化（Gamma函数）",
-    "id": "complex"
+    "id": "complex",
+    "description": [
+      "> 操作指南：",
+      "WSAD：控制4D相机围绕中心旋转",
+      "鼠标拖拽：转动3D投影",
+      "Q / Shift+Q：切换3D正交/切换4D正交",
+      "1，2，3，4：将4D相机移动到预设的位置"
+    ]
   },
   {
     "name": "Brainf*ck 解释器",
-    "id": "brainfrick"
+    "id": "brainfrick",
+    "description": [
+      "> 操作指南：",
+      "点击右侧区域进入编辑模式：",
+      "任意按键：编辑代码",
+      "Backspace/Delete：删除字符",
+      "↑↓←→：移动光标",
+      "鼠标滚轮：滚动",
+      "Ctrl+鼠标滚轮：缩放",
+      "Ctrl+V：弹出对话框，将输入的内容插入",
+      "",
+      "点击左侧区域退出编辑模式：",
+      "Enter：运行代码",
+      "T：终结代码并关闭终端",
+      "O：导出代码",
+      "I：导入代码"
+    ]
   }
 ]

@@ -45,15 +45,11 @@
     button.style.padding = "15px 60px";
 
     button.onclick = () => {
-      const resizeHandler = () => div.style.height = `${div.clientWidth * 0.75}px`;
-
-      window.addEventListener("resize", resizeHandler);
-      resizeHandler();
-
       const iframe = document.createElement("iframe");
       iframe.src = "https://turbowarp.org/1218039929/embed?limitless&hqpen";
       iframe.innerText = "Well it looks like the iframe is failed to load or embed :(";
       iframe.style.border = "none";
+      iframe.style.aspectRatio = "480 / 360";
 
       button.remove();
       div.append(iframe);

@@ -11,46 +11,228 @@
 
   <style>
     .gameshot {
-      min-width: 240px;
-      min-height: 180px;
-
-      max-width: 480px;
-      max-height: 360px;
+      min-width: 320px;
+      max-width: 640px;
 
       width: 100%;
 
+      border-radius: 5px;
+
       cursor: pointer;
 
-      margin-bottom: 20px;
+      transition: scale 150ms, box-shadow 150ms;
+    }
+
+    .gameshot:hover {
+      scale: 1.05;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.425);
+    }
+
+    .game-div {
+      flex-grow: 1;
+      width: min-content;
+      margin: 5px;
+    }
+
+    .body {
+      display: flex;
+      flex-wrap: wrap;
+
+      justify-content: center;
+    }
+
+    #popup-layer {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+
+      background-color: #00000073;
+
+      z-index: 1001;
+
+      opacity: 0;
+      display: none;
+    }
+
+    #popup {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+
+      width: calc(100% - 50px);
+
+      min-height: 300px;
+
+      max-width: 1500px;
+      max-height: calc(100% - 50px);
+
+      background-color: #daf4ff;
+
+      border: 2px solid #7eb7ce;
+      border-radius: 10px;
+
+      padding: 10px;
+    }
+
+    #popup-title {
+      display: block;
+      width: 100%;
+
+      color: #e72f2f;
+      text-shadow: 0.5px 0.5px 0 color-mix(in srgb, currentColor 70%, black);
+
+      text-align: center;
+      font-weight: bold;
+
+      padding: 5px 0 15px;
+
+      font-size: 150%;
+    }
+
+    #popup-div {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    #popup-img {
+      width: 360px;
+
+      border-radius: 5px;
+
+      flex-grow: 1;
+
+      transition: filter 200ms;
+    }
+
+    #popup-img:hover {
+      filter: blur(1.5px);
+    }
+
+    #popup-description {
+      display: block;
+      
+      width: 360px;
+      aspect-ratio: 480 / 200;
+      margin: 5px 8px;
+
+      flex-grow: 1;
+
+      overflow-y: auto;
+    }
+
+    #popup-button {
+      display: block;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+
+      width: fit-content;
+
+      color: white;
+      background-color: #048104;
+      border: none;
+      border-radius: 10px;
+
+      font-weight: bold;
+      font-size: 120%;
+      padding: 3px 60px;
+      margin: 15px 0 5px;
+
+      user-select: none;
+
+      transition: translate 200ms, box-shadow 200ms;
+    }
+
+    #popup-button:hover {
+      translate: 0 -5px;
+      box-shadow: 0 5px 6px #00000052;
     }
   </style>
 
   <script type="module">
     const PROJECT_ROOT = "/projects/";
+    const ANI_DURATION = 150;
+
+    const fragment = document.createDocumentFragment();
+    const res = await fetch("/data/projects/index.json");
+    const json = await res.json();
+
+    const parseThumbnail = data => `${PROJECT_ROOT}${data.id}/thumbnail.${data.isSvgThumbnail ? "svg" : "webp"}`;
+
+    const popupTitle = document.createElement("span");
+    popupTitle.id = "popup-title";
+
+    const popupImg = document.createElement("img");
+    popupImg.id = "popup-img";
+    popupImg.alt = "作品截图";
+
+    const popupDescription = document.createElement("span");
+    popupDescription.id = "popup-description";
+
+    const popupDiv = document.createElement("div");
+    popupDiv.id = "popup-div";
+    popupDiv.append(popupImg, popupDescription);
+
+    const popupButton = document.createElement("a");
+    popupButton.id = "popup-button";
+    popupButton.innerText = "查看作品";
+
+    const popup = document.createElement("div");
+    popup.id = "popup";
+    popup.append(popupTitle, popupDiv, popupButton);
+
+    const popupLayer = document.createElement("div");
+    popupLayer.id = "popup-layer";
+    popupLayer.style.transition = `opacity ${ANI_DURATION}ms`;
+    popupLayer.onclick = ev => {
+      if(ev.target !== popupLayer) return;
+      hidePopup();
+    }
+    popupLayer.append(popup);
+
+    function showPopup(i) {
+      const data = json[i];
+
+      popupTitle.innerText = data.name;
+
+      popupImg.src = parseThumbnail(data);
+
+      popupDescription.innerHTML = data.description 
+      ? data.description.join("<br>")
+      : "暂无描述...";
+
+      popupButton.href = `${PROJECT_ROOT}${data.id}/`;
+
+      popupLayer.style.display = "block";
+      setTimeout(() => popupLayer.style.opacity = "1");
+    }
+
+    function hidePopup() {
+      popupLayer.style.opacity = null;
+      setTimeout(() => popupLayer.style.display = null, ANI_DURATION);
+    }
     
-    async function load() {
-      const fragment = document.createDocumentFragment();
-      const res = await fetch("/data/projects/index.json");
-      
-      for(const data of await res.json()) {
+    function load() {
+      let i = 0;
+      for(const data of json) {
+        const div = document.createElement("div");
+        div.classList.add("game-div");
+        fragment.append(div);
+
         const title = document.createElement("h3");
         title.innerHTML = data.name;
-        fragment.append(title);
-
-        if(data.description) {
-          const description = document.createElement("p");
-          description.innerHTML = data.description.join("<br>");
-
-          fragment.append(description);
-        }
+        div.append(title);
 
         const gameshot = document.createElement("img");
         gameshot.classList.add("gameshot");
         gameshot.loading = "lazy";
         gameshot.alt = data.name + " 的截图";
-        gameshot.src = `${PROJECT_ROOT}${data.id}/thumbnail.${data.isSvgThumbnail ? "svg" : "webp"}`;
-        gameshot.dataset.gameId = data.id;
-        fragment.append(gameshot);
+        gameshot.src = parseThumbnail(data);
+        gameshot.dataset.index = i++;
+        div.append(gameshot);
       }
 
       const body = document.querySelector(".body");
@@ -58,14 +240,14 @@
       body.append(fragment);
       body.addEventListener("click", ev => {
         const target = ev.target;
-        if(!target.classList.contains("gameshot")
-        || !target.dataset.gameId) return;
-        
-        location.href = `${PROJECT_ROOT}${target.dataset.gameId}/`;
+        if(!target.classList.contains("gameshot")) return;
+
+        showPopup(Number(target.dataset.index));
       });
     }
 
-    await load();
+    load();
+    document.body.append(popupLayer);
   </script>
 </head>
 
