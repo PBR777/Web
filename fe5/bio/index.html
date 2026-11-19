@@ -98,10 +98,10 @@
 
         update();
         if(resultDiv.childrenCount === 1)
-          resultDiv.select(".bio-links").get().click();
+          resultDiv.select(".bio-links").raw.click();
       })
       .addListener("change", update)
-      .get();
+      .raw;
 
     searchbar.placeholder = "输入编号...";
     searchbar.maxLength = "16";
@@ -148,11 +148,11 @@
 
       const links = results.map(name => create("li").append(
         create("img", ".bio-icon")
-          .setAttribute("src", `/fe5/assets/zone/${name[0]}.png`),
+          .setAttr("src", `/fe5/assets/zone/${name[0]}.png`),
         create("a", ".bio-links")
           .setText(name)
-          .setAttribute("href", `/fe5/bio/${name}/`)
-        ).get());
+          .setAttr("href", `/fe5/bio/${name}/`)
+        ).raw);
 
       resultDiv.setHTML("");
       resultDiv.append(...links);
@@ -180,7 +180,7 @@
       }
 
       document.body.querySelector("#placeholder").remove();
-      document.body.append(searchbar, textbox.get());
+      document.body.append(searchbar, textbox.raw);
     })().catch(err => {
       console.error(err);
 

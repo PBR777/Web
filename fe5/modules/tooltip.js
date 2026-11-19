@@ -21,7 +21,7 @@ class Tooltip extends HTMLElement {
   }
 
   set text(val) {
-    this.setAttribute("text", val);
+    this.setAttr("text", val);
   }
 
   hideTooltip() {

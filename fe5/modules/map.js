@@ -60,13 +60,13 @@ class Map extends PackedElement {
     const yPct = `${y * 50 + 50}%`;
 
     const spot = create("tool-tip", ".map-spot.map-spot-main.hidden")
-      .setAttribute("text", name)
+      .setAttr("text", name)
       .setStyle("left", xPct)
       .setStyle("top", yPct)
       .appendTo(this);
   
     if(href) {
-      spot.setAttribute("data-href", href);
+      spot.setAttr("data-href", href);
     } else {
       spot.addClass("map-spot-nohref")
     }

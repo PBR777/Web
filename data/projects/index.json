@@ -1,0 +1,70 @@
+[
+  {
+    "name": "多人枪战 1.5.4",
+    "id": "gunwar"
+  },
+  {
+    "name": "大战 2.1",
+    "id": "survive",
+    "description": [
+      "音乐：",
+      "<a href='https://youtu.be/2wml6eoLQ0U'>Elektronomia - Energy</a>",
+      "<a href='https://youtu.be/VmPYf6FpsBA'>Elektronomia - Sky High pt.II</a>",
+      "<a href='https://youtu.be/Ic-gZlPFTkQ'>TheFatRat - Never Be Alone</a>",
+      "<a href='https://youtu.be/n8X9_MgEdCg'>TheFatRat - Unity</a>",
+      "<a href='https://youtu.be/jqkPqfOFmbY'>TheFatRat - Windfall</a>",
+      "<a href='https://youtu.be/blA7epJJaR4'>Tobu - Higher</a>"
+    ],
+    "isSvgThumbnail": true
+  },
+  {
+    "name": "快乐游戏",
+    "id": "happy-game",
+    "description": [
+      "注意：该游戏含有微量惊悚元素，以及闪烁画面。光敏性癫痫警告。"
+    ]
+  },
+  {
+    "name": "贪吃蛇2",
+    "id": "snake2",
+    "description": [
+      "音乐：",
+      "<a href='https://youtu.be/Iv5P21D76bw'>Ampyx - Holo</a>"
+    ]
+  },
+  {
+    "name": "光线追踪",
+    "id": "raycasting"
+  },
+  {
+    "name": "Renderer1",
+    "id": "renderer1"
+  },
+  {
+    "name": "质点",
+    "id": "mass-point"
+  },
+  {
+    "name": "画笔时钟",
+    "id": "pen-clock",
+    "description": [
+      "注意：周末时，按下 空格 即可触发闪烁画面。光敏性癫痫警告。"
+    ]
+  },
+  {
+    "name": "律动渲染",
+    "id": "visible-soudbytes",
+    "description": [
+      "音乐：",
+      "<a href='https://youtu.be/hDBwe0oOCPU'>Rameses B - Neon Rainbow (feat. Anna Yvette)</a>"
+    ]
+  },
+  {
+    "name": "复变可视化（Gamma函数）",
+    "id": "complex"
+  },
+  {
+    "name": "Brainf*ck 解释器",
+    "id": "brainfrick"
+  }
+]

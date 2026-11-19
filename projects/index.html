@@ -6,104 +6,72 @@
   <title>Projects</title>
 
   <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="./style.css">
+
+  <script type="module" src="/script.js"></script>
 
   <style>
-    img {
-      width: 480px;
-      height: 360px;
-    }
+    .gameshot {
+      min-width: 240px;
+      min-height: 180px;
 
-    .gameshot span {
-      display: none;
-    }
+      max-width: 480px;
+      max-height: 360px;
 
-    .gameshot:hover span {
-      display: inline-block;
-    }
+      width: 100%;
 
-    .body {
-      margin-top: -8px;
+      cursor: pointer;
+
+      margin-bottom: 20px;
     }
   </style>
 
-  <script type="module" src="/script.js"></script>
+  <script type="module">
+    const PROJECT_ROOT = "/projects/";
+    
+    async function load() {
+      const fragment = document.createDocumentFragment();
+      const res = await fetch("/data/projects/index.json");
+      
+      for(const data of await res.json()) {
+        const title = document.createElement("h3");
+        title.innerHTML = data.name;
+        fragment.append(title);
+
+        if(data.description) {
+          const description = document.createElement("p");
+          description.innerHTML = data.description.join("<br>");
+
+          fragment.append(description);
+        }
+
+        const gameshot = document.createElement("img");
+        gameshot.classList.add("gameshot");
+        gameshot.loading = "lazy";
+        gameshot.alt = data.name + " 的截图";
+        gameshot.src = `${PROJECT_ROOT}${data.id}/thumbnail.${data.isSvgThumbnail ? "svg" : "webp"}`;
+        gameshot.dataset.gameId = data.id;
+        fragment.append(gameshot);
+      }
+
+      const body = document.querySelector(".body");
+      body.innerHTML = "";
+      body.append(fragment);
+      body.addEventListener("click", ev => {
+        const target = ev.target;
+        if(!target.classList.contains("gameshot")
+        || !target.dataset.gameId) return;
+        
+        location.href = `${PROJECT_ROOT}${target.dataset.gameId}/`;
+      });
+    }
+
+    await load();
+  </script>
 </head>
 
 <body>
   <div class="body">
-    <h2>多人游戏</h2>
-
-    <h3>多人枪战 1.5.4</h3>
-    <a class="gameshot" href="gunwar/">
-      <img src="./gunwar/thumbnail.svg" loading="lazy">
-    </a>
-
-    <h2>单人游戏</h2>
-
-    <h3>大战 2.1</h3>
-    <a class="gameshot" href="survive!/">
-      <img src="./survive!/thumbnail.svg" loading="lazy">
-    </a>
-
-    <h3>快乐游戏</h3>
-    <a class="gameshot" href="happy_game/">
-      <img src="./happy_game/thumbnail.svg" loading="lazy">
-    </a>
-
-    <h3>贪吃蛇2</h3>
-    音乐: <a href="https://www.youtube.com/watch?v=Iv5P21D76bw">Ampyx - Holo</a>
-    <br>
-    <a class="gameshot" href="snake2/">
-      <img src="./snake2/thumbnail.svg" loading="lazy">
-    </a>
-
-    <h2>其他</h2>
-
-    <h3>光线追踪</h3>
-    <br>
-    <a class="gameshot" href="raycasting/">
-      <img src="./raycasting/thumbnail.svg" loading="lazy">
-    </a>
-
-    <h3>Renderer1</h3>
-    <br>
-    <a class="gameshot" href="renderer1/">
-      <img src="./renderer1/thumbnail.svg" loading="lazy">
-    </a>
-
-    <h3>质点</h3>
-    <br>
-    <a class="gameshot" href="mass_point/">
-      <img src="./mass_point/thumbnail.svg" loading="lazy">
-    </a>
-
-    <h3>画笔时钟</h3>
-    嗯，如果现在不是周末，你可以忽略这个警告。
-    否则：按空格触发闪光模式，可能导致光敏性癫痫发作。
-    <br>
-    <a class="gameshot" href="pen_clock/">
-      <img src="./pen_clock/thumbnail.svg" loading="lazy">
-    </a>
-
-    <h3>律动渲染</h3>
-    音乐: <a href="https://www.youtube.com/watch?v=yappQQtfk8Q">Rameses B - Neon Rainbow (feat. Anna Yvette)</a>
-    <br>
-    <a class="gameshot" href="visible-soudbytes/">
-      <img src="./visible-soudbytes/thumbnail.svg" loading="lazy">
-    </a>
-
-    <h3>4D复变渲染（Gamma函数）</h3>
-    <br>
-    <a class="gameshot" href="complex/">
-      <img src="./complex/thumbnail.webp" loading="lazy">
-    </a>
-
-    <h3>Brainfrick 解释器</h3>
-    <br>
-    <a class="gameshot" href="brainfrick/">
-      <img src="./brainfrick/thumbnail.webp" loading="lazy">
-    </a>
+    <h2>加载中...</h2>
   </div>
 </body>
 

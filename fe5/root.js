@@ -25,7 +25,7 @@ if(!document.querySelector("meta[name='no-title']")) {
   }
 }
 
-document.body.insertAdjacentElement("afterbegin", headingDiv.get());
+document.body.insertAdjacentElement("afterbegin", headingDiv.raw);
 
 Promise.race([
   calStyleStatus().then(console.log),

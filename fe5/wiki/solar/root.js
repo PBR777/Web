@@ -6,7 +6,7 @@ import { setTitle } from "/fe5/modules/sidebar.js";
 
 const img = loadImage(`/fe5/assets/solar/${dirName}-800x800.webp`);
 
-const div = (await createCard(img.image.get(), "天体数据"))
+const div = (await createCard(img.image.raw, "天体数据"))
   .appendTo(headingDiv);
 
 try {

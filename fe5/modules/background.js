@@ -4,14 +4,14 @@ const canvasDiv = create("div", "#background-div");
 
 const canvas = create("canvas", "#background")
   .appendTo(canvasDiv)
-  .get();
+  .raw;
 
 /**@type {CanvasRenderingContext2D} */
 const ctx = canvas.getContext("2d");
 
 const STAR_SIZE = 512;
 
-const starPNG = create("canvas").get();
+const starPNG = create("canvas").raw;
 starPNG.width = STAR_SIZE;
 starPNG.height = STAR_SIZE;
 

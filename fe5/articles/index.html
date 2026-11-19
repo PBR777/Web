@@ -43,8 +43,8 @@
 
       const buttons = arr.map(name => create("a")
         .setText(name)
-        .setAttribute("href", "/fe5/articles/read/?" + new URLSearchParams({ name }).toString())
-        .get());
+        .setAttr("href", "/fe5/articles/read/?" + new URLSearchParams({ name }).toString())
+        .raw);
 
       slot.innerHTML = "";
       slot.append(...buttons);

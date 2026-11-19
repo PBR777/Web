@@ -200,7 +200,7 @@
             const content = block.querySelector(".log-content")
               ?? create("div", ".log-content")
                 .appendTo(block)
-                .get();
+                .raw;
 
             if (block.classList.toggle("log-block-expanded")) {
               if (!content.classList.contains("log-loaded")) {
@@ -236,7 +236,7 @@
           const i = Number(target.parentElement.dataset.index);
           const time = Time.stringify(logsData[i].t, "full", 0);
 
-          target.setAttribute("text", time);
+          target.setAttr("text", time);
         }
 
         const logBlockDiv = create("div", ".log-block-div")
@@ -246,7 +246,7 @@
 
         const blocks = logsData.map((data, i) => {
           const block = create("div", ".log-block")
-            .setAttribute("data-index", i)
+            .setAttr("data-index", i)
 
           const time = Time.stringify(data.t, "YDH", 0);
 

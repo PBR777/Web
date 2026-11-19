@@ -34,20 +34,20 @@ async function getToolObject(toolName) {
   }
 
   const name = toolDiv.select("meta[name='tool-name']");
-  heading.setText(name ? name.get().content : null);
+  heading.setText(name ? name.raw.content : null);
 
   return {
-    tool: div.get(),
+    tool: div.raw,
     name: name,
     execute: () => {
 
       const scripts = toolDiv.selectAll(".to-be-executed")
         .map(script => {
           const newScript = create("script")
-            .setAttribute("type", script.get().type)
-            .get();
+            .setAttr("type", script.raw.type)
+            .raw;
 
-          newScript.textContent = script.get().textContent;
+          newScript.textContent = script.raw.textContent;
           script.remove();
           return newScript;
       });

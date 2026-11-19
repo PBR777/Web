@@ -125,7 +125,7 @@
 
       const authorText = create("info-box", ".author-box")
         .setHTML(`<span>作者：${author}</span>`)
-        .get();
+        .raw;
 
       if (true) {
         
@@ -139,17 +139,17 @@
 
       const heading = create("h2")
         .setText(title)
-        .get();
+        .raw;
 
       const dateText = create("info-box", ".date-box")
         .setHTML(`<span>日期：${date.join(", ")}</span>`)
-        .get();
+        .raw;
 
       const div = create("div", "#article")
         .setHTML(text
           .map(line => `<p>${line}</p>`)
           .join(""))
-        .get();
+        .raw;
 
       textbox.innerHTML = "";
       textbox.append(authorText, dateText, heading, div);

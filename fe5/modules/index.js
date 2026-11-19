@@ -1,59 +1,72 @@
 export const dirName = location.href.split("/").at(-2);
 
 /**
- * @typedef {HTMLElement | PackedElement | keyof HTMLElementTagNameMap} PackedElementConstructParam
+ * @template {keyof HTMLElementTagNameMap} T
  */
-
-
 export class PackedElement {
-  /**@type HTMLElement */
-  #element;
+  /**@type {HTMLElementTagNameMap[T]} */
+  #raw;
 
-  /**@param {PackedElementConstructParam} element */
+  /**
+   * @overload
+   * @param {T} name
+   * @returns {PackedElement<T>}
+   * 
+   * @overload
+   * @param {HTMLElementTagNameMap[T]} element
+   * @returns {PackedElement<T>}
+   * 
+   * @overload
+   * @param {PackedElement<T>} element
+   * @returns {PackedElement<T>}
+   */
   constructor(element) {
     if(typeof element === "string") {
-      this.#element = document.createElement(element);
+      this.#raw = document.createElement(element);
     } else {
-      this.#element = (element instanceof PackedElement) ? element.#element : element;
+      this.#raw = (element instanceof PackedElement) ? element.#raw : element;
     }
   }
 
   /**@param {string[]} name */
   addClass(...name) {
-    this.#element.classList.add(...name);
+    this.#raw.classList.add(...name);
     return this;
   }
 
   /**@param {string[]} name */
   removeClass(...name) {
-    this.#element.classList.remove(...name);
+    this.#raw.classList.remove(...name);
     return this;
   }
 
   /**@param {string} text */
   setText(text) {
-    this.#element.innerText = text;
+    this.#raw.innerText = text;
     return this;
   }
 
   /**@param {string} html */
   setHTML(html) {
-    this.#element.innerHTML = html;
+    this.#raw.innerHTML = html;
     return this;
   }
 
   /**
+   * @overload 
    * @param {keyof CSSStyleDeclaration} name 
-   * @param {string | undefined} value 
+   * @param {string | null} value 
+   * @returns {this}
+   * @overload Directly override all style.
+   * @param {string} css
+   * @returns {this}
    */
   setStyle(name, value) {
-    this.#element.style[name] = value;
-    return this;
-  }
+    if(value === undefined)
+      this.#raw.style.cssText = name;
+    else
+      this.#raw.style[name] = value;
 
-  /**@param {string} style */
-  overrideStyle(style) {
-    this.#element.style.cssText = style;
     return this;
   }
 
@@ -61,8 +74,8 @@ export class PackedElement {
    * @param {string} name 
    * @param {string} value 
    */
-  setAttribute(name, value) {
-    this.#element.setAttribute(name, value);
+  setAttr(name, value) {
+    this.#raw.setAttribute(name, value);
     return this;
   }
 
@@ -72,7 +85,7 @@ export class PackedElement {
    * @param {boolean | AddEventListenerOptions  | undefined} options 
    */
   addListener(type, listener, options) {
-    this.#element.addEventListener(type, listener, options);
+    this.#raw.addEventListener(type, listener, options);
     return this;
   }
 
@@ -82,7 +95,7 @@ export class PackedElement {
    * @param {boolean | EventListenerOptions | undefined} options 
    */
   removeListener(type, listener, options) {
-    this.#element.removeEventListener(type, listener, options);
+    this.#raw.removeEventListener(type, listener, options);
     return this;
   }
 
@@ -90,7 +103,7 @@ export class PackedElement {
    * @param {keyof HTMLElementTagNameMap} selector 
    */
   select(selector) {
-    const result = this.#element.querySelector(selector);
+    const result = this.#raw.querySelector(selector);
     return result ? new PackedElement(result) : null;
   }
 
@@ -98,14 +111,14 @@ export class PackedElement {
    * @param {keyof HTMLElementTagNameMap} selector 
    */
   selectAll(selector) {
-    return [...this.#element.querySelectorAll(selector)]
+    return [...this.#raw.querySelectorAll(selector)]
       .map(element => new PackedElement(element));
   }
 
   /**@param {(string | HTMLElement | PackedElement)[]} nodes */
   append(...nodes) {
-    this.#element.append(...nodes.map(node =>
-      node instanceof PackedElement ? node.#element : node));
+    this.#raw.append(...nodes.map(node =>
+      node instanceof PackedElement ? node.#raw : node));
     return this;
   }
 
@@ -113,21 +126,21 @@ export class PackedElement {
    * @param {HTMLElement | PackedElement} node
    */
   appendTo(node) {
-    node.append(this.#element);
+    node.append(this.#raw);
     return this;
   }
 
-  get() {
-    return this.#element;
+  get raw() {
+    return this.#raw;
   }
 
   getChildren() {
-    return [...this.#element.children]
+    return [...this.#raw.children]
       .map(element => new PackedElement(element));
   }
 
   getClass() {
-    return this.#element.classList;
+    return this.#raw.classList;
   }
 
   /**
@@ -135,30 +148,44 @@ export class PackedElement {
    * @param {string} name 
    */
   hasClass(name) {
-    return this.#element.classList.contains(name);
+    return this.#raw.classList.contains(name);
   }
 
   remove() {
-    this.#element.remove();
+    this.#raw.remove();
     return this;
   }
 
   get childrenCount() {
-    return this.#element.children.length;
+    return this.#raw.children.length;
   }
 
   /**
    * @param {(element: HTMLElement) => void} cb
    */
   for(cb) {
-    cb(this.#element);
+    cb(this.#raw);
     return this;
   }
 }
 
 /**
- * @param {PackedElementConstructParam} element 
- * @param {string?} initRule 
+ * @template {keyof HTMLElementTagNameMap} T
+ * 
+ * @overload
+ * @param {T} name
+ * @param {string} initRule
+ * @returns {PackedElement<T>}
+ * 
+ * @overload
+ * @param {HTMLElementTagNameMap[T]} element
+ * @param {string} initRule
+ * @returns {PackedElement<T>}
+ * 
+ * @overload
+ * @param {PackedElement<T>} element
+ * @param {string} initRule
+ * @returns {PackedElement<T>}
  */
 export function create(element, initRule) {
   const packed = new PackedElement(element);
@@ -169,7 +196,7 @@ export function create(element, initRule) {
   const first = rules.shift()
   
   if(first[0] === "#") {
-    packed.get().id = first.slice(1);
+    packed.raw.id = first.slice(1);
   }
   if(rules.length > 0)
     packed.addClass(...rules)
@@ -275,7 +302,7 @@ export function loadImage(url, isLazy = false) {
         
         div.setText("图片加载失败 :(")
           .addClass("img-load-failed")
-          .overrideStyle(`
+          .setStyle(`
             width: 100%;
             height: 100%;
 
@@ -293,8 +320,8 @@ export function loadImage(url, isLazy = false) {
         reject(ev);
 
       }, defaultSetting)
-      .setAttribute("loading", isLazy ? "lazy" : "eager")
-      .setAttribute("src", url)
+      .setAttr("loading", isLazy ? "lazy" : "eager")
+      .setAttr("src", url)
       .appendTo(div);
   }).finally(() => controller.abort());
 

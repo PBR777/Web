@@ -3,7 +3,7 @@ import { create } from "/fe5/modules/index.js";
 const bg = create("canvas", "#bg")
   .appendTo(document.body);
 
-const ctx = bg.get().getContext("2d");
+const ctx = bg.raw.getContext("2d");
 const view = document.querySelector("#main");
 
 let ctrlLock = false;

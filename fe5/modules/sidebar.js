@@ -16,7 +16,7 @@ create("div", ".sidebar-title-div")
   .addListener("click", () => window.location.href = "/fe5/")
   .append(
     create("img", ".sidebar-title-icon")
-      .setAttribute("src", "/fe5/assets/solar/fe5-256x256.webp")
+      .setAttr("src", "/fe5/assets/solar/fe5-256x256.webp")
   ).appendTo(div);
 
 const anchorDiv = create("div", ".sidebar-anchor-div")
@@ -60,7 +60,7 @@ const updateTree = (() => {
 
       const quicklink = create("div", ".sidebar-anchor")
         .setHTML(heading.innerHTML)
-        .setAttribute("href", "#" + heading.id)
+        .setAttr("href", "#" + heading.id)
         .appendTo(fragment);
 
       if(heading.tagName === "H3") {
@@ -121,6 +121,6 @@ export function setTitle(title) {
 
 loadStyle("sidebar").then(() => {
   if(HAS_SIDEBAR) {
-    document.body.append(button.get(), div.get(), overlay.get());
+    document.body.append(button.raw, div.raw, overlay.raw);
   }
 });

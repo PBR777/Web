@@ -44,11 +44,11 @@ img.promise.catch(() => {
 
 const subheading = create("h1", "#profile-subheading")
   .setHTML(writer && writer !== dirName ? `由<id->${writer}</id->撰写` : "自我撰写")
-  .get();
+  .raw;
 
-const div = await createCard(img.image.get(), "基础信息");
+const div = await createCard(img.image.raw, "基础信息");
 
-headingDiv.append(subheading, div.get());
+headingDiv.append(subheading, div.raw);
 
 try {
   const bio = await fetchJson(`./data.json`);

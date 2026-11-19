@@ -190,7 +190,7 @@
         for(const link of json) {
           create("a", ".wiki-links")
             .setText(link.name)
-            .setAttribute("href", `/fe5/wiki/${data.path}/${link.path}/`)
+            .setAttr("href", `/fe5/wiki/${data.path}/${link.path}/`)
             .appendTo(fragment);
         }
         
@@ -295,10 +295,10 @@
           create("span", ".indents")
             .setText(selfIndent), 
           create("a", ".links")
-          .setAttribute("href", `/fe5/wiki/solar/${obj.id}/`)
+          .setAttr("href", `/fe5/wiki/solar/${obj.id}/`)
           .setText(obj.name));
 
-      if(obj.children.length === 0) return self.get();
+      if(obj.children.length === 0) return self.raw;
 
       const fragment = document.createDocumentFragment();
       self.appendTo(fragment);
@@ -317,11 +317,11 @@
       const data = tabData[i];
       create("div", `.wiki-tab.wiki-tab-${data.path}`)
         .setText(data.name)
-        .setAttribute("data-i", i)
+        .setAttr("data-i", i)
         .appendTo(tabMenu);
     }
 
-    document.body.append(description.get(), tabMenu.get());
+    document.body.append(description.raw, tabMenu.raw);
 
     let pageIndex = 0;
     
