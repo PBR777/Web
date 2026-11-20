@@ -108,6 +108,8 @@
 
       flex-shrink: 1;
       flex-grow: 1;
+
+      cursor: pointer;
     }
 
     #popup-description {
@@ -167,6 +169,7 @@
     const popupImg = document.createElement("img");
     popupImg.id = "popup-img";
     popupImg.alt = "作品截图";
+    popupImg.onclick = () => location.href = popupImg.dataset.href;
 
     const popupDescription = document.createElement("span");
     popupDescription.id = "popup-description";
@@ -198,12 +201,11 @@
       popupTitle.innerText = data.name;
 
       popupImg.src = parseThumbnail(data);
+      popupImg.dataset.href = popupButton.href = `${PROJECT_ROOT}${data.id}/`;
 
       popupDescription.innerHTML = data.description 
       ? data.description.join("<br>")
       : "暂无描述...";
-
-      popupButton.href = `${PROJECT_ROOT}${data.id}/`;
 
       popupLayer.style.display = "block";
       setTimeout(() => popupLayer.style.opacity = "1");
