@@ -36,7 +36,7 @@
     import { create, fetchJson } from "/fe5/modules/index.js";
 
     const ARTICLE_ROOT = "/fe5/data/article/";
-    const slot = document.querySelector("#main-slot");
+    const textbox = document.querySelector("#slot");
 
     try {
       const arr = await fetchJson(ARTICLE_ROOT + "index.json");
@@ -46,13 +46,12 @@
         .setAttr("href", "/fe5/articles/read/?" + new URLSearchParams({ name }).toString())
         .raw);
 
-      slot.innerHTML = "";
-      slot.append(...buttons);
+      textbox.append(...buttons);
   
     } catch(err) {
       console.error(err);
       
-      slot.innerHTML = "加载失败:(<br>" + err;
+      textbox.innerHTML = "加载失败:(<br>" + err;
     }
 
   </script>
@@ -71,11 +70,8 @@
       <figcaption><span>《基本篇章》封面（是的……）</span></figcaption>
     </figure>
   </info-box>
-  <text-box>
+  <text-box id="slot">
     <h2>《基本篇章》</h2>
-    <div id="main-slot">
-      加载中...
-    </div>
   </text-box>
 </body>
 </html>
