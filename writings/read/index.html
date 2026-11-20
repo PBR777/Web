@@ -13,7 +13,7 @@
   <style>
     .writing-text {
       white-space: pre-wrap;
-      size: 10px;
+      font-size: 10px;
       overflow-wrap: break-word;
     }
 
@@ -70,7 +70,7 @@
         if(!name) throw new Error("Missing parameter \"n\" (name)");
 
         const category = params.get("c");
-        if(!name) throw new Error("Missing parameter \"c\" (category)");
+        if(!category) throw new Error("Missing parameter \"c\" (category)");
 
         const hashcode = await hash(name);
 

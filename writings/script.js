@@ -32,15 +32,15 @@ export async function load(category) {
 }
 
 function createLink(category, name) {
-  const elememt = document.createElement("a");
+  const element = document.createElement("a");
   const params = new URLSearchParams({
     c: category,
     n: name
   });
 
-  elememt.classList.add("writings-link");
-  elememt.innerText = name;
-  elememt.href = "/writings/read/?" + params.toString();
+  element.classList.add("writings-link");
+  element.innerText = name;
+  element.href = "/writings/read/?" + params.toString();
   
-  return elememt;
+  return element;
 }
