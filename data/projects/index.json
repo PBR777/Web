@@ -21,6 +21,7 @@
       "空格：技能（冲刺）",
       "Q：技能（狂暴）",
       "R：技能（回血）",
+      "",
       "> 音乐：",
       "<a href='https://youtu.be/2wml6eoLQ0U'>Elektronomia - Energy</a>",
       "<a href='https://youtu.be/VmPYf6FpsBA'>Elektronomia - Sky High pt.II</a>",
@@ -48,6 +49,7 @@
     "description": [
       "> 操作指南：",
       "鼠标左键：加速",
+      "",
       "> 音乐：",
       "<a href='https://youtu.be/Iv5P21D76bw'>Ampyx - Holo</a>"
     ]
@@ -106,20 +108,26 @@
     ]
   },
   {
-    "name": "复变可视化（Gamma函数）",
+    "name": "复变计算器",
     "id": "complex",
     "description": [
       "> 操作指南：",
-      "WSAD：控制4D相机围绕中心旋转",
+      "WSAD, Shift, Space：控制4D相机围绕中心旋转",
       "鼠标拖拽：转动3D投影",
-      "Q / Shift+Q：切换3D正交/切换4D正交",
-      "1，2，3，4：将4D相机移动到预设的位置"
+      "鼠标滚轮：缩放4D相机",
+      "Q / (` + Q)：切换3D正交/切换4D正交",
+      "1, 2, 3, 4 / (` + (1, 2, 3))：将 4D/3D 相机移动到预设的位置",
+      "←→：切换函数",
+      "IKJL：更改实部/虚部偏移",
+      "R：重制所有"
     ]
   },
   {
     "name": "Brainf*ck 解释器",
     "id": "brainfrick",
     "description": [
+      "实际上叫“布莱恩法克”，即“他吗的大脑”，这里使用星号代替u。",
+      "",
       "> 操作指南：",
       "点击右侧区域进入编辑模式：",
       "任意按键：编辑代码",

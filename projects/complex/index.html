@@ -201,7 +201,7 @@
       setProgress(0.1);
 
       const scaffolding = new Scaffolding.Scaffolding();
-      scaffolding.width = 640;
+      scaffolding.width = 480;
       scaffolding.height = 360;
       scaffolding.resizeMode = "preserve-ratio";
       scaffolding.editableLists = false;
@@ -340,7 +340,7 @@
       if (vm.setRuntimeOptions) vm.setRuntimeOptions({
         fencing: true,
         miscLimits: false,
-        maxClones: 9999999999,
+        maxClones: Infinity,
       });
       if (vm.setCompilerOptions) vm.setCompilerOptions({
         enabled: true,
