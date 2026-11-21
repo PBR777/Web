@@ -98,13 +98,23 @@
     ]
   },
   {
-    "name": "律动渲染",
-    "id": "visible-soundbytes",
+    "name": "律动渲染：Neon Rainbow",
+    "id": "vs-neon-rainbow",
     "description": [
       "> 操作指南：",
       "空格：切换HUB可见性",
       "> 音乐：",
       "<a href='https://youtu.be/hDBwe0oOCPU'>Rameses B - Neon Rainbow (feat. Anna Yvette)</a>"
+    ]
+  },
+  {
+    "name": "律动渲染：Mountains",
+    "id": "vs-mountains",
+    "description": [
+      "> 操作指南：",
+      "空格：切换HUB可见性",
+      "> 音乐：",
+      "<a href='https://youtu.be/n2E_RDtrqIE'>Rameses B - Mountains (ft. Veela)</a>"
     ]
   },
   {

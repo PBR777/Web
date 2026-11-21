@@ -27,19 +27,15 @@ async function initCanvas(seed, starCount = 256) {
 
   const ctx = canvas.getContext("2d");
 
-  if(!ctx) {
-    console.error("Canvas is not supported in this browser.");
-    return;
-  }
+  if(!ctx) return console.error("Canvas is not supported in this browser.");
 
   try {
     await starImgLoadPromise;
   } catch {
-    console.error("star.svg load failed.");
-    return;
+    return console.error("star.svg load failed.");
   }
 
-  seed ??= Math.random() * 65536 | 0;
+  seed ??= (Math.random() - 0.5) * 65536 | 0;
   const random = () => {
     seed = seed * 1664525 + 1013904223 | 0;
     return seed / 4294967296 + 0.5;
@@ -89,7 +85,6 @@ async function initCanvas(seed, starCount = 256) {
   }
 
   tick(0);
-  return true;
 }
 
 loadStyle("background").then(() => {
