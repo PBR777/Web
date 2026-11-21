@@ -37,8 +37,11 @@ const overlay = create("div", ".sidebar-overlay")
 
 const updateTree = (() => {
   let timeoutId = null;
+  let isFirstLoad = true;
 
   function update() {
+    timeoutId = null;
+
     anchorDiv.setHTML("");
     anchorTitle.setText(document.title);
     anchorDiv.append(anchorTitle);
@@ -71,7 +74,10 @@ const updateTree = (() => {
 
     anchorDiv.append(fragment);
 
-    timeoutId = null;
+    if(isFirstLoad) {
+      isFirstLoad = false;
+      if(location.hash.trim() !== "") location.href = location.hash;
+    }
   }
 
   return HAS_SIDEBAR ? () => {
