@@ -1,5 +1,5 @@
 import { create, dirName, calStyleStatus } from "/fe5/modules/index.js";
-import { setTitle } from "/fe5/modules/sidebar.js"
+import { setTitle } from "/fe5/modules/sidebar.js";
 import "/fe5/modules/background.js";
 
 create("link", "#favicon")
@@ -27,7 +27,7 @@ if(!document.querySelector("meta[name='no-title']")) {
 
 document.body.insertAdjacentElement("afterbegin", headingDiv.raw);
 
-Promise.race([
+await Promise.race([
   calStyleStatus().then(console.log),
   new Promise((_, reject) => setTimeout(reject, 5000))
 ]).catch(() => {

@@ -2,86 +2,42 @@ import { loadStyle, create } from "./index.js";
 
 const tooltip = create("div", "#tooltip");
 
-let isTooltipShowing = false;
 let frameId = null;
 
-const observer = new IntersectionObserver(entries => {
-  for(const entry of entries) {
-    entry.target.toggle(entry.isIntersecting);
-  }
-});
+/**
+ * @param {PointerEvent} ev 
+ */
+function mouseEventHandler(ev) {
+  const target = ev.target;
+  if(!(target instanceof HTMLElement)) return;
 
-class Tooltip extends HTMLElement {
-  static observedAttributes = ["text"];
+  const text = target.getAttribute("text");
+  if(!text) return;
 
-  #text = "";
+  switch(ev.type) {
+    case "pointerover":
+    tooltip.setHTML(text).addClass("show");
+    break;
 
-  get text() {
-    return this.#text;
-  }
-
-  set text(val) {
-    this.setAttr("text", val);
-  }
-
-  hideTooltip() {
+    case "pointerout":
     tooltip.removeClass("show");
-    isTooltipShowing = false;
-  }
+    break;
 
-  showTooltip(ev) {
-    tooltip
-      .setHTML(this.text)
-      .addClass("show");
-
-    isTooltipShowing = true;
-    this.updateTooltip(ev);
-  }
-
-  updateTooltip(ev) {
-    if(!isTooltipShowing) this.showTooltip();
-    if(frameId) return;
+    case "pointermove":
+    if(frameId) break;
 
     frameId = requestAnimationFrame(() => {
-      tooltip
-        .setStyle("left", ev.clientX + "px")
+      tooltip.setStyle("left", ev.clientX + "px")
         .setStyle("top", ev.clientY + "px");
 
       frameId = null;
     });
   }
-
-  constructor() {
-    super();
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    this.#text = newValue;
-  }
-
-  toggle(enable) {
-    if(enable) {
-      this.addEventListener("pointerenter", this.showTooltip);
-      this.addEventListener("pointerleave", this.hideTooltip);
-      this.addEventListener("pointermove", this.updateTooltip);
-    } else {
-      this.removeEventListener("pointerenter", this.showTooltip);
-      this.removeEventListener("pointerleave", this.hideTooltip);
-      this.removeEventListener("pointermove", this.updateTooltip);
-    }
-  }
-
-  connectedCallback() {
-    observer.observe(this);
-  }
-
-  disconnectedCallback() {
-    observer.unobserve(this);
-    this.toggle(false);
-  }
 }
 
-customElements.define("tool-tip", Tooltip);
+document.addEventListener("pointerover", mouseEventHandler);
+document.addEventListener("pointerout", mouseEventHandler);
+document.addEventListener("pointermove", mouseEventHandler);
 
 loadStyle("tooltip").then(() => {
   tooltip.appendTo(document.body);

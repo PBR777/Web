@@ -1,15 +1,16 @@
 import { loadStyle } from "./index.js";
 
+/**@type {Set<HTMLElement>} */
 const visibleObfucatedText = new Set();
 
 const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
+  for(const entry of entries) {
     if(entry.isIntersecting) {
       visibleObfucatedText.add(entry.target);
     } else {
       visibleObfucatedText.delete(entry.target);
     }
-  });
+  }
 });
 
 class ObfucatedText extends HTMLElement {
@@ -32,12 +33,12 @@ customElements.define("obf-text", ObfucatedText);
 
 loadStyle("text-obfucation").then(() => {
   setInterval(() => {
-    visibleObfucatedText.forEach(element => {
-      element.textContent = Array
-        .from({ length: element.textContent.length }, () => 
+    for(const text of visibleObfucatedText) {
+      text.textContent = Array
+        .from({ length: text.textContent.length }, () => 
           String.fromCharCode((Math.random() * 94 | 0) + 33))
         .join("");
-    });
+    }
   }, 40);
 }).catch(err => {
   console.error(err);

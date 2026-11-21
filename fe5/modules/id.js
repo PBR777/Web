@@ -16,7 +16,7 @@ class Id extends HTMLElement {
   }
 
   clickHandler() {
-    window.location.href = `/fe5/bio/?id=${this.textContent}&redirect`;
+    location.href = `/fe5/bio/?id=${this.textContent}&redirect`;
   }
 
   connectedCallback() {

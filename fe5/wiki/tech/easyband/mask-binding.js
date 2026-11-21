@@ -8,8 +8,6 @@ const observer = new IntersectionObserver(entries => {
       visibleElement.set(entry.target, map.get(entry.target));
     } else {
       visibleElement.delete(entry.target);
-      console.log("Out!");
-      
     }
   }
 });
@@ -32,5 +30,5 @@ export function bind(easyband, mask) {
   const parent = maskElement.parentElement;
 
   map.set(parent, [maskElement, cursorElement]);
-  observer.observe(parent)
+  observer.observe(parent);
 }

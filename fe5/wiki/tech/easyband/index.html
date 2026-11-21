@@ -12,9 +12,10 @@
   <script type="module" src="/fe5/modules/tooltip.js"></script>
 
   <style>
-
     .animation {
       width: 90%;
+
+      aspect-ratio: 4 / 3;
 
       display: flex;
       align-items: center;
@@ -40,10 +41,6 @@
       0% {opacity: 0.5;}
       50% {opacity: 0.3;}
       100% {opacity: 0.5;}
-    }
-
-    easyband-demo tool-tip {
-      display: block;
     }
 
     easyband-demo .demo-band {
@@ -124,8 +121,6 @@
       animation: flashing 1s ease-in-out infinite;
     }
 
-    
-
     easyband-demo.side .demo-band {
       width: 1350px;
     }
@@ -158,32 +153,21 @@
       height: 750px;
 
       transition: mask-size 200ms, mask-position 50ms;
-    }    
+    }
   </style>
 
   <script type="module">
     const observer = new ResizeObserver(entries => {
       entries.forEach(entry => {
-        const element = entry.target;
-        const width = entry.contentRect.width;
-        const height = (width / 4 * 3 | 0) + "px";
-
-        if(element.style.height !== height)
-          element.style.height = height;
-
-        const child = element.querySelector("div");
+        const child = entry.target.querySelector("div");
         if(!child) return;
-
-        child.style.scale = width / 1000;
-
+        child.style.scale = entry.contentRect.width / 1000;
       });
     });
 
-    document
-      .querySelectorAll(".animation")
-      .forEach(element => {
-        observer.observe(element);
-      });
+    document.querySelectorAll(".animation").forEach(element => {
+      observer.observe(element);
+    });
 
     class EasybandDemo extends HTMLElement {
       static node = document
@@ -209,13 +193,13 @@
 
   <!--我有最顶级的艺术细菌-->
   <template id="easyband-demo">
-    <tool-tip class="demo-band hidden" text="环带">
-      <tool-tip class="demo-beam hidden" text="游标光束"></tool-tip>
-      <tool-tip class="demo-projector hidden" text="全息投影仪"></tool-tip>
-      <tool-tip class="demo-cursor hidden" text="3D游标"></tool-tip>
-      <tool-tip class="demo-leftkey demo-key hidden" text="左触控区域（左键）"></tool-tip>
-      <tool-tip class="demo-rightkey demo-key hidden" text="右触控区域（右键）"></tool-tip>
-    </tool-tip>
+    <div class="demo-band" text="环带">
+      <div class="demo-beam" text="游标光束"></div>
+      <div class="demo-projector" text="全息投影仪"></div>
+      <div class="demo-cursor" text="3D游标"></div>
+      <div class="demo-leftkey demo-key" text="左触控区域（左键）"></div>
+      <div class="demo-rightkey demo-key" text="右触控区域（右键）"></div>
+    </div>
   </template>
 </head>
 <body>
@@ -282,7 +266,7 @@
     <h2>全息模式</h2>
 
     <p>随身环的默认投影模式。当随身环被触发时，在正上方投影出三维全息图。</p>
-    <p>全息模式下，最大<tool-tip text="投影距离与画面宽度之比">投射比</tool-tip>为<info-text>1:1.73（视场角120°）</info-text>，视锥最大高度为<info-text>30cm</info-text>。</p>
+    <p>全息模式下，最大<span tooltip text="投影距离与画面宽度之比">投射比</span>为<info-text>1:1.73（视场角120°）</info-text>，视锥最大高度为<info-text>30cm</info-text>。</p>
     <p>全息模式下的界面存在一个3D游标，无论投影仪相对于地面的方向如何，该游标总是悬停在投影仪正前方，该距离可设置，默认为<info-text>10cm</info-text>。</p>
     <p>游标处的像素密度为<info-text>125000/cm³</info-text>。</p>
     <p>为了方便演示，无特殊声明，本页面下所有光标距离默认为<info-text>4cm</info-text>。</p>
@@ -462,7 +446,7 @@
     <h2>投影模式</h2>
 
     <p>顾名思义，投影模式指将画面投影至一张平面的模式，与平面投影仪有异曲同工之妙。</p>
-    <p>投影模式下，最远有效投影距离为<info-text>5米</info-text>，屏幕比例为<info-text>16:9</info-text>，<tool-tip text="游标光束与水平面的夹角">投影夹角</tool-tip>默认为<info-text>20°（可调整，12°~90°）</info-text>。5米20°情况下，能得到2米×1.125米的画面，分辨率为<info-text>3840×2160</info-text>。</p>
+    <p>投影模式下，最远有效投影距离为<info-text>5米</info-text>，屏幕比例为<info-text>16:9</info-text>，<span tooltip text="游标光束与水平面的夹角">投影夹角</span>默认为<info-text>20°（可调整，12°~90°）</info-text>。5米20°情况下，能得到2米×1.125米的画面，分辨率为<info-text>3840×2160</info-text>。</p>
 
     <info-box class="animation">
       <div class="animation-div" id="ani4">
@@ -504,12 +488,9 @@
           }
         </style>
 
-        <tool-tip class="hidden" id="wall" text="墙面"></tool-tip>
-        <tool-tip id="frame" text="投影画面预览">
-          <img src="/fe5/assets/app-bg.svg">
-        </tool-tip>
-        <easyband-demo>
-        </easyband-demo>
+        <div id="wall" text="墙面"></div>
+        <img id="frame" text="投影画面预览" src="/fe5/assets/app-bg.svg">
+        <easyband-demo></easyband-demo>
       </div>
     </info-box>
 

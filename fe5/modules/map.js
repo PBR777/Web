@@ -59,7 +59,7 @@ class Map extends PackedElement {
     const xPct = `${x * 50 + 50}%`;
     const yPct = `${y * 50 + 50}%`;
 
-    const spot = create("tool-tip", ".map-spot.map-spot-main.hidden")
+    const spot = create("div", ".map-spot.map-spot-main")
       .setAttr("text", name)
       .setStyle("left", xPct)
       .setStyle("top", yPct)

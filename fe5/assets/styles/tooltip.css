@@ -33,12 +33,12 @@
   50% {text-decoration-color: transparent;}
 }
 
-tool-tip {
+[tooltip] {
   text-decoration: underline solid;
   animation: flashingLine 2s infinite;
 }
 
-tool-tip::after {
+[tooltip]::after {
   content: "?";
 
   color: #6ebeff;
@@ -51,12 +51,4 @@ tool-tip::after {
   translate: 0 -30%;
 
   animation: flashingText 2s infinite;
-}
-
-tool-tip.hidden {
-  text-decoration: none;
-}
-
-tool-tip.hidden::after {
-  content: "";
 }

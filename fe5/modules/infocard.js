@@ -8,11 +8,9 @@ export class Infocard extends PackedElement {
    */
   constructor(img, title = "信息", descriptions) {
     super("text-box");
-    
     this.addClass("infocard-textbox");
 
     img.classList.add("infocard-img");
-    
     
     const profileImgDiv = create("div", ".infocard-img-div")
       .appendTo(this);
@@ -39,8 +37,7 @@ export class Infocard extends PackedElement {
    * @param {string} info 
    */
   setInfo(info) {
-    this
-      .select(".infocard-span")
+    this.select(".infocard-span")
       .setHTML(info.replaceAll("\n", "<br>"));
   }
 }

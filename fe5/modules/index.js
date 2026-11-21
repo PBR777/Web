@@ -161,7 +161,7 @@ export class PackedElement {
   }
 
   /**
-   * @param {(element: HTMLElement) => void} cb
+   * @param {(element: HTMLElementTagNameMap[T]) => void} cb
    */
   for(cb) {
     cb(this.#raw);
@@ -246,14 +246,6 @@ export async function calStyleStatus() {
   result.total = status.length;
   result.timeUsed = Date.now() - startLoadingTime;
   return result;
-}
-
-/**
- * @async
- * @param {number} ms 
- */
-export function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**

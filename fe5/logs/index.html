@@ -229,16 +229,6 @@
           }
         }
 
-        function lazyCb(ev) {
-          /**@type HTMLElement */
-          const target = ev.target;
-
-          const i = Number(target.parentElement.dataset.index);
-          const time = Time.stringify(logsData[i].t, "full", 0);
-
-          target.setAttr("text", time);
-        }
-
         const logBlockDiv = create("div", ".log-block-div")
           .addListener("click", clickHandler)
           .appendTo(logsDiv);
@@ -250,9 +240,8 @@
 
           const time = Time.stringify(data.t, "YDH", 0);
 
-          create("tool-tip", ".log-timestamp-box.hidden")
+          create("span", ".log-timestamp-box")
             .setText(time)
-            .addListener("pointerenter", lazyCb, { once: true, capture: true })
             .appendTo(block);
 
           create("div", ".log-timestamp-spot.log-timestamp-spot-pulse")
