@@ -73,65 +73,58 @@
     import IdUtils from "/fe5/modules/id.js";
     import { create, fetchJson } from "/fe5/modules/index.js";
 
-    /**@type string[] */
-    let idSet = [];
+    /**@type {HTMLLIElement[]} */
+    const ids = (await fetchJson("/fe5/data/bio/index.json"))
+      .sort()
+      .map(id => create("li").setAttr("data-id", id).append(
+        create("img", ".bio-icon")
+          .setAttr("src", `/fe5/assets/zone/${id[0]}.png`),
+        create("a", ".bio-links")
+          .setText(id)
+          .setAttr("href", `/fe5/bio/${id}/`)
+        ).raw);
 
-    const textbox = create("text-box");
+    const resultTextDiv = document.querySelector("#result-text-div");
 
-    const resultTextDiv = create("div", "#result-text-div")
-      .appendTo(textbox);
+    const resultDiv = document.querySelector("#search-result");
 
-    const resultDiv = create("ol", "#search-result")
-      .appendTo(textbox);
+    /**@type {HTMLInputElement} */
+    const searchbar = document.querySelector("#search-bar");
+    searchbar.oninput = (() => {
+      let id;
+      return () => {
+        clearTimeout(id);
+        id = setTimeout(update, 300);
+      }
+    })();
 
-    const searchbar = create("input", "#search-bar")
-      .addListener("input", (() => {
-        let id;
-        return () => {
-          clearTimeout(id);
-          id = setTimeout(update, 300);
-        }
-      })())
-      .addListener("keydown", ev => {
-        
-        if(ev.keyCode !== 13) return; // Not pressed Enter
+    searchbar.onkeydown = ev => {
+      if(ev.key !== "Enter") return; // Not pressed Enter
+      update();
+      
+      if(resultDiv.childElementCount === 1) resultDiv.querySelector(".bio-links").click();
+    };
 
-        update();
-        if(resultDiv.childrenCount === 1)
-          resultDiv.select(".bio-links").raw.click();
-      })
-      .addListener("change", update)
-      .raw;
+    searchbar.onchange = update;
 
-    searchbar.placeholder = "输入编号...";
-    searchbar.maxLength = "16";
-
-    /**
-     * @param {string} str 
-     */
     function search(str) {
-      if(str.trim() === "") return idSet;
+      if(str === "") return ids;
 
       const {zoneCode, id, fullId} = IdUtils.parse(str);
-      let results = idSet;
+      let results = ids;
 
-      if(zoneCode) {
-        results = results.filter(val => val[0] === zoneCode);
-      }
+      if(zoneCode) results = results.filter(e => e.dataset.id[0] === zoneCode);
 
-      results = results
-        .map(val => ({ name: val, weight: val.length - val.lastIndexOf(id)}))
-        .filter(obj => obj.weight <= obj.name.length)
+      return results
+        .map(li => ({ li, weight: li.dataset.id.length - li.dataset.id.lastIndexOf(id)}))
+        .filter(obj => obj.weight <= obj.li.dataset.id.length)
         .sort((a, b) => a.weight - b.weight)
-        .map(obj => obj.name);
-
-      return results;
+        .map(obj => obj.li);
     }
 
     let searchRecord;
 
     function update() {
-      
       const str = searchbar.value.trim();
       if(str === searchRecord) return;
       searchRecord = str;
@@ -139,58 +132,49 @@
       const results = search(str);
 
       if(str === "") {
-        resultTextDiv.setText(`${idSet.length}个编号已收录`);
+        resultTextDiv.innerText = `${results.length}个编号已收录`;
       } else if(results.length === 0) {
-        resultTextDiv.setText(`ID:${str}未找到，他/她可能未被收录，或者根本不存在\n\n￣へ￣`);
+        resultTextDiv.innerText = `ID:${str}未找到，他/她可能未被收录，或者根本不存在\n\n￣へ￣`;
       } else {
-        resultTextDiv.setText(`找到${results.length}个与ID:${str}相似的结果。已按相似度排序`);
+        resultTextDiv.innerText = `找到${results.length}个与ID:${str}相似的结果。已按相似度排序`;
       }
 
-      const links = results.map(name => create("li").append(
-        create("img", ".bio-icon")
-          .setAttr("src", `/fe5/assets/zone/${name[0]}.png`),
-        create("a", ".bio-links")
-          .setText(name)
-          .setAttr("href", `/fe5/bio/${name}/`)
-        ).raw);
-
-      resultDiv.setHTML("");
-      resultDiv.append(...links);
-
-      return results;
+      resultDiv.innerHTML = "";
+      resultDiv.append(...results);
     }
 
-    (async () => {
-      idSet = (await fetchJson("/fe5/data/bio/index.json")).sort();
-
-      const url = new URLSearchParams(location.search);
-      const id = url.get("id");
+    async function load() {
+      const params = new URLSearchParams(location.search);
+      const id = params.get("id");
       if(id) searchbar.value = id;
 
-      const results = update();
+      update();
 
-      if(url.has("redirect")) {
-        url.delete("redirect");
-        history.replaceState({}, "", "/fe5/bio/?" + url.toString());
+      if(params.has("redirect")) {
+        params.delete("redirect");
+        history.replaceState({}, "", "/fe5/bio/?" + params.toString());
 
-        if(results && results.length === 1) {
-          location.replace(`/fe5/bio/${results[0]}/`);
-          return;
-        }
+        if(resultDiv.childElementCount === 1) return resultDiv.querySelector(".bio-links").click();
       }
 
-      document.body.querySelector("#placeholder").remove();
-      document.body.append(searchbar, textbox.raw);
-    })().catch(err => {
+      document.querySelector("#placeholder").remove();
+    }
+
+    try {
+      await load();
+    } catch(err) {
       console.error(err);
-
-      document.body.querySelector("#placeholder").innerText = `加载失败 :(\n${err}`;
-    });
-
+      document.querySelector("#placeholder").innerText = `加载失败 :(\n${err}`;
+    }
   </script>
 </head>
 
 <body>
-  <span id="placeholder">加载中</span>
+  <input id="search-bar" type="text" placeholder="输入编号..." maxlength="16">
+  <text-box>
+    <span id="placeholder">加载中...</span>
+    <div id="result-text-div"></div>
+    <ol id="search-result"></ol>
+  </text-box>
 </body>
 </html>

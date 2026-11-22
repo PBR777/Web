@@ -32,10 +32,12 @@
       width: min-content;
       margin: 5px;
 
+      max-width: 500px;
+
       flex-basis: 24%;
     }
 
-    .body {
+    #project-area {
       display: flex;
       flex-wrap: wrap;
 
@@ -151,6 +153,32 @@
       translate: 0 -5px;
       box-shadow: 0 5px 6px #00000052;
     }
+
+    #search-bar {
+      width: 20%;
+      min-width: 150px;
+
+      font-size: 120%;
+
+      position: relative;
+      left: 50%;
+      translate: -50%;
+
+      padding: 0 10px;
+
+      border: 2px solid #313131;
+      border-radius: 100px;
+
+      outline: none;
+
+      transition: width 200ms;
+    }
+
+    #search-bar:focus {
+      border: 2px solid #696969;
+
+      width: 50%;
+    }
   </style>
 
   <script type="module">
@@ -195,6 +223,8 @@
     }
     popupLayer.append(popup);
 
+    const projArea = document.querySelector("#project-area");
+
     function showPopup(i) {
       const data = json[i];
 
@@ -221,6 +251,8 @@
       for(const data of json) {
         const div = document.createElement("div");
         div.classList.add("game-div");
+        div.dataset.name = data.name;
+        div.dataset.id = data.id;
         fragment.append(div);
 
         const title = document.createElement("h3");
@@ -236,16 +268,42 @@
         div.append(gameshot);
       }
 
-      const body = document.querySelector(".body");
-      body.innerHTML = "";
-      body.append(fragment);
-      body.addEventListener("click", ev => {
+      projArea.querySelector("h2").remove();
+      projArea.append(fragment);
+      projArea.onclick = ev => {
         const target = ev.target;
         if(!target.classList.contains("gameshot")) return;
 
         showPopup(Number(target.dataset.index));
-      });
+      };
     }
+
+    /**@type {HTMLInputElement} */
+    const searchbar = document.querySelector("#search-bar");
+    let timeoutId, lastValue;
+    const search = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        const value = searchbar.value.trim();
+        if(value === lastValue) return;
+        lastValue = value;
+
+        const divs = projArea.querySelectorAll(".game-div");
+
+        if(value === "") {
+          return divs.forEach(div => div.style.display = null);
+        }
+
+        Array.from(divs).forEach(div => {
+          if(div.dataset.name.includes(value) || div.dataset.id.includes(value)) {
+            div.style.display = null;
+          } else {
+            div.style.display = "none";
+          }
+        });
+      }, 300);
+    };
+    searchbar.onchange = searchbar.oninput = search;
 
     load();
     document.body.append(popupLayer);
@@ -254,7 +312,10 @@
 
 <body>
   <div class="body">
-    <h2>加载中...</h2>
+    <input id="search-bar" type="text" placeholder="搜索名称/ID...">
+    <div id="project-area">
+      <h2>加载中...</h2>
+    </div>
   </div>
 </body>
 
