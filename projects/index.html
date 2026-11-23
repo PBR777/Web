@@ -284,7 +284,7 @@
     const search = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
-        const value = searchbar.value.trim();
+        const value = searchbar.value.trim().toLowerCase();
         if(value === lastValue) return;
         lastValue = value;
 
