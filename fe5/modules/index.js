@@ -62,10 +62,8 @@ export class PackedElement {
    * @returns {this}
    */
   setStyle(name, value) {
-    if(value === undefined)
-      this.#raw.style.cssText = name;
-    else
-      this.#raw.style[name] = value;
+    if(value === undefined) this.#raw.style.cssText = name;
+    else this.#raw.style[name] = value;
 
     return this;
   }
@@ -111,12 +109,18 @@ export class PackedElement {
    * @param {keyof HTMLElementTagNameMap} selector 
    */
   selectAll(selector) {
-    return [...this.#raw.querySelectorAll(selector)]
-      .map(element => new PackedElement(element));
+    const targets = this.#raw.querySelectorAll(selector);
+    if(!targets) return [];
+    return Array.from(targets, element => new PackedElement(element));
   }
 
   /**@param {(string | HTMLElement | PackedElement)[]} nodes */
   append(...nodes) {
+    if(nodes.length === 1) {
+      this.#raw.append(nodes[0] instanceof PackedElement ? nodes[0].#raw : nodes[0]);
+      return this;
+    }
+
     this.#raw.append(...nodes.map(node =>
       node instanceof PackedElement ? node.#raw : node));
     return this;
@@ -135,20 +139,7 @@ export class PackedElement {
   }
 
   getChildren() {
-    return [...this.#raw.children]
-      .map(element => new PackedElement(element));
-  }
-
-  getClass() {
-    return this.#raw.classList;
-  }
-
-  /**
-   * 
-   * @param {string} name 
-   */
-  hasClass(name) {
-    return this.#raw.classList.contains(name);
+    return Array.from(this.#raw.children, element => new PackedElement(element));
   }
 
   remove() {
@@ -192,14 +183,11 @@ export function create(element, initRule) {
 
   if(!initRule) return packed;
 
-  const rules = initRule.split(/(?<!\\)\./g);
+  const rules = initRule.split(/\./g);
   const first = rules.shift()
   
-  if(first[0] === "#") {
-    packed.raw.id = first.slice(1);
-  }
-  if(rules.length > 0)
-    packed.addClass(...rules)
+  if(first[0] === "#") packed.raw.id = first.slice(1);  
+  if(rules.length > 0) packed.addClass(...rules);
 
   return packed;
 }

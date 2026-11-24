@@ -66,7 +66,7 @@ const updateTree = (() => {
         .setAttr("href", "#" + heading.id)
         .appendTo(fragment);
 
-      if(heading.tagName === "H3") {
+      if(heading.tagName === "h3") {
         quicklink.addClass("sidebar-anchor-h2");
       }
 
