@@ -9,7 +9,7 @@ let frameId = null;
  */
 function mouseEventHandler(ev) {
   const target = ev.target;
-  if(!(target instanceof HTMLElement)) return;
+  if(!(target instanceof Element)) return;
 
   const text = target.getAttribute("text");
   if(!text) return;
