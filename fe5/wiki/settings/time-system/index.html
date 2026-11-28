@@ -53,7 +53,7 @@
     <h2>时间戳</h2>
 
     <h3>定义</h3>
-    <p>一个标准的时间戳总是遵循着<info-text>Y*-DD-HH HpHp:ssss?</info-text>的格式。其中Y*为任意长度的年，DD为两位的天，HH为两位的时，HpHp为两位的百分时，ssss?为三到四位的秒。Y*字段读作“年”，DD字段读作“日”，HH字段读作“时”，HpHp字段读作“点”，ssss?读作“秒”，其中Y*因为长度不定，所以直接从左到右读数字就行。<info-text>12-03-04 56:789</info-text>将读作：<info-text>一二年三日四时五十六点七百八十九秒</info-text>。</p>
+    <p>一个标准的时间戳总是遵循着<code>Y*-DD-HH HpHp:ssss?</code>的格式。其中Y*为任意长度的年，DD为两位的天，HH为两位的时，HpHp为两位的百分时，ssss?为三到四位的秒。Y*字段读作“年”，DD字段读作“日”，HH字段读作“时”，HpHp字段读作“点”，ssss?读作“秒”，其中Y*因为长度不定，所以直接从左到右读数字就行。<code>12-03-04 56:789</code>将读作：<code>一二年三日四时五十六点七百八十九秒</code>。</p>
     <p>以下是一些标准的时间戳：</p>
     <info-box>3-10-21 98:675</info-box>
     <info-box>15-02-00 15:1000</info-box>
@@ -62,18 +62,18 @@
     <info-box>6-08-27 100:012</info-box>
     <info-box>13-11-36 52:1001</info-box>
     <p>根据定义，1H=100H%，即H%满100就要向H进一位，第一个时间戳的H%为100，不在[0, 100)之间，顾不正确。第二个时间戳的H亦同理。</p>
-    <p>一些更高精度的时间戳会写出秒的小数位，如：<info-text>19-05-20 03:454.622</info-text>。</p>
+    <p>一些更高精度的时间戳会写出秒的小数位，如：<code>19-05-20 03:454.622</code>。</p>
     
     <h3>报时</h3>
-    <p>假设现在的时间戳为<info-text>1-02-34 56:789</info-text>。</p>
-    <p>他们现在问：<info-text>现在几点了？</info-text></p>
-    <p>Fe5上，百分时HpHp才读作“点”，所以应该回答：<info-text>现在56点。</info-text></p>
-    <p>问：<info-text>那……几时了？</info-text></p>
-    <p>答：<info-text>34时。</info-text></p>
-    <p>问：<info-text>几日？</info-text></p>
-    <p>答：<info-text>2日。</info-text></p>
-    <p>问：<info-text>秒？</info-text></p>
-    <p>答：<info-text>789。</info-text></p>
+    <p>假设现在的时间戳为<code>1-02-34 56:789</code>。</p>
+    <p>他们现在问：<code>现在几点了？</code></p>
+    <p>Fe5上，百分时HpHp才读作“点”，所以应该回答：<code>现在56点。</code></p>
+    <p>问：<code>那……几时了？</code></p>
+    <p>答：<code>34时。</code></p>
+    <p>问：<code>几日？</code></p>
+    <p>答：<code>2日。</code></p>
+    <p>问：<code>秒？</code></p>
+    <p>答：<code>789。</code></p>
     <!--The tool will be added in future-->
   </text-box>
 </body>

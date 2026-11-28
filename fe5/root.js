@@ -3,6 +3,12 @@ import { setTitle } from "/fe5/modules/sidebar.js";
 import "/fe5/modules/background.js";
 
 create("link", "#favicon").for(element => {
+  element.rel = "icon";
+  element.sizes = "16x16";
+  element.href = "/fe5/assets/zone/M.png";
+}).appendTo(document.head);
+
+create("link", "#apple-favicon").for(element => {
   element.rel = "apple-touch-icon";
   element.sizes = "180x180";
   element.href = "/apple-favicon.png";

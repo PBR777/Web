@@ -17,7 +17,7 @@ try {
   const info = [];
 
   const getData = (num, unit = "") => (num != undefined && !Number.isNaN(num)) 
-    ? `<info-text>${num + unit}</info-text>` 
+    ? `<code>${num + unit}</code>` 
     : "未知";
 
   info.push(  "质量：" + getData(data.mass, "kg"));
